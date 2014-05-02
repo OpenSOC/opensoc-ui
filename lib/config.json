@@ -1,0 +1,9 @@
+{
+  "development": {
+    "elasticsearch": {
+      "hosts": [ "localhost" ]
+    }
+  },
+  "production": {
+  }
+}

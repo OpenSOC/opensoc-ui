@@ -26,7 +26,7 @@ GEM
     multipart-post (2.0.0)
     parslet (1.6.0)
       blankslate (~> 2.0)
-    plunk (0.3.8)
+    plunk (0.3.10)
       activesupport (~> 4.0, >= 4.0.0)
       chronic (~> 0.10, >= 0.10.0)
       elasticsearch (~> 1.0, >= 1.0.0)
