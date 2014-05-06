@@ -11,7 +11,7 @@ echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
 apt-get update
-apt-get -y install redis-server postgresql-9.3 openjdk-7-jre-headless librdkafka-dev
+apt-get -y install redis-server postgresql-9.3 openjdk-7-jre-headless librdkafka-dev zookeeperd
 
 wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.deb
 dpkg -i elasticsearch-1.1.1.deb
@@ -20,6 +20,7 @@ update-rc.d elasticsearch defaults 95 10
 service postgresql restart
 service elasticsearch restart
 service redis-server restart
+service zookeeper restart
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
