@@ -4,6 +4,24 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+# Provisioning script
+$script = <<SCRIPT
+# Add latest postgresql to apt repo
+echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
+apt-get update
+apt-get -y install redis-server postgresql-9.3 openjdk-7-jre-headless librdkafka-dev
+
+wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.deb
+dpkg -i elasticsearch-1.1.1.deb
+
+update-rc.d elasticsearch defaults 95 10
+service postgresql restart
+service elasticsearch restart
+service redis-server restart
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
@@ -11,6 +29,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
+
+  config.vm.provision "shell", inline: $script
+
+  # Elasticsearch
+  config.vm.network :forwarded_port, guest: 9200, host: 9200
+
+  # Postgres
+  config.vm.network :forwarded_port, guest: 5432, host: 5432
+
+  # Redis
+  config.vm.network :forwarded_port, guest: 6379, host: 6379
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
