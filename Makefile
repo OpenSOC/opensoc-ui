@@ -5,5 +5,6 @@ test-all:
 		./node_modules/mocha/bin/_mocha -- --check-leaks -R spec
 
 # Load test data into DB
+# TODO: name indexes properly
 seed:
-	node script/seed.js
+	node script/seed.js; for f in data/*.json; do curl -XPUT -d @$$f 'http://localhost:9200/$$f' ; done

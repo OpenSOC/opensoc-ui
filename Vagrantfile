@@ -42,6 +42,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Redis
   config.vm.network :forwarded_port, guest: 6379, host: 6379
 
+	# Zookeeper
+	config.vm.network :forwarded_port, guest: 2181, host: 2181
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
