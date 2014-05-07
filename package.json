@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "seed": "make seed"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "karma-coverage": "^0.2.1",
     "istanbul": "^0.2.7",
     "grunt-bowercopy": "^1.0.0",
-    "karma": "^0.12.14"
+    "karma": "^0.12.14",
+    "lodash": "^2.4.1"
   }
 }
