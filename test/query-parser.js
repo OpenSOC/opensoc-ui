@@ -17,9 +17,4 @@ describe('query parser', function () {
       done();
     });
   });
-
-	it('should fail', function (done) {
-		assert.equal(0, 1);
-		done();
-	});
 });

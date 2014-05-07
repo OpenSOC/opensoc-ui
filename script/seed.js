@@ -5,7 +5,7 @@ var http = require('http')
   , _ = require('lodash');
 
 var options = {
-  host: 'elasticsearch-stag.mtd.cisco-services.com',
+  host: process.env.ES_HOST || 'localhost',
   port: 9200
 };
 
