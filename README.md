@@ -65,3 +65,11 @@ You can now run the tests:
 ```bash
 make test
 ```
+
+### Step 7: Launch the server
+
+The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically. Make sure you have all the dependencies installed from Step 3 above (e.g. ```npm install```) and then you should be able to just run:
+
+```bash
+nodemon
+```
