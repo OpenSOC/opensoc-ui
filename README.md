@@ -9,7 +9,7 @@ User interface for OpenSOC
 
 If you're on a Mac, [Homebrew](http://brew.sh) is the recommended way to install NodeJS.
 
-[Here](jshintrc) is a sample jshintrc file. Make sure to save it as ```.jshintrc``` in your home directory.
+[Here](.jshintrc) is a sample jshintrc file. Make sure to save it as ```.jshintrc``` in your home directory.
 
 ### Step 2: Install Virtualbox and Vagrant
 
