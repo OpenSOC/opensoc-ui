@@ -73,3 +73,5 @@ The ```nodemon``` utility automatically watches for changed files and reloads th
 ```bash
 nodemon
 ```
+
+You can then access the OpenSOC ui at ```http://localhost:5000```.
