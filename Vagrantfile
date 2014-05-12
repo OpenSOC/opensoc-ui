@@ -4,25 +4,6 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-# Provisioning script
-$script = <<SCRIPT
-# Add latest postgresql to apt repo
-echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-
-apt-get update
-apt-get -y install redis-server postgresql-9.3 openjdk-7-jre-headless librdkafka-dev zookeeperd
-
-wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.deb
-dpkg -i elasticsearch-1.1.1.deb
-
-update-rc.d elasticsearch defaults 95 10
-service postgresql restart
-service elasticsearch restart
-service redis-server restart
-service zookeeper restart
-SCRIPT
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
@@ -31,19 +12,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.provision "shell", inline: $script
+  config.vm.provision "shell", path: 'script/provision.sh'
 
+  # Port Forwarding not needed if VM is on NAT'd net
   # Elasticsearch
-  config.vm.network :forwarded_port, guest: 9200, host: 9200
+  # config.vm.network :forwarded_port, guest: 9200, host: 9200
 
   # Postgres
-  config.vm.network :forwarded_port, guest: 5432, host: 5432
+  # config.vm.network :forwarded_port, guest: 5432, host: 5432
 
   # Redis
-  config.vm.network :forwarded_port, guest: 6379, host: 6379
+  # config.vm.network :forwarded_port, guest: 6379, host: 6379
 
 	# Zookeeper
-	config.vm.network :forwarded_port, guest: 2181, host: 2181
+	# config.vm.network :forwarded_port, guest: 2181, host: 2181
+
+  # Kafka
+  # config.vm.network :forwarded_port, guest: 9092, host: 9092
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -57,7 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "192.168.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -78,13 +63,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
   #   # Don't boot with headless mode
   #   vb.gui = true
   #
   #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
