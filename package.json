@@ -26,7 +26,8 @@
     "pg": "^3.0.3",
     "connect": "^2.14.5",
     "connect-redis": "^2.0.0",
-    "express-session": "^1.0.4"
+    "express-session": "^1.0.4",
+    "kafkaesque": "git+ssh://git@github.com/pelger/Kafkaesque.git"
   },
   "devDependencies": {
     "karma-mocha": "^0.1.3",
