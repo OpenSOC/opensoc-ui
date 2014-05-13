@@ -27,7 +27,7 @@
     "connect": "^2.14.5",
     "connect-redis": "^2.0.0",
     "express-session": "^1.0.4",
-    "kafkaesque": "git+ssh://git@github.com/pelger/Kafkaesque.git"
+    "kafka-node": "^0.1.9"
   },
   "devDependencies": {
     "karma-mocha": "^0.1.3",
