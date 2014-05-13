@@ -2,8 +2,32 @@
   "development": {
     "elasticsearch": {
       "hosts": [ "localhost" ]
+    },
+    "zookeeper": {
+      "host": "192.168.33.10",
+      "port": 2181
+    },
+    "postgres": {
+      "host": "192.168.33.10",
+      "port": 5432
+    }
+  },
+  "test": {
+    "elasticsearch": {
+      "hosts": []
+    },
+    "zookeeper": {
+      "host": "localhost",
+      "port": 2181
     }
   },
   "production": {
+    "elasticsearch": {
+      "hosts": []
+    },
+    "zookeeper": {
+      "host": "localhost",
+      "port": 2181
+    }
   }
 }

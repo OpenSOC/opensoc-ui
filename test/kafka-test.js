@@ -8,8 +8,8 @@ describe('kafka', function () {
     done();
   });
 
-  it('throws exception when success handler is omitted', function (done) {
-    assert.throw(kafka.read, "Must pass success callback");
+  it('ensures register is a function', function (done) {
+    assert(typeof kafka.register, 'function');
     done();
   });
 });

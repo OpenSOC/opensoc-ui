@@ -1,0 +1,13 @@
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "query": {
+          "query_string": {
+            "query": "_type:fireeye"
+          }
+        }
+      }
+    }
+  }
+}
