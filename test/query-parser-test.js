@@ -6,9 +6,7 @@ var assert = require('chai').assert
 describe('query parser', function () {
   it('should parse query', function (done) {
     parser.parse('_type = fireeye', function (data) {
-      var result = JSON.parse(data)
-        , expected = {query:{filtered:{filter:{query:{query_string:{query:"_type:fireeye"}}}}}};
-      assert.deepEqual(result, expected);
+      assert.deepEqual(JSON.parse(data), expected);
       done();
     });
   });
