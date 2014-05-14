@@ -13,6 +13,7 @@ service postgresql restart
 
 ### BEGIN REDIS ###
 apt-get -y install redis-server
+update-rc.d redis-server defaults 95 10
 sed -i '/bind 127.0.0.1/c\bind 0.0.0.0' /etc/redis/redis.conf
 service redis-server restart
 ### END REDIS ###
@@ -34,7 +35,7 @@ chown -R vagrant kafka_2.10-0.8.1.1
 # zookeeper-server startup script
 rm /etc/init/zookeeper-server.conf
 echo 'description "Zookeeper Server"' >> /etc/init/zookeeper-server.conf
-echo 'start on stopped networking' >> /etc/init/zookeeper-server.conf
+echo 'start on started networking' >> /etc/init/zookeeper-server.conf
 echo 'stop on runlevel [016]' >> /etc/init/zookeeper-server.conf
 echo 'exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/zookeeper-server-start.sh config/zookeeper.properties"' >> /etc/init/zookeeper-server.conf
 echo 'respawn' >> /etc/init/zookeeper-server.conf
@@ -44,7 +45,7 @@ service zookeeper-server restart
 # kafka-server startup script
 rm /etc/init/kafka-server.conf
 echo 'description "Kafka Server"' >> /etc/init/kafka-server.conf
-echo 'start on stopped networking' >> /etc/init/kafka-server.conf
+echo 'start on started networking' >> /etc/init/kafka-server.conf
 echo 'stop on runlevel [016]' >> /etc/init/kafka-server.conf
 echo 'exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/kafka-server-start.sh config/server.properties"' >> /etc/init/kafka-server.conf
 echo 'respawn' >> /etc/init/kafka-server.conf
@@ -55,4 +56,3 @@ service kafka-server restart
 sleep 3
 su - vagrant -c "cd kafka_2.10-0.8.1.1; bin/kafka-topics.sh --create --topic opensoc --zookeeper localhost:2181 --partitions 1 --replication-factor 1"
 ### END KAFKA ###
-
