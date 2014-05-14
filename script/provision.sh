@@ -13,6 +13,7 @@ service postgresql restart
 
 ### BEGIN REDIS ###
 apt-get -y install redis-server
+sed -i '/bind 127.0.0.1/c\bind 0.0.0.0' /etc/redis/redis.conf
 service redis-server restart
 ### END REDIS ###
 
