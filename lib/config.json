@@ -1,7 +1,8 @@
 {
   "development": {
     "elasticsearch": {
-      "hosts": [ "localhost" ]
+      "host": "192.168.33.10",
+      "port": 9200
     },
     "zookeeper": {
       "host": "192.168.33.10",

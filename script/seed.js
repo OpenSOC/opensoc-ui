@@ -2,12 +2,17 @@
 
 var http = require('http')
   , fs = require('fs')
+  , env = process.env.NODE_ENV || 'development'
+  , config = require('../lib/config')[env]
   , _ = require('lodash');
 
 var options = {
-  host: process.env.ES_HOST || 'localhost',
-  port: 9200
+  host: config.elasticsearch.host,
+  port: config.elasticsearch.port
 };
+
+var size = 1000;
+var fields = [ '_source' ];
 
 // indices to pull test data from
 var indices = [
@@ -18,8 +23,9 @@ var indices = [
   'bro-201405050800'
 ];
 
-var retrieve = function (el, i) {
-  options.path = '/' + el + '/_search?size=1000&fields=_source';
+var retrieve = function (index, i) {
+  options.path =
+    '/' + index + '/_search?size=' + size + '&fields=' + fields.join(',');
 
   http.get(options, function (response) {
     var data = [];
@@ -29,7 +35,7 @@ var retrieve = function (el, i) {
     });
 
     response.on('end', function () {
-      var filePath = 'data/' + el + '.json'
+      var filePath = 'data/' + index + '.json'
         , results = _.pluck(JSON.parse(data.join('')).hits.hits, '_source');
 
       var output = results.map(function (v) {
@@ -43,7 +49,6 @@ var retrieve = function (el, i) {
       });
     });
   });
-
 };
 
 indices.forEach(retrieve);
