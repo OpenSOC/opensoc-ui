@@ -22,6 +22,9 @@ service redis-server restart
 apt-get -y install openjdk-7-jre-headless
 wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.deb
 dpkg -i elasticsearch-1.1.1.deb
+cd /usr/share/elasticsearch
+bin/plugin -install mobz/elasticsearch-head
+cd -
 update-rc.d elasticsearch defaults 95 10
 service elasticsearch restart
 ### END ELASTICSEARCH ###
