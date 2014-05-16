@@ -30,19 +30,20 @@
     "kafka-node": "^0.1.9"
   },
   "devDependencies": {
-    "karma-mocha": "^0.1.3",
-    "chance": "^0.5.6",
     "chai": "^1.9.1",
-    "supertest": "^0.11.0",
+    "chance": "^0.5.6",
+    "glob": "^3.2.9",
+    "grunt": "^0.4.4",
+    "grunt-bowercopy": "^1.0.0",
+    "istanbul": "^0.2.7",
+    "karma": "^0.12.14",
+    "karma-coverage": "^0.2.1",
+    "karma-mocha": "^0.1.3",
+    "karma-osx-reporter": "0.0.4",
     "karma-sinon-chai": "^0.1.5",
+    "lodash": "^2.4.1",
     "mocha": "^1.18.2",
     "sinon": "^1.9.1",
-    "grunt": "^0.4.4",
-    "karma-osx-reporter": "0.0.4",
-    "karma-coverage": "^0.2.1",
-    "istanbul": "^0.2.7",
-    "grunt-bowercopy": "^1.0.0",
-    "karma": "^0.12.14",
-    "lodash": "^2.4.1"
+    "supertest": "^0.11.0"
   }
 }

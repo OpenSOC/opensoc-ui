@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 
+/*
+ * fetch.js
+ * A small utility to fetch records from Elasticsearch and save as JSON
+ *
+ */
+
 var http = require('http')
   , fs = require('fs')
-  , env = process.env.NODE_ENV || 'development'
-  , config = require('../lib/config')[env]
   , _ = require('lodash');
 
 var options = {
-  host: config.elasticsearch.host,
-  port: config.elasticsearch.port
+  host: process.env.ES_HOST || 'localhost',
+  port: 9200
 };
 
 var size = 1000;
@@ -42,7 +46,12 @@ var retrieve = function (index, i) {
         return JSON.stringify(v);
       });
 
-      fs.writeFile(filePath, output.join("\n"), function (err) {
+      // ES-friendly bulk format
+      var fmt = "{\"index\": { \"_index\": \"" + index +
+                "\", \"_type\": \"" + index + "\"}}\n";
+      var toWrite = fmt + output.join("\n" + fmt) + "\n";
+
+      fs.writeFile(filePath, toWrite, function (err) {
         if (err) {
           throw err;
         }
