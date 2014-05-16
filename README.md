@@ -54,9 +54,19 @@ is in a state which doesn't allow modifying port forwarding.
 
 This will populate dummy data from data/*.json into the Elasticsearch development instance.
 
+First, take a look at the [fetch](script/fetch.js) script to ensure it's pulling from the proper indices. Then run it like so:
+
 ```bash
-node script/seed.js
+ES_HOST=changeme.com script/fetch.js
 ```
+
+This will save JSON data in an ES bulk-loadable format into ```data/[index name].json```. Then, you can throw this into ES with:
+
+```bash
+script/seed.sh
+```
+
+Of course, you can always populate your ES indices as you see fit.
 
 ### Step 6: Ensure tests pass
 
@@ -68,7 +78,7 @@ make test
 
 ### Step 7: Launch the server
 
-The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically. Make sure you have all the dependencies installed from Step 3 above (e.g. ```npm install```) and then you should be able to just run:
+The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically. Make sure you have install it globally with ```npm install -g nodemon``` then you can start the server with:
 
 ```bash
 nodemon
