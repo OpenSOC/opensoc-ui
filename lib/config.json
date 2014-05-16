@@ -11,6 +11,10 @@
     "postgres": {
       "host": "192.168.33.10",
       "port": 5432
+    },
+    "redis": {
+      "host": "192.168.33.10",
+      "port": 6379
     }
   },
   "test": {
@@ -20,6 +24,10 @@
     "zookeeper": {
       "host": "localhost",
       "port": 2181
+    },
+    "redis": {
+      "host": "localhost",
+      "port": 6379
     }
   },
   "production": {
