@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.org/OpenSOC/opensoc-ui.svg?branch=master)
+
 opensoc-ui
 ==========
 
