@@ -32,7 +32,8 @@ service elasticsearch restart
 ### BEGIN KAFKA ###
 wget --quiet http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.1.1/kafka_2.10-0.8.1.1.tgz
 tar zxvf kafka_2.10-0.8.1.1.tgz
-echo 'advertised.host.name=192.168.33.10' >> kafka_2.10-0.8.1.1.tgz/config/server.properties
+echo 'advertised.host.name=192.168.33.10' >> kafka_2.10-0.8.1.1/config/server.properties
+sed -i '/zookeeper.connect=localhost:2181/c\zookeeper.connect=192.168.33.10:2181/kafka0.8'
 chown -R vagrant kafka_2.10-0.8.1.1
 
 # zookeeper-server startup script
@@ -57,5 +58,5 @@ service kafka-server restart
 
 # Create OpenSOC Kafka topic
 sleep 3
-su - vagrant -c "cd kafka_2.10-0.8.1.1; bin/kafka-topics.sh --create --topic opensoc --zookeeper localhost:2181 --partitions 1 --replication-factor 1"
+su - vagrant -c "cd kafka_2.10-0.8.1.1; bin/kafka-topics.sh --create --topic opensoc --zookeeper 192.168.33.10:2181 --partitions 1 --replication-factor 1"
 ### END KAFKA ###
