@@ -1,5 +1,4 @@
 var assert = require('chai').assert
-  , sinon = require('sinon')
   , expected = require('./fixtures/query-parser')
   , parser = require('../lib/modules/query-parser');
 

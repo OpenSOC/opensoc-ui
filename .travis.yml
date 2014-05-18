@@ -1,4 +1,5 @@
 language: node_js
+env: IN_TRAVIS=true
 node_js:
 - '0.10'
 notifications:
