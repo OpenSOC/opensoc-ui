@@ -8,3 +8,6 @@ test-all:
 # TODO: name indexes properly
 seed:
 	node script/seed.js; for f in data/*.json; do curl -XPUT -d @$$f 'http://localhost:9200/$$f' ; done
+
+clean:
+	rm -rf ./node_modules ./coverage ./.bundle
