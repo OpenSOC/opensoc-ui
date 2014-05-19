@@ -30,7 +30,8 @@
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "pg": "^3.0.3",
-    "redis": "^0.10.1"
+    "redis": "^0.10.1",
+    "ws": "^0.4.31"
   },
   "devDependencies": {
     "chai": "^1.9.1",
