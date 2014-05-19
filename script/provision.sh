@@ -7,7 +7,11 @@ echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 apt-get update
 apt-get -y install postgresql-9.3
+echo "listen_addresses = '0.0.0.0'" >> /etc/postgresql/9.3/main/postgresql.conf
+echo "host\tall\tall192.168.33.0/24\ttrust" >> /etc/postgresql/9.3/main/pg_hba
 service postgresql restart
+su - postgres -c 'createuser -s -w -d -l opensoc'
+su - postgres -c 'createdb opensoc_development'
 ### END POSTGRESQL ###
 
 

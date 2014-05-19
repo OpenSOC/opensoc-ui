@@ -39,7 +39,7 @@ var retrieve = function (index, i) {
     });
 
     response.on('end', function () {
-      var filePath = 'data/' + index + '.json'
+      var filePath = 'seed/es/' + index + '.json'
         , results = _.pluck(JSON.parse(data.join('')).hits.hits, '_source');
 
       var output = results.map(function (v) {
