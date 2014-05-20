@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.provision "shell", path: 'script/provision.sh'
+  config.vm.provision "shell", path: 'script/provision'
 
   # Port Forwarding not needed if VM is on NAT'd net
   # Elasticsearch
