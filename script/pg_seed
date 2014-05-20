@@ -2,18 +2,16 @@
 
 // Small script to seed postgres with fixtures
 
-var Bookshelf = require('bookshelf')
-  , env = process.env.NODE_ENV || 'dev'
-  , config = require('../database')[env]
-  , users = require('../seed/pg/users')
-  , DB = Bookshelf.initialize({
-    client: 'pg',
-    connection: config
-  });
-
-var User = DB.Model.extend({
-  tableName: 'users'
-});
+var
+		env = process.env.NODE_ENV || 'dev'
+	, config = require('../database')
+	, Bookshelf = require('bookshelf')
+	, DB = Bookshelf.PG || Bookshelf.initialize({
+			client: 'pg',
+			connection: config
+		})
+	,	users = require('../seed/pg/users')
+	, User = require('../lib/models/user');
 
 var Users = DB.Collection.extend({
   model: User

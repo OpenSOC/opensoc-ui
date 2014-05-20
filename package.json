@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/OpenSOC/opensoc-ui",
   "dependencies": {
+    "bcrypt": "^0.7.8",
     "bookshelf": "^0.6.10",
     "connect": "^2.16.2",
     "connect-redis": "^2.0.0",
