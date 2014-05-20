@@ -7,9 +7,9 @@ User interface for OpenSOC
 
 ## Hacking
 
-### Step 1: Ensure you have Node >= 0.10.26 and a proper jshintrc installed
+### Step 1: Ensure you have a proper Node >= 0.10.26 and Ruby >= 2.0.0 environment.
 
-If you're on a Mac, [Homebrew](http://brew.sh) is the recommended way to install NodeJS.
+If you're on a Mac, [Homebrew](http://brew.sh) is the recommended way to install NodeJS, and [rvm](http://rvm.io) is easiest for Ruby.
 
 [Here](.jshintrc) is a sample jshintrc file. Make sure to save it as ```.jshintrc``` in your home directory.
 
@@ -26,6 +26,7 @@ Download the latest package for your platform here:
 git clone git@github.com:OpenSOC/opensoc-ui.git
 cd opensoc-ui
 npm install
+bundle install
 ```
 
 ### Step 4: Download and provision the development environment
