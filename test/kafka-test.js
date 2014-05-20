@@ -1,10 +1,9 @@
 var assert = require('chai').assert
   , Chance = require('chance')
-  , env = process.env.NODE_ENV || 'development'
+  , env = process.env.NODE_ENV || 'dev'
   , kafka = require('../lib/modules/kafka');
 
 describe('kafka', function () {
-  // TODO: stub for travis-ci.org
   if (!process.env.IN_TRAVIS) {
     describe('topics', function () {
       var topic = 'opensoc-test'

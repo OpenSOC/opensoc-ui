@@ -1,5 +1,5 @@
 {
-  "development": {
+  "dev": {
     "elasticsearch": {
       "host": "192.168.33.10",
       "port": 9200
@@ -7,14 +7,6 @@
     "zookeeper": {
       "host": "192.168.33.10",
       "port": 2181
-    },
-    "postgres": {
-      "host": "192.168.33.10",
-      "port": 5432,
-      "database": "opensoc_development",
-      "user": "opensoc",
-      "charset": "UTF8_GENERAL_CI"
-      
     },
     "redis": {
       "host": "192.168.33.10",
@@ -34,7 +26,7 @@
       "port": 6379
     }
   },
-  "production": {
+  "prod": {
     "elasticsearch": {
       "hosts": []
     },

@@ -6,7 +6,7 @@ module.exports = function (opts) {
 
 	opts = opts || {};
 
-	for (var i = 0; i < opts.number || 100; i++) {
+	for (var i = 0; i < (opts.number || 100); i++) {
 		data.push({
 			email: chance.email(),
 			password: chance.string(),

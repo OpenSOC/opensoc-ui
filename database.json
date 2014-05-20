@@ -1,0 +1,12 @@
+{
+	"dev": {
+		"driver": "pg",
+		"database": "opensoc_dev",
+		"host": "192.168.33.10",
+		"user": "opensoc"
+	},
+	"test": {
+	},
+	"prod": {
+	}
+}
