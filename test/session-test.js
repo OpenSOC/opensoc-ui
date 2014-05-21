@@ -1,3 +1,4 @@
+/*global assert: true*/
 var assert = require('chai').assert
   , request = require('supertest')
   , app = require('../lib/opensoc-ui').app;

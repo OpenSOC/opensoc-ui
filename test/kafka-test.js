@@ -6,9 +6,9 @@ var assert = require('chai').assert
 describe('kafka', function () {
   if (!process.env.IN_TRAVIS) {
     describe('topics', function () {
-      var topic = 'opensoc-test'
-        , chance = new Chance()
+      var chance = new Chance()
         , message = chance.paragraph()
+        , topic = 'test-' + chance.word()
         , consumed;
 
       // register topic first
@@ -17,7 +17,10 @@ describe('kafka', function () {
       });
 
       before(function (next) {
-        kafka.produce(topic, message, next);
+        // wait a bit for kafka to determine topic leader
+        setTimeout(function () {
+          kafka.produce(topic, message, next);
+        }, 1000);
       });
 
       it('reads from topic', function (done) {
