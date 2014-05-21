@@ -17,4 +17,4 @@ addons:
   postgresql: "9.3"
 before_script:
   - psql -c 'create database opensoc_test;' -U postgres
-  - script/migrate up
+  - script/migrate up -e ci
