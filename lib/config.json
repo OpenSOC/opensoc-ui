@@ -13,6 +13,12 @@
       "port": 6379
     }
   },
+  "ci": {
+    "redis": {
+      "host": "localhost",
+      "port": 6379
+    }
+  },
   "test": {
     "elasticsearch": {
       "hosts": []
@@ -22,7 +28,7 @@
       "port": 2181
     },
     "redis": {
-      "host": "localhost",
+      "host": "192.168.33.10",
       "port": 6379
     }
   },

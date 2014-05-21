@@ -1,3 +1,5 @@
+/*global assert: true*/
+
 var assert = require('chai').assert
   , Chance = require('chance')
   , env = process.env.NODE_ENV || 'dev'

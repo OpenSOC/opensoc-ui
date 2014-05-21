@@ -5,7 +5,17 @@
 		"host": "192.168.33.10",
 		"user": "opensoc"
 	},
-	"test": {
+  "test": {
+		"driver": "pg",
+		"database": "opensoc_test",
+		"host": "192.168.33.10",
+		"user": "opensoc"
+  },
+	"ci": {
+    "driver": "pg",
+    "database": "opensoc_test",
+    "user": "postgres",
+    "host": "localhost"
 	},
 	"prod": {
 	}
