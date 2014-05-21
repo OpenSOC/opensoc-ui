@@ -55,11 +55,7 @@ script/es_seed
 
 Of course, you can always populate your ES indices as you see fit.
 
-For Postgres, there's a similar script:
-
-```script/pg_seed```
-
-Which loads the seed data from ```seed/pg/*.json``` into Postgres.
+For Postgres, there's ```script/pg_seed``` which loads the seed data from ```seed/pg/*.json``` into Postgres.
 
 ### Step 6: Ensure tests pass
 
