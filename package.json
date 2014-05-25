@@ -19,8 +19,11 @@
   },
   "homepage": "https://github.com/OpenSOC/opensoc-ui",
   "dependencies": {
+    "async": "^0.9.0",
     "bcrypt": "^0.7.8",
+    "bluebird": "^1.2.4",
     "bookshelf": "^0.6.10",
+    "checkit": "^0.2.0-pre",
     "connect": "^2.16.2",
     "connect-redis": "^2.0.0",
     "db-migrate": "^0.6.4",

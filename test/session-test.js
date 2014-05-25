@@ -3,7 +3,7 @@ var assert = require('chai').assert
   , request = require('supertest')
   , app = require('../lib/opensoc-ui').app;
 
-describe('auth', function () {
+describe('sessions', function () {
   var session = request.agent(app);
 
   it('logs in', function (done) {
