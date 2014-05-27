@@ -34,22 +34,40 @@
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
 
-    <div ng-cloak ng-repeat='alert in dashAlerts.list' class="alert-{{alert.severity}} dashboard-notice" ng-show="$last">
-      <button type="button" class="close" ng-click="dashAlerts.clear(alert)" style="padding-right:50px">&times;</button>
-      <strong>{{alert.title}}</strong> <span ng-bind-html='alert.text'></span> <div style="padding-right:10px" class='pull-right small'> {{$index + 1}} alert(s) </div>
-    </div>
-    <div ng-cloak class="navbar navbar-static-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><img src="img/small.png" bs-tooltip="'Kibana '+(kbnVersion=='@REV@'?'master':kbnVersion)" data-placement="bottom"> {{dashboard.current.title}}</span>
 
-          <ul class="nav pull-right" ng-controller='dashLoader' ng-init="init()" ng-include="'app/partials/dashLoader.html'">
-          </ul>
+    <div class='container-fluid'>
+      <div class='row-fluid'>
+        <div class='span6 offset3'>
+          <form class='form-horizontal login-form' action='/login' method='POST'>
+            <fieldset>
+              <legend>Login</legend>
+                <div class="control-group">
+                  <label class="control-label" for="inputEmail">Email</label>
+                  <div class="controls">
+                    <input type="text" id="inputEmail" name="email" placeholder="Email">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="inputPassword">Password</label>
+                  <div class="controls">
+                    <input type="password" id="inputPassword" name="password" placeholder="Password">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <div class="controls">
+                    <label class="checkbox">
+                      <input type="checkbox"> Remember me
+                    </label>
+                    <button type="submit" class="btn">Sign in</button>
+                  </div>
+                </div>
+            </fieldset>
+          </form>
         </div>
       </div>
     </div>
 
-    <div ng-cloak ng-view></div>
+    <!-- <div ng-cloak ng-view></div> -->
 
   </body>
 </html>
