@@ -31,14 +31,5 @@
       "host": "192.168.33.10",
       "port": 6379
     }
-  },
-  "prod": {
-    "elasticsearch": {
-      "hosts": []
-    },
-    "zookeeper": {
-      "host": "localhost",
-      "port": 2181
-    }
   }
 }
