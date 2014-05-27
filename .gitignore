@@ -25,3 +25,6 @@ build/Release
 node_modules
 
 /.vagrant
+
+# Potentially sensitive seed data
+/seed/es
