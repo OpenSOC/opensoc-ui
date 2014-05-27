@@ -24,7 +24,7 @@ setInterval(function () {
     });
   }
 
-  var message = dashboards[chance.integer({ min: 0, max: dashboardCount })];
+  var message = dashboards[chance.integer({ min: 0, max: dashboardCount-1 })];
 
   kafka.produce(topic, JSON.stringify(message), function (err, result) {
     console.log('Sending Text:');
