@@ -8,13 +8,25 @@ var kafka = require('../lib/modules/kafka')
 
   // Number of randomly-generated messages per second
   , mps = 1
-  , topic = 'opensoc';
+  , topic = 'opensoc'
+  , dashboardCount = 20;
 
 
 // Fire off random text
 setInterval(function () {
-  var message = chance.paragraph();
-  kafka.produce(topic, message, function (err, result) {
+  var dashboards = [];
+
+  for (var i = 0; i < dashboardCount; i++) {
+    dashboards.push({
+      title: chance.sentence({
+        words: chance.integer({ min: 1, max: 7 })
+      }).replace(/\./, '')
+    });
+  }
+
+  var message = dashboards[chance.integer({ min: 0, max: dashboardCount })];
+
+  kafka.produce(topic, JSON.stringify(message), function (err, result) {
     console.log('Sending Text:');
     console.log(message);
     console.log();
