@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Kibana 3 - Alerts</title>
+    <link rel="stylesheet" href="css/bootstrap.light.min.css" title="Light">
+    <link rel="stylesheet" href="css/timepicker.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/opensoc.css">
+    <!-- load the root require context -->
+
+    <script>
+      function updateAlerts(alert) {
+        if (alerts[alert.title]) {
+
+          alerts[alert.title].count++;
+          jQuery('#' + alerts[alert.title].id).html(alerts[alert.title].count);
+
+        } else {
+
+          var id = 'alert-' + Math.floor((Math.random() * 1000000) + 1);
+          alerts[alert.title] = { count: 1, id: id, title: alert.title };
+          console.log(alerts[alert.title]);
+          jQuery('#realtime-alerts tbody').append(
+            '<tr><td class="count" id="' + id + '">' + alerts[alert.title].count + '</td><td>' + alerts[alert.title].title + '</td><td>' + (new Date()) + '</td></tr>'
+          );
+
+        }
+      }
+
+      var host = window.document.location.host.replace(/:.*/, '');
+      var port = window.document.location.port;
+
+
+      var ws = new WebSocket('ws://' + host + ':' + port);
+
+      var alerts = {};
+      
+      ws.onmessage = function (event) {
+        updateAlerts(JSON.parse(event.data));
+      };
+    </script>
+    <script src="vendor/require/require.js"></script>
+    <script src="app/components/require.config.js"></script>
+    <script>require(['app'], function () {})</script>
+    <style>
+    </style>
+
+  </head>
+
+  <body>
+    <noscript>
+      <div class="container">
+        <center><h3>You must enable javascript to use Kibana</h3></center>
+      </div>
+    </noscript>
+    <!--<link rel="stylesheet" ng-href="css/bootstrap.{{dashboard.current.style||'dark'}}.min.css">-->
+    <link rel="stylesheet" ng-href="css/bootstrap.{{dashboard.current.style||'dark'}}.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+
+    <div class='container-fluid'>
+      <div class='row-fluid'>
+        <div class='span6 offset3'>
+          <table class="table" id="realtime-alerts">
+            <caption>Dashboard Alerts</caption>
+            <thead>
+              <tr>
+                <th>Count</th>
+                <th>Dashboard Name</th>
+                <th>Last Alert</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div ng-cloak ng-view></div> -->
+  </body>
+</html>
