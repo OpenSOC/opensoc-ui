@@ -7,23 +7,23 @@ var kafka = require('../lib/modules/kafka')
   , chance = new Chance()
 
   // Number of randomly-generated messages per second
-  , mps = 1
+  , mps = 20
   , topic = 'opensoc'
-  , dashboardCount = 20;
+  , dashboardCount = 10;
+
+var dashboards = [];
+
+for (var i = 0; i < dashboardCount; i++) {
+  dashboards.push({
+    title: chance.sentence({
+      words: chance.integer({ min: 1, max: 7 })
+    }).replace(/\./, '')
+  });
+}
 
 
 // Fire off random text
 setInterval(function () {
-  var dashboards = [];
-
-  for (var i = 0; i < dashboardCount; i++) {
-    dashboards.push({
-      title: chance.sentence({
-        words: chance.integer({ min: 1, max: 7 })
-      }).replace(/\./, '')
-    });
-  }
-
   var message = dashboards[chance.integer({ min: 0, max: dashboardCount-1 })];
 
   kafka.produce(topic, JSON.stringify(message), function (err, result) {
