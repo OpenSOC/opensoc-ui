@@ -2,6 +2,12 @@
 
 # This file is meant to be executed inside the Vagrant development VM
 
+### BEGIN OPENLDAP ###
+sed -i '/127.0.0.1 localhost/c\127.0.0.1 opensoc.local localhost'
+apt-get update
+apt-get -y install slapd ldap-utils
+### END OPENLDAP ###
+
 ### BEGIN POSTGRESQL ###
 echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
