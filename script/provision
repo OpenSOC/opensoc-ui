@@ -3,7 +3,7 @@
 # This file is meant to be executed inside the Vagrant development VM
 
 ### BEGIN OPENLDAP ###
-sed -i '/127.0.0.1 localhost/c\127.0.0.1 opensoc.local localhost'
+sed -i '/127.0.0.1 localhost/c\127.0.0.1 vm.opensoc.dev localhost' /etc/hosts
 apt-get update
 apt-get -y install slapd ldap-utils
 ### END OPENLDAP ###
