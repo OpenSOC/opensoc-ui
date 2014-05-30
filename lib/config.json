@@ -14,6 +14,14 @@
     }
   },
   "ci": {
+    "elasticsearch": {
+      "host": "localhost",
+      "port": 9200
+    },
+    "zookeeper": {
+      "host": "localhost",
+      "port": 2181
+    },
     "redis": {
       "host": "localhost",
       "port": 6379
@@ -21,7 +29,6 @@
   },
   "test": {
     "elasticsearch": {
-      "hosts": []
     },
     "zookeeper": {
       "host": "192.168.33.10",
