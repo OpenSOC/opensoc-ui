@@ -1,6 +1,5 @@
 language: node_js
 env: IN_TRAVIS=true
-before_install: bundle install
 node_js:
 - '0.10'
 notifications:
