@@ -14,5 +14,5 @@ seed:
 	node script/es_fetch.js && script/es_seed.sh
 
 clean:
-	rm -rf ./node_modules ./coverage ./.bundle
+	rm -rf ./node_modules ./coverage
 
