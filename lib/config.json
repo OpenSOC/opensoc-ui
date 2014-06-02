@@ -11,6 +11,13 @@
     "redis": {
       "host": "192.168.33.10",
       "port": 6379
+    },
+    "ldap": {
+      "url": "ldap://192.168.33.10:389",
+      "searchBase": "dc=opensoc,dc=dev",
+      "searchFilter": "(mail={{username}})",
+      "adminDn": "cn=admin,dc=opensoc,dc=dev",
+      "adminPassword": "opensoc"
     }
   },
   "ci": {
@@ -37,6 +44,13 @@
     "redis": {
       "host": "192.168.33.10",
       "port": 6379
+    },
+    "ldap": {
+      "url": "ldap://192.168.33.10:389",
+      "searchBase": "dc=opensoc,dc=dev",
+      "searchFilter": "(mail={{username}})",
+      "adminDn": "cn=admin,dc=opensoc,dc=dev",
+      "adminPassword": "opensoc"
     }
   }
 }
