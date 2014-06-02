@@ -9,7 +9,7 @@ describe('sessions', function () {
   it('logs in', function (done) {
     session.
       post('/login').
-      send({ email: 'analyst@opensoc.dev', password: 'opensoc' }).
+      send({ email: 'joesmith@opensoc.dev', password: 'opensoc' }).
       end(function (err, res) {
         // redirects to home
         assert.equal(res.header['location'], '/');
