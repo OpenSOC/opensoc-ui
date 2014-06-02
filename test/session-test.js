@@ -18,6 +18,17 @@ describe('sessions', function () {
       });
   });
 
+  it('fails log in', function (done) {
+    session.
+      post('/login').
+      send({ email: 'joesmith@opensoc.dev', password: 'foobar' }).
+      end(function (err, res) {
+        assert.equal(res.header['location'], '/login');
+        assert.equal(res.statusCode, 302);
+        done();
+      });
+  });
+
   it('logs out', function (done) {
     session.
       get('/logout').
