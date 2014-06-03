@@ -23,6 +23,7 @@ describe('sessions', function () {
       post('/login').
       send({ email: 'joesmith@opensoc.dev', password: 'foobar' }).
       end(function (err, res) {
+      console.log(res);
         assert.equal(res.header['location'], '/login');
         assert.equal(res.statusCode, 302);
         done();

@@ -25,6 +25,7 @@
     "bookshelf": "^0.6.10",
     "checkit": "^0.2.0-pre",
     "connect": "^2.16.2",
+    "connect-flash": "^0.1.1",
     "connect-redis": "^2.0.0",
     "db-migrate": "^0.6.4",
     "express": "^4.2.0",
