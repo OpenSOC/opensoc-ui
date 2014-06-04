@@ -2,10 +2,46 @@
 
 # This file is meant to be executed inside the Vagrant development VM
 
+# Prevent dpkg-reconfigure interactive sessions
+export DEBIAN_FRONTEND=noninteractive
+export DEBCONF_NONINTERACTIVE_SEEN=true
+
 ### BEGIN OPENLDAP ###
 sed -i '/127.0.0.1 localhost/c\127.0.0.1 vm.opensoc.dev localhost' /etc/hosts
 apt-get update
 apt-get -y install slapd ldap-utils
+
+# set password to opensoc
+CHANGES='
+dn: olcDatabase={1}hdb,cn=config
+changetype: modify
+replace: olcSuffix
+olcSuffix: dc=opensoc,dc=dev
+-
+replace: olcRootDN
+olcRootDN: cn=admin,dc=opensoc,dc=dev
+-
+replace: olcRootPW
+olcRootPW: {SSHA}xcq9tZHvh2EWfLXM4jDJQmGs81EI7kk9
+-
+replace: olcAccess
+olcAccess: {0}to * 
+  by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" write 
+  by dn.base="cn=admin,dc=opensoc,dc=dev" write
+  by * none
+'
+echo "$CHANGES" >> changes.ldif
+ldapmodify -Y EXTERNAL -H ldapi:/// -f changes.ldif
+
+
+LOGGING='
+dn: cn=config
+changetype: modify
+add: olcLogLevel
+olcLogLevel: stats
+'
+echo "$LOGGING" > logging.ldif
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f logging.ldif
 ### END OPENLDAP ###
 
 ### BEGIN POSTGRESQL ###
@@ -14,7 +50,7 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key a
 apt-get update
 apt-get -y install postgresql-9.3
 echo "listen_addresses = '0.0.0.0'" >> /etc/postgresql/9.3/main/postgresql.conf
-echo "host\tall\tall192.168.33.0/24\ttrust" >> /etc/postgresql/9.3/main/pg_hba.conf
+echo "host\tall\tall\t192.168.33.0/24\ttrust" >> /etc/postgresql/9.3/main/pg_hba.conf
 service postgresql restart
 su - postgres -c 'createuser -s -w -d -l opensoc'
 su - postgres -c 'createdb opensoc_dev'
@@ -44,30 +80,36 @@ service elasticsearch restart
 wget --quiet http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.1.1/kafka_2.10-0.8.1.1.tgz
 tar zxvf kafka_2.10-0.8.1.1.tgz
 echo 'advertised.host.name=192.168.33.10' >> kafka_2.10-0.8.1.1/config/server.properties
-sed -i '/zookeeper.connect=localhost:2181/c\zookeeper.connect=192.168.33.10:2181/kafka0.8'
+sed -i '/zookeeper.connect=localhost:2181/c\zookeeper.connect=192.168.33.10:2181' kafka_2.10-0.8.1.1/config/server.properties
 chown -R vagrant kafka_2.10-0.8.1.1
 
 # zookeeper-server startup script
 rm /etc/init/zookeeper-server.conf
-echo 'description "Zookeeper Server"' >> /etc/init/zookeeper-server.conf
-echo 'start on started networking' >> /etc/init/zookeeper-server.conf
-echo 'stop on runlevel [016]' >> /etc/init/zookeeper-server.conf
-echo 'exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/zookeeper-server-start.sh config/zookeeper.properties"' >> /etc/init/zookeeper-server.conf
-echo 'respawn' >> /etc/init/zookeeper-server.conf
-echo 'respawn limit 3 60' >> /etc/init/zookeeper-server.conf
+ZOOCONF='
+description "Zookeeper Server"
+start on started networking
+stop on runlevel [016]
+exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/zookeeper-server-start.sh config/zookeeper.properties"
+respawn
+respawn limit 3 60
+'
+echo "$ZOOCONF" >> /etc/init/zookeeper-server.conf
 service zookeeper-server restart
 
 # kafka-server startup script
 rm /etc/init/kafka-server.conf
-echo 'description "Kafka Server"' >> /etc/init/kafka-server.conf
-echo 'start on started networking' >> /etc/init/kafka-server.conf
-echo 'stop on runlevel [016]' >> /etc/init/kafka-server.conf
-echo 'exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/kafka-server-start.sh config/server.properties"' >> /etc/init/kafka-server.conf
-echo 'respawn' >> /etc/init/kafka-server.conf
-echo 'respawn limit 3 60' >> /etc/init/kafka-server.conf
+KAFKACONF='
+description "Kafka Server"
+start on started networking
+stop on runlevel [016]
+exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/kafka-server-start.sh config/server.properties"
+respawn
+respawn limit 3 60
+'
+echo "$KAFKACONF" >> /etc/init/kafka-server.conf
 service kafka-server restart
 
 # Create OpenSOC Kafka topic
 sleep 3
-su - vagrant -c "cd kafka_2.10-0.8.1.1; bin/kafka-topics.sh --create --topic opensoc --zookeeper 192.168.33.10:2181 --partitions 1 --replication-factor 1"
+su - vagrant -c "cd kafka_2.10-0.8.1.1; bin/kafka-topics.sh --create --topic opensoc --zookeeper 192.168.33.10:2181 --partitions 2 --replication-factor 1"
 ### END KAFKA ###
