@@ -7,6 +7,16 @@ describe('sessions', function () {
   describe('log in / log out', function () {
     var session = request.agent(app);
 
+    it('redirects to login unless logged in', function (done) {
+      session.
+        get('/').
+        end(function (err, res) {
+          assert.equal(res.statusCode, 302);
+          assert.equal(res.header['location'], '/login');
+          done();
+        });
+    });
+
     it('logs in', function (done) {
       session.
         post('/login').

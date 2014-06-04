@@ -1,3 +1,5 @@
+/* global assert:true */
+
 var assert = require('chai').assert
   , request = require('supertest')
 	, app = require('../lib/opensoc-ui').app;
@@ -8,6 +10,6 @@ describe('index', function () {
       get('/').
       set('Accept', 'text/html').
       expect('Content-Type', /html/).
-      expect(200, done);
+      expect(302, done); // unauthed
   });
 });
