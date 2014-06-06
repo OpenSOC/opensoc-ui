@@ -7,7 +7,7 @@ var kafka = require('../lib/modules/kafka')
   , chance = new Chance()
 
   // Number of randomly-generated messages per second
-  , mps = 20
+  , mps = 5
   , topic = 'opensoc'
   , dashboardCount = 10;
 

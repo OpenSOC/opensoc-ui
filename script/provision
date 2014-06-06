@@ -6,12 +6,13 @@
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
-### BEGIN OPENLDAP ###
-sed -i '/127.0.0.1 localhost/c\127.0.0.1 vm.opensoc.dev localhost' /etc/hosts
+# ### BEGIN OPENLDAP ###
+sed -i '/127.0.0.1 localhost/c\127.0.0.1 vm.opensoc.dev vm localhost' /etc/hosts
+echo '127.0.1.1 vm.opensoc.dev vm' >> /etc/hosts
 apt-get update
 apt-get -y install slapd ldap-utils
 
-# set password to opensoc
+# # set password to opensoc
 CHANGES='
 dn: olcDatabase={1}hdb,cn=config
 changetype: modify
