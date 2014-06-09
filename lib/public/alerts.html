@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width">
 
     <title>Kibana 3 - Alerts</title>
-    <link rel="stylesheet" href="css/bootstrap.light.min.css" title="Light">
+    <link rel="stylesheet" href="css/bootstrap.dark.min.css" title="Dark">
     <link rel="stylesheet" href="css/timepicker.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/normalize.min.css">
@@ -44,6 +44,7 @@
       var alerts = {};
       
       ws.onmessage = function (event) {
+        console.log(event);
         updateAlerts(JSON.parse(event.data));
       };
     </script>
