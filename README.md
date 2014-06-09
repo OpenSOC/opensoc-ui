@@ -36,7 +36,18 @@ vagrant up
 
 You might see a couple warnings, but usually these can be ignored. Check for any obvious errors as this can cause problems running the portal later.
 
-###  Step 5: Seed the development VM
+### Step 5: Migrate the DB
+
+You'll need to migrate the database for both the development (default) and test environments:
+
+```bash
+script/migrate up
+script/migrate up -e test
+```
+
+You should see no errors.
+
+###  Step 6: Seed the development VM
 
 This will populate dummy data from data/*.json into the Elasticsearch development instance.
 
@@ -56,7 +67,7 @@ Of course, you can always populate your ES indices as you see fit.
 
 For Postgres, there's ```script/pg_seed``` which loads the seed data from ```seed/pg/*.json``` into Postgres.
 
-### Step 6: Ensure tests pass
+### Step 7: Ensure tests pass
 
 You can now run the tests:
 
@@ -64,7 +75,7 @@ You can now run the tests:
 make test
 ```
 
-### Step 7: Launch the server
+### Step 8: Launch the server
 
 The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically.
 
