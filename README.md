@@ -67,6 +67,12 @@ Of course, you can always populate your ES indices as you see fit.
 
 For Postgres, there's ```script/pg_seed``` which loads the seed data from ```seed/pg/*.json``` into Postgres.
 
+For authentication, make sure you set up the LDAP directory structure with:
+
+```bash
+script/ldap_seed
+```
+
 ### Step 7: Ensure tests pass
 
 You can now run the tests:
