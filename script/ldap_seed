@@ -3,4 +3,4 @@
 CONTENT=`cat seed/ldap/content.ldif`
 
 vagrant ssh -c "echo \"$CONTENT\" > content.ldif; \
-  sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f content.ldif"
+  ldapadd -h localhost -p 389 -D 'cn=admin,dc=opensoc,dc=dev' -w opensoc -f content.ldif"

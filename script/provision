@@ -4,36 +4,28 @@
 
 # Prevent dpkg-reconfigure interactive sessions
 export DEBIAN_FRONTEND=noninteractive
-export DEBCONF_NONINTERACTIVE_SEEN=true
 
 # ### BEGIN OPENLDAP ###
-sed -i '/127.0.0.1 localhost/c\127.0.0.1 vm.opensoc.dev vm localhost' /etc/hosts
-echo '127.0.1.1 vm.opensoc.dev vm' >> /etc/hosts
+# slapd doesn't seem to work right unless you configure it via debconf
+SEED='
+slapd	slapd/password1	password	opensoc
+slapd	slapd/password2	password	opensoc
+slapd	slapd/purge_database	boolean	false
+slapd	slapd/allow_ldap_v2	boolean	false
+slapd	slapd/invalid_config	boolean	true
+slapd	shared/organization	string	OpenSOC
+slapd	slapd/dump_database	select	when needed
+slapd	slapd/domain	string	opensoc.dev
+slapd	slapd/backend	select	HDB
+slapd	slapd/no_configuration	boolean	false
+slapd	slapd/dump_database_destdir	string	/var/backups/slapd-VERSION
+slapd	slapd/move_old_database	boolean	true
+'
+echo "$SEED" > slapd.seed
+debconf-set-selections ./slapd.seed
+
 apt-get update
 apt-get -y install slapd ldap-utils
-
-# # set password to opensoc
-CHANGES='
-dn: olcDatabase={1}hdb,cn=config
-changetype: modify
-replace: olcSuffix
-olcSuffix: dc=opensoc,dc=dev
--
-replace: olcRootDN
-olcRootDN: cn=admin,dc=opensoc,dc=dev
--
-replace: olcRootPW
-olcRootPW: {SSHA}xcq9tZHvh2EWfLXM4jDJQmGs81EI7kk9
--
-replace: olcAccess
-olcAccess: {0}to * 
-  by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" write 
-  by dn.base="cn=admin,dc=opensoc,dc=dev" write
-  by * none
-'
-echo "$CHANGES" >> changes.ldif
-ldapmodify -Y EXTERNAL -H ldapi:/// -f changes.ldif
-
 
 LOGGING='
 dn: cn=config
@@ -42,7 +34,7 @@ add: olcLogLevel
 olcLogLevel: stats
 '
 echo "$LOGGING" > logging.ldif
-ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f logging.ldif
+ldapmodify -Y EXTERNAL -H ldapi:/// -f logging.ldif
 ### END OPENLDAP ###
 
 ### BEGIN POSTGRESQL ###
