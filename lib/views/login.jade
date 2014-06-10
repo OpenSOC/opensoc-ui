@@ -25,11 +25,14 @@ html
           form.form-horizontal.login-form(action='/login', method='POST')
             fieldset
               legend Login
-              .control-group
+              if flash.error
+                .alert.alert-error=flash.error
+              div(class="#{flash.error ? 'control-group error' : 'control-group'}") 
                 label.control-label(for='inputEmail') Email
                 .controls
                   input#inputEmail(type='text', name='email', placeholder='Email')
-              .control-group
+
+              div(class="#{flash.error ? 'control-group error' : 'control-group'}") 
                 label.control-label(for='inputPassword') Password
                 .controls
                   input#inputPassword(type='password', name='password', placeholder='Password')
