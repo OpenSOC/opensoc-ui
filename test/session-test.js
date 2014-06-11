@@ -1,6 +1,6 @@
 /*global assert: true*/
 
-if (!process.env.IN_TRAVIS) {
+if (process.env.IN_TRAVIS) {
   var assert = require('chai').assert
     , request = require('supertest')
     , app = require('../lib/opensoc-ui').app;
