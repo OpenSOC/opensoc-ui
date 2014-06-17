@@ -10,7 +10,8 @@ var Users = DB.Collection.extend({
   model: User
 });
 
-Users.forge(users).invokeThen('save').then(function (err) {
+Users.forge(users).invokeThen('save').then(
+	function (createdUsers){ process.exit(0); }).catch(function (err) {
   console.log(err.message);
-	process.exit(0);
+	process.exit(1);
 });

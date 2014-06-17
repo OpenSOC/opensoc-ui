@@ -1,17 +1,14 @@
 [
 	{
 		"name": "OpenSOC Analyst",
-		"email": "analyst@opensoc.dev",
-		"password": "opensoc"
+		"email": "analyst@opensoc.dev"
 	},
 	{
 		"name": "OpenSOC Investigator",
-		"email": "investigator@opensoc.dev",
-		"password": "opensoc"
+		"email": "investigator@opensoc.dev"
 	},
 	{
 		"name": "OpenSOC Admin",
-		"email": "admin@opensoc.dev",
-		"password": "opensoc"
+		"email": "admin@opensoc.dev"
 	}
 ]
