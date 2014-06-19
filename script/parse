@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+var spawn = require('child_process').spawn
+  , sax = require('sax')
+  , saxpath = require('saxpath')
+  , xml2js = require('xml2js')
+  , url = process.argv[2];
+
+if (process.argv.length !== 3) {
+  console.log('Usage: script/parse [URL of pcap]');
+  process.exit(1);
+}
+
+var PCAPToJSON = function (pcapUrl, cb) {
+  var saxParser = sax.createStream(true)
+    , streamer = new saxpath.SaXPath(saxParser, '/pdml/packet/proto')
+    , parser = new xml2js.Parser()
+    , curl = spawn('curl', ['-s', pcapUrl])
+    , tshark = spawn('tshark', ['-i', '-', '-T', 'pdml']);
+
+  streamer.on('match', function (xml) {
+    parser.parseString(xml, function (err, result) { cb(result); });
+  });
+
+  curl.stdout.pipe(tshark.stdin);
+  tshark.stdout.pipe(saxParser);
+};
+
+PCAPToJSON(url, function (json) {
+  console.log(JSON.stringify(json, null, 2));
+});

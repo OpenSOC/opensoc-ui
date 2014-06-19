@@ -13,6 +13,10 @@ If you're on a Mac, [Homebrew](http://brew.sh) is the recommended way to install
 
 [Here](.jshintrc) is a sample jshintrc file. Make sure to save it as ```.jshintrc``` in your home directory.
 
+#### Optional: Ensure you have the tshark commandline utility
+
+If you'd like to experiment with the PCAP panel type, you'll need tshark to parse the sample pcaps. This is part of Wireshark and can be installed with Homebrew as well with ```brew install wireshark```.
+
 ### Step 2: Install Virtualbox and Vagrant
 
 Download the latest package for your platform here:

@@ -8,8 +8,9 @@ export DEBIAN_FRONTEND=noninteractive
 ### BEGIN SAMPLE PCAP SERVER ###
 apt-get update
 apt-get install -y apache2
-wget 'http://www.snaketrap.co.uk/pcaps/Ncapture.pcap' -o /var/www/html/napenthes.pcap
-### END SAMPLE PCAP ###
+curl -s 'http://www.snaketrap.co.uk/pcaps/Ncapture.pcap' -o /var/www/html/napenthes.pcap
+curl -s 'http://malware-traffic-analysis.net/2013/06/18/2013-06-18.pcap' -o /var/www/html/java.pcap
+### END SAMPLE PCAP SERVER ###
 
 
 ### BEGIN OPENLDAP ###
@@ -44,6 +45,7 @@ olcLogLevel: stats
 echo "$LOGGING" > logging.ldif
 ldapmodify -Y EXTERNAL -H ldapi:/// -f logging.ldif
 ### END OPENLDAP ###
+
 
 ### BEGIN POSTGRESQL ###
 echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
