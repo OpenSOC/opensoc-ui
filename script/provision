@@ -5,8 +5,16 @@
 # Prevent dpkg-reconfigure interactive sessions
 export DEBIAN_FRONTEND=noninteractive
 
-# ### BEGIN OPENLDAP ###
+### BEGIN SAMPLE PCAP SERVER ###
+apt-get update
+apt-get install -y apache2
+wget 'http://www.snaketrap.co.uk/pcaps/Ncapture.pcap' -o /var/www/html/napenthes.pcap
+### END SAMPLE PCAP ###
+
+
+### BEGIN OPENLDAP ###
 # slapd doesn't seem to work right unless you configure it via debconf
+# The password for all users is opensoc
 SEED='
 slapd	slapd/password1	password	opensoc
 slapd	slapd/password2	password	opensoc
