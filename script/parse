@@ -18,7 +18,7 @@ for (var entity in sax.ENTITIES) {
 
 var PCAPToJSON = function (pcapUrl, cb) {
   var saxParser = sax.createStream(true)
-    , streamer = new saxpath.SaXPath(saxParser, '/pdml/packet/proto')
+    , streamer = new saxpath.SaXPath(saxParser, '/pdml/packet')
     , parser = new xml2js.Parser()
     , curl = spawn('curl', ['-s', pcapUrl])
     , tshark = spawn('tshark', ['-i', '-', '-T', 'pdml']);
@@ -41,8 +41,8 @@ var PCAPToJSON = function (pcapUrl, cb) {
 
 PCAPToJSON(url, function (json) {
   // uncomment to output formatted JSON
-  console.log(JSON.stringify(json, null, 2));
+  // console.log(JSON.stringify(json, null, 2));
 
   // uncomment to output condensed JSON
-  // console.log(JSON.stringify(json));
+  console.log(JSON.stringify(json));
 });
