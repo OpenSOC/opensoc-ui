@@ -30,7 +30,7 @@ html
 
         var host = window.document.location.host.replace(/:.*/, '');
         var port = window.document.location.port;
-        var ws = new WebSocket('ws://' + host + ':' + port);
+        var ws = new WebSocket('ws://' + host + ':' + port + '/alert');
         var alerts = {};
         ws.onmessage = function (event) {
           console.log(event);
