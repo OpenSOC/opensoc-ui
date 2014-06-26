@@ -41,8 +41,8 @@ var PCAPToJSON = function (pcapUrl, cb) {
 
 PCAPToJSON(url, function (json) {
   // uncomment to output formatted JSON
-  // console.log(JSON.stringify(json, null, 2));
+  console.log(JSON.stringify(json, null, 2));
 
   // uncomment to output condensed JSON
-  console.log(JSON.stringify(json));
+  // console.log(JSON.stringify(json));
 });

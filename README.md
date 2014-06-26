@@ -32,6 +32,8 @@ cd opensoc-ui
 npm install
 ```
 
+If you get an error complaining about missing pg headers, you need to install the Postgres development headers. On Mac this is simply ```brew install postgresql```
+
 ### Step 4: Download and provision the development environment
 
 ```bash
