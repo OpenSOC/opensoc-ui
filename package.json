@@ -37,7 +37,6 @@
     "passport": "^0.2.0",
     "passport-ldapauth": "^0.2.0",
     "passport-local": "^1.0.0",
-    "pcap": "^1.2.0",
     "pg": "^3.0.3",
     "redis": "^0.10.2",
     "sax": "^0.6.0",
