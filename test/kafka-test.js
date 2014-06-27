@@ -10,6 +10,7 @@ if (!process.env.IN_TRAVIS) {
     describe('topics', function () {
       var chance = new Chance()
         , message = chance.paragraph()
+        , _ = require('lodash')
         , topic = 'test-' + chance.word()
         , consumed;
 
@@ -22,7 +23,7 @@ if (!process.env.IN_TRAVIS) {
         // wait a bit for kafka to determine topic leader
         setTimeout(function () {
           kafka.produce(topic, message, next);
-        }, 1000);
+        }, 500);
       });
 
       it('reads from topic', function (done) {
