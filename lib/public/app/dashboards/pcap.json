@@ -43,16 +43,17 @@
           "style": {},
           "title": "PCAP Table",
           "fields": [
-            "Number",
-            "Time",
-            "Source",
+            "@fields.facility",
+            "showname",
+            "@timestamp",
+            "time",
             "Destination",
             "Protocol",
             "Length",
             "Info"
           ],
           "size": 50,
-    "field_list": false,
+    "field_list": true,
     "all_fields": false
 
         }
