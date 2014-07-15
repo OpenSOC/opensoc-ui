@@ -206,6 +206,7 @@
   "style": "dark",
   "failover": false,
   "panel_hints": true,
+  "realtime": true,
   "loader": {
     "save_gist": false,
     "save_elasticsearch": true,
