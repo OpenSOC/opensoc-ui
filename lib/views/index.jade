@@ -11,7 +11,7 @@ html
     link(rel='stylesheet', href='css/normalize.min.css')
     link(rel='stylesheet', href='css/opensoc.css')
     //
-       load the root require context 
+       load the root require context
     script(src='vendor/require/require.js')
     script(src='app/components/require.config.js')
     script.
@@ -29,7 +29,7 @@ html
       button.close(type='button', ng-click='dashAlerts.clear(alert)', style='padding-right: 50px;') ×
       strong {{alert.title}}
       span(ng-bind-html='alert.text')
-      .pull-right.small(style='padding-right: 10px;') {{$index + 1}} alert(s) 
+      .pull-right.small(style='padding-right: 10px;') {{$index + 1}} alert(s)
     .navbar.navbar-static-top(ng-cloak='ng-cloak')
       .navbar-inner
         .container-fluid
