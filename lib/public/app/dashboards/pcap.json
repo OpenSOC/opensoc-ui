@@ -53,7 +53,7 @@
             "Info"
           ],
           "size": 50,
-    "field_list": true,
+    "field_list": false,
     "all_fields": false
 
         }
