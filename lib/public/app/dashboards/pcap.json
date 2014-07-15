@@ -45,9 +45,9 @@
           "fields": [
             "@fields.fe.alert.fe.@id",
             "@timestamp",
-            "showname",
-            "time",
-            "Destination",
+            "@fields.fe.alert.fe.severity",
+            "@fields.fe.alert.fe.src.fe.ip",
+            "@fields.fe.alert.fe.dst.fe.ip",
             "Protocol",
             "Length",
             "Info"
