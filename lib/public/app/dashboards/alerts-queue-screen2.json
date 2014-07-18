@@ -1,5 +1,5 @@
 {
-  "title": "PCAP Dashboard",
+  "title": " Alerts Queue",
   "services": {
     "query": {
       "list": {
@@ -22,46 +22,8 @@
     }
   },
   "rows": [
-    {
-      "title": "Options",
-      "height": "50px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "group": [
-            "default"
-          ],
-          "type": "table",
-          "status": "Stable",
-          "mode": "markdown",
-          "content": "OpenSOC custom PCAP panel.",
-          "style": {},
-          "title": "Alerts Queue",
-          "fields": [
-            "@fields.fe.alert.fe.@id",
-            "@timestamp",
-            "@fields.priority",
-            "@source_host",
-            "@fields.destination_",
-            "@fields.protocol_",
-            "Length",
-            "Info"
-          ],
-          "size": 50,
-    "field_list": false,
-    "all_fields": false
-
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "PCAP Data",
+  {
+      "title": "Alerts Queue",
       "height": "250px",
       "editable": true,
       "collapse": false,
@@ -83,8 +45,8 @@
           },
           "field": "@fields.priority",
           "exclude": [],
-          "missing": true,
-          "other": true,
+          "missing": false,
+          "other": false,
           "size": 100,
           "order": "count",
           "style": {
@@ -115,9 +77,9 @@
           },
           "field": "@fields.priority",
           "exclude": [],
-          "missing": true,
-          "other": true,
-          "size": 10,
+          "missing": false,
+          "other": false,
+          "size": 100,
           "order": "count",
           "style": {
             "font-size": "10pt"
@@ -130,6 +92,43 @@
           "counter_pos": "above",
           "spyable": true,
           "title": "Priority Levels"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Options",
+      "height": "50px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "group": [
+            "default"
+          ],
+          "type": "table",
+          "status": "Stable",
+          "mode": "markdown",
+          "content": "OpenSOC Alerts Home screen.",
+          "style": {},
+          "title": "Alerts Queue",
+          "fields": [
+            "@timestamp",
+            "@fields.priority",
+            "@source_host",
+            "@fields.destination_ip",
+            "@fields.protocol_",
+            "@fields.message"
+          ],
+          "size": 100,
+    "field_list": false,
+    "sortable": true,
+    "all_fields": false
+
         }
       ],
       "notice": false
@@ -185,11 +184,9 @@
   "editable": true,
   "index": {
     "interval": "none",
-    "pattern": "[logstash-]YYYY.MM.DD",
-    "default": "test_data2",
-    "warm_fields": false
+    "default": "test_data2"
   },
-  "style": "light",
+  "style": "dark",
   "failover": false,
   "panel_hints": true,
   "loader": {
