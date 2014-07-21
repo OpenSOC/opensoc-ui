@@ -109,7 +109,7 @@
           "label_name": "Severity",
           "value_name": "Count",
           "spyable": false,
-          "locked": false,
+          "locked": true,
           "title": "Alerts Count",
           "field": "Severity_level"
         },
@@ -131,7 +131,7 @@
           },
           "locked": false,
           "style": {
-            "font-size": "14pt"
+            "font-size": "20pt"
           },
           "title": "Last 24hr"
         },
@@ -197,7 +197,7 @@
             "max": null,
             "min": 0
           },
-          "locked": false,
+          "locked": true,
           "annotate": {
             "enable": false,
             "query": "*",
@@ -277,7 +277,7 @@
           "counter_pos": "none",
           "title": "Severity Ratio",
           "spyable": false,
-          "locked": false,
+          "locked": true,
           "tmode": "terms",
           "tstat": "total",
           "valuefield": ""
@@ -420,6 +420,17 @@
       "panels": [
         {
           "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "text",
+          "loadingEditor": false,
+          "mode": "html",
+          "content": "See the full Alerts Queue <a href=\"http://localhost:5000/#/dashboard/file/alerts-queue-screen3.json\">here</a>.",
+          "style": {},
+          "title": "Real Time Alerts Queue"
+        },
+        {
+          "error": false,
           "span": 12,
           "editable": true,
           "group": [
@@ -463,7 +474,7 @@
               3
             ]
           },
-          "locked": false,
+          "locked": true,
           "normTimes": true
         }
       ],
@@ -607,12 +618,14 @@
       "query": "*",
       "pinned": false,
       "history": [
-        "192.168.36.102",
+        "",
         "minor",
         "Major",
         "critical",
-        "10.246.16.90",
-        "10.122.196.84"
+        "10.81.123.243",
+        "10.122.196.84",
+        "10.247.181.37",
+        "192.168.36.174"
       ],
       "remember": 10,
       "enable": true
