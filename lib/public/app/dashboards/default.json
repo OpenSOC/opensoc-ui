@@ -37,7 +37,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "*"
+          "query": ""
         }
       },
       "ids": [
@@ -458,11 +458,8 @@
           "timeField": "@timestamp",
           "spyable": true,
           "queries": {
-            "mode": "all",
+            "mode": "unpinned",
             "ids": [
-              0,
-              1,
-              2,
               3
             ]
           },
@@ -581,7 +578,7 @@
   "editable": true,
   "index": {
     "interval": "none",
-    "default": "test_data15",
+    "default": "test_data16",
     "pattern": "_all",
     "warm_fields": true
   },
@@ -610,9 +607,12 @@
       "query": "*",
       "pinned": false,
       "history": [
+        "192.168.36.102",
         "minor",
         "Major",
-        "critical"
+        "critical",
+        "10.246.16.90",
+        "10.122.196.84"
       ],
       "remember": 10,
       "enable": true
