@@ -297,40 +297,26 @@
           "scaleSeconds": false
         },
         {
-          "error": false,
           "span": 2,
           "editable": true,
-          "type": "terms",
+          "type": "trends",
           "loadingEditor": false,
-          "field": "_type",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "table",
-          "counter_pos": "above",
+          "ago": "1d",
+          "arrangement": "vertical",
           "spyable": true,
           "queries": {
-            "mode": "pinned",
+            "mode": "selected",
             "ids": [
               0,
               1,
               2
             ]
           },
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Alert Source"
+          "locked": false,
+          "style": {
+            "font-size": "20pt"
+          },
+          "title": "Last 24hr"
         },
         {
           "error": false,
@@ -369,26 +355,40 @@
           "title": "Alerts Source"
         },
         {
+          "error": false,
           "span": 2,
           "editable": true,
-          "type": "trends",
+          "type": "terms",
           "loadingEditor": false,
-          "ago": "1d",
-          "arrangement": "vertical",
+          "field": "_type",
+          "exclude": [],
+          "missing": false,
+          "other": false,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": false,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "table",
+          "counter_pos": "above",
           "spyable": true,
           "queries": {
-            "mode": "selected",
+            "mode": "pinned",
             "ids": [
               0,
               1,
               2
             ]
           },
-          "locked": false,
-          "style": {
-            "font-size": "20pt"
-          },
-          "title": "Last 24hr"
+          "locked": true,
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Alert Source"
         },
         {
           "error": false,
