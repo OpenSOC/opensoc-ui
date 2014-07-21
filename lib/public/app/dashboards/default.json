@@ -425,7 +425,7 @@
           "type": "text",
           "loadingEditor": false,
           "mode": "html",
-          "content": "See the full Alerts Queue <a href=\"http://localhost:5000/#/dashboard/file/alerts-queue-screen3.json\">here</a>.",
+          "content": "See the full Alerts Queue <a href=\"//localhost:5000/#/dashboard/file/alerts-queue-screen3.json\">here</a>.",
           "style": {},
           "title": "Real Time Alerts Queue"
         },
