@@ -425,7 +425,7 @@
           "type": "text",
           "loadingEditor": false,
           "mode": "html",
-          "content": "See the full Alerts Queue <a href=\"//localhost:5000/#/dashboard/file/alerts-queue-screen3.json\">here</a>.",
+          "content": "See the full Alerts Queue <a href=\"http://localhost:5000/#/dashboard/file/alerts-queue-screen3.json\">here</a>.",
           "style": {},
           "title": "Real Time Alerts Queue"
         },
@@ -441,13 +441,12 @@
           "mode": "markdown",
           "content": "OpenSOC Alerts Home screen.",
           "style": {},
-          "title": "Top Alerts Queue",
+          "title": "Top Real Time Alerts",
           "fields": [
-            "Timestamp",
+            "@timestamp",
             "Severity",
             "Source_host_ip",
-            "@fields.destination_ip",
-            "@fields.protocol_",
+            "@fields.Protocol",
             "@fields.message"
           ],
           "size": 10,
@@ -461,7 +460,9 @@
           "pages": 5,
           "offset": 0,
           "overflow": "min-height",
-          "highlight": [],
+          "highlight": [
+            "Severity"
+          ],
           "header": true,
           "paging": true,
           "trimFactor": 300,
@@ -469,9 +470,11 @@
           "timeField": "@timestamp",
           "spyable": true,
           "queries": {
-            "mode": "unpinned",
+            "mode": "pinned",
             "ids": [
-              3
+              0,
+              1,
+              2
             ]
           },
           "locked": true,
@@ -484,7 +487,7 @@
       "title": "Real Time Alerts",
       "height": "650px",
       "editable": true,
-      "collapse": true,
+      "collapse": false,
       "collapsable": true,
       "panels": [
         {
@@ -513,11 +516,8 @@
           "paging": true,
           "spyable": true,
           "queries": {
-            "mode": "all",
+            "mode": "unpinned",
             "ids": [
-              0,
-              1,
-              2,
               3
             ]
           },
@@ -525,11 +525,11 @@
           "status": "Stable",
           "trimFactor": 300,
           "normTimes": true,
-          "title": "Real Time Alerts",
+          "title": "Query Results",
           "all_fields": false,
           "localTime": false,
           "timeField": "@timestamp",
-          "locked": false
+          "locked": true
         }
       ],
       "notice": false
