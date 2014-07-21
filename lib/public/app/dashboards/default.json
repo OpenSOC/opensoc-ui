@@ -297,7 +297,7 @@
           "scaleSeconds": false
         },
         {
-          "span": 2,
+          "span": 3,
           "editable": true,
           "type": "trends",
           "loadingEditor": false,
@@ -316,7 +316,7 @@
           "style": {
             "font-size": "20pt"
           },
-          "title": "Last 24hr"
+          "title": "Change in last 24hr"
         },
         {
           "error": false,
@@ -480,8 +480,8 @@
             "@timestamp",
             "Severity",
             "Source_host_ip",
-            "@fields.Destination_ip",
-            "@fields.Protocol",
+            "Destination_ip",
+            "Protocol",
             "@fields.message"
           ],
           "size": 10,
@@ -542,8 +542,8 @@
             "@timestamp",
             "Severity",
             "Source_host_ip",
-            "@fields.Destination_ip",
-            "@fields.Protocol",
+            "Destination_ip",
+            "Protocol",
             "@fields.message"
           ],
           "size": 20,
@@ -684,7 +684,7 @@
   "editable": true,
   "index": {
     "interval": "none",
-    "default": "test_data16",
+    "default": "test_data18",
     "pattern": "_all",
     "warm_fields": true
   },

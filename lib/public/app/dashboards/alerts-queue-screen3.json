@@ -130,8 +130,8 @@
             "@timestamp",
             "Severity",
             "Source_host_ip",
-            "@fields.Destination_ip",
-            "@fields.Protocol",
+            "Destination_ip",
+            "Protocol",
             "@fields.message"
           ],
           "size": 100,
@@ -220,7 +220,7 @@
   "editable": true,
   "index": {
     "interval": "none",
-    "default": "test_data16",
+    "default": "test_data18",
     "pattern": "_all",
     "warm_fields": true
   },
