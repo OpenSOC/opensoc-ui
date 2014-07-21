@@ -480,6 +480,7 @@
             "@timestamp",
             "Severity",
             "Source_host_ip",
+            "@fields.Destination_ip",
             "@fields.Protocol",
             "@fields.message"
           ],
@@ -541,6 +542,7 @@
             "@timestamp",
             "Severity",
             "Source_host_ip",
+            "@fields.Destination_ip",
             "@fields.Protocol",
             "@fields.message"
           ],
