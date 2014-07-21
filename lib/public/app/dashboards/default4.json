@@ -484,10 +484,10 @@
       "notice": false
     },
     {
-      "title": "Options",
+      "title": "Query Results",
       "height": "50px",
       "editable": true,
-      "collapse": false,
+      "collapse": true,
       "collapsable": true,
       "panels": [
         {
@@ -533,9 +533,7 @@
           "queries": {
             "mode": "unpinned",
             "ids": [
-              0,
-              1,
-              2
+              3
             ]
           },
           "locked": true,
@@ -548,7 +546,7 @@
       "title": "Real Time Alerts",
       "height": "650px",
       "editable": true,
-      "collapse": false,
+      "collapse": true,
       "collapsable": true,
       "panels": [
         {
@@ -586,7 +584,7 @@
           "status": "Stable",
           "trimFactor": 300,
           "normTimes": true,
-          "title": "Query Results",
+          "title": "Query Results Raw Data",
           "all_fields": false,
           "localTime": false,
           "timeField": "@timestamp",
