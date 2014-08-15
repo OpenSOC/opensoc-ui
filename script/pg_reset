@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-script/migrate down -c 99999
-script/migrate up

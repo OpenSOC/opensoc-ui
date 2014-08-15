@@ -10,11 +10,10 @@
 
 
   "predef"        : [         // extra globals
-    "Backbone",
+    "angular",
     "JST",
     "MTD",
     "google",
-    "_",
 
     // Tests
     "assert",
@@ -52,9 +51,6 @@
   // Development
   "debug"         : false,    // warn about debugger statements
 
-  // ECMAScript 5
-  "es5"           : true,     // allow ES5 syntax
-
   // Enforcing
   "bitwise"       : true,     // prohibit the use of bitwise operations (slow and '&' is usually supposed to be '&&')
   "curly"         : true,     // require {} for all blocks/scopes
@@ -67,5 +63,4 @@
   "sub"           : true,     // allow all subscript notation, including '[]'
   "laxcomma"      : true,     // allow commas after line breaks in lists
   "strict"        : false     // don't force strict mode
-  
 }

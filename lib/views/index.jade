@@ -15,6 +15,7 @@ html
     script(src='vendor/require/require.js')
     script(src='app/components/require.config.js')
     script.
+      user=!{user}
       require(['app'], function () {})
     style
   body

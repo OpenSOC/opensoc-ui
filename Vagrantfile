@@ -14,6 +14,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "shell", path: 'script/provision'
 
+
+  config.vm.network :forwarded_port, guest: 5000, host: 5000
   # Port Forwarding not needed if VM is on NAT'd net
   # Elasticsearch
   # config.vm.network :forwarded_port, guest: 9200, host: 9200
