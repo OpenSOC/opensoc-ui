@@ -53,7 +53,7 @@ service elasticsearch restart
 
 ### NODE SETUP ###
 apt-get update
-apt-get install -y nodejs npm postgresql-server-dev-9.3
+apt-get install -y nodejs npm
 
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g nodemon

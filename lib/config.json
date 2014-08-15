@@ -1,37 +1,7 @@
 {
-  "dev": {
-    "elasticsearch": {
-      "host": "192.168.33.10",
-      "port": 9200
-    },
-    "zookeeper": {
-      "host": "192.168.33.10",
-      "port": 2181
-    },
-    "redis": {
-      "host": "192.168.33.10",
-      "port": 6379
-    },
-    "ldap": {
-      "url": "ldap://192.168.33.10:389",
-      "searchBase": "dc=opensoc,dc=dev",
-      "searchFilter": "(mail={{username}})",
-      "searchAttributes": ["mail", "givenName", "memberOf"],
-      "adminDn": "cn=admin,dc=opensoc,dc=dev",
-      "adminPassword": "opensoc"
-    },
-    "permissions": {
-      "pcap": "cn=investigators,ou=groups,dc=opensoc,dc=dev"
-    }
-  },
   "vagrant": {
     "elasticsearch": {
-      "host": "127.0.0.1",
-      "port": 9200
-    },
-    "zookeeper": {
-      "host": "127.0.0.1",
-      "port": 2181
+      "url": "http://192.168.33.10:9200"
     },
     "redis": {
       "host": "127.0.0.1",
@@ -51,12 +21,7 @@
   },
   "ci": {
     "elasticsearch": {
-      "host": "localhost",
-      "port": 9200
-    },
-    "zookeeper": {
-      "host": "localhost",
-      "port": 2181
+      "url": "http://127.0.0.1:9200"
     },
     "redis": {
       "host": "localhost",
@@ -65,10 +30,7 @@
   },
   "test": {
     "elasticsearch": {
-    },
-    "zookeeper": {
-      "host": "192.168.33.10",
-      "port": 2181
+      "url": "http://192.168.33.10:9200"
     },
     "redis": {
       "host": "192.168.33.10",
