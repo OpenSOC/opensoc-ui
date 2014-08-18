@@ -10,10 +10,9 @@ notifications:
     on_failure: always
   hipchat:
     rooms:
-      secure: ftMVn8V34kdqbwVUDMoKgbEKG4KzywcAIxByW0bUes18Fl4e0Tc5wUajfKCtB3ih9fazNgClQgoDZWhYGZ/Ik7o/DxwJdMd7SN36Vfl412LQiV7IVPO+vvVVvrAH5RxXA1yxQveNlF7DI6ANRwVISs/OsAplznIzmyqsJ/onn1I=
-
+      secure: R8B4ZKfk8olu5Kvu/bOPqQzP5O6T2LXqW+rIVxbPPs5FEGYexo/ItUlGYA3eLF3dTrvNYYmSVINsvm7TQyvqeexLL7KxGalzeboheTpg1f1+RRkzNa8F5J/1X+lSJhp4hDqXF2uzyVaq2V4lfULJIEolYQf3haKztkjyplF1yHw=
 addons:
-  postgresql: "9.3"
+  postgresql: '9.3'
 before_script:
-  - psql -c 'create database opensoc_test;' -U postgres
-  - script/migrate up -e ci
+- psql -c 'create database opensoc_test;' -U postgres
+- script/migrate up -e ci
