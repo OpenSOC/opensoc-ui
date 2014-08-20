@@ -1,5 +1,6 @@
 {
   "vagrant": {
+    "secret": "b^~BN-IdQ9{gdp5sa2K$N=d5DV06eN7Y)sjZf:69dUj.3JWq=o",
     "elasticsearch": {
       "url": "http://192.168.33.10:9200"
     },
@@ -20,6 +21,7 @@
     }
   },
   "ci": {
+    "secret": "b^~BN-IdQ9{gdp5sa2K$N=d5DV06eN7Y)sjZf:69dUj.3JWq=o",
     "elasticsearch": {
       "url": "http://127.0.0.1:9200"
     },
@@ -29,6 +31,7 @@
     }
   },
   "test": {
+    "secret": "b^~BN-IdQ9{gdp5sa2K$N=d5DV06eN7Y)sjZf:69dUj.3JWq=o",
     "elasticsearch": {
       "url": "http://192.168.33.10:9200"
     },
