@@ -5,7 +5,51 @@ opensoc-ui
 
 User interface for OpenSOC
 
-## Hacking
+## Deployment
+
+ Here are the minimal steps for deployment on a Ubuntu 14.04. These instructions will need to be altered for Ubuntu 12.04 as the nodejs package is too old. Assume that the code is in ```/opt/portal``` and the user is ```portal```.
+
+* Install dependencies:
+
+```bash
+apt-get update
+apt-get install -y libpcap-dev tshark redis-server nodejs npm
+ln -s /usr/bin/nodejs /usr/bin/node
+npm install -g pm2
+
+su - portal
+cd /opt/portal
+npm install --production
+```
+
+* Add a file name ```config.json``` to the repo root (```/opt/portal``` in our setup). The config should point to the various services. The following is an example config, all fields are required:
+
+```json
+{
+    "secret": "b^~BN-IdQ9{gdp5sa2K$N=d5DV06eN7Y)sjZf:69dUj.3JWq=o",
+    "elasticsearch": {
+      "url": "http://192.168.33.10:9200"
+    },
+    "redis": {
+      "host": "127.0.0.1",
+      "port": 6379
+    },
+    "ldap": {
+      "url": "ldap://127.0.0.1:389",
+      "searchBase": "dc=opensoc,dc=dev",
+      "searchFilter": "(mail={{username}})",
+      "searchAttributes": ["cn", "uid", "mail", "givenName", "sn", "memberOf"],
+      "adminDn": "cn=admin,dc=opensoc,dc=dev",
+      "adminPassword": "opensoc"
+    },
+    "permissions": {
+      "pcap": "cn=investigators,ou=groups,dc=opensoc,dc=dev"
+    }
+  }
+```
+
+
+## Setup development environment
 
 ### Step 1: Install Virtualbox and Vagrant
 
@@ -39,22 +83,23 @@ cd vagrant
 
 ###  Step 5: Seed the development VM
 
-This will populate dummy data from data/*.json into the Elasticsearch development instance.
-
-Take a look at the [fetch](script/fetch.js) script to ensure it's pulling from the proper indices. Then run it like so:
+To generate seed data for use with the opensoc-ui, use the following command.
 
 ```bash
-ES_HOST=changeme.com script/es_fetch
+script/es_gen.js
 ```
 
-This will save JSON data in an ES bulk-loadable format into ```seed/es/[index name].json```. Then, you can throw this into ES with:
+On the other hand, to duplicate another ES installation use:
+
+```bash
+ES_HOST=changeme.com script/es_fetch.js
+```
+
+You should now have seed data in ```seed/es```. You can load this into the dev ES instance with:
 
 ```bash
 script/es_seed
 ```
-
-Of course, you can always populate your ES indices as you see fit.
-
 
 For authentication, make sure you set up the LDAP directory structure with:
 

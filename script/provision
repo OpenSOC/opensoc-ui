@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 ### BEGIN SAMPLE PCAP SERVER ###
 apt-get update
-apt-get install -y apache2 libpcap-dev tshark
+apt-get install -y libpcap-dev tshark
 curl -s 'http://www.snaketrap.co.uk/pcaps/Ncapture.pcap' -o /var/www/html/napenthes.pcap
 curl -s 'http://malware-traffic-analysis.net/2013/06/18/2013-06-18.pcap' -o /var/www/html/java.pcap
 ### END SAMPLE PCAP SERVER ###
@@ -32,9 +32,6 @@ cd -
 
 ### BEGIN REDIS ###
 apt-get -y install redis-server
-update-rc.d redis-server defaults 95 10
-sed -i '/bind 127.0.0.1/c\bind 0.0.0.0' /etc/redis/redis.conf
-service redis-server restart
 ### END REDIS ###
 
 
