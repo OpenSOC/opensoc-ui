@@ -26,7 +26,7 @@ npm install --production
 
 ```json
 {
-    "secret": "b^~BN-IdQ9{gdp5sa2K$N=d5DV06eN7Y)sjZf:69dUj.3JWq=o",
+    "secret": "some secret",
     "elasticsearch": {
       "url": "http://192.168.33.10:9200"
     },
@@ -46,6 +46,12 @@ npm install --production
       "pcap": "cn=investigators,ou=groups,dc=opensoc,dc=dev"
     }
   }
+```
+
+* Run the server:
+
+```bash
+pm2 start index.js -i max --name "opensoc"
 ```
 
 
