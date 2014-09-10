@@ -38,7 +38,7 @@ var clusters = ['preprod', 'cluster A', 'cluster B'];
 
 function choice(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
-};
+}
 
 function randomAlert(index) {
   var dst = choice(inventory);
@@ -66,7 +66,7 @@ function randomAlert(index) {
         timestamp: chance.integer({min: startTimestamp, max: endTimestamp})
       }
     }
-  }
+  };
 }
 
 for (var i = 0; i < numEnrichedMachines; i++) {
@@ -95,7 +95,8 @@ for (var i = 0; i < numOtherMachines; i++) {
   inventory.push({ip: chance.ip()});
 }
 
-for (var i = 0, index; index = indices[i]; i++) {
+for (var i = 0; i < indices.length; i++) {
+  var index = indices[i];
   var filename = index + '.json';
   var json = fs.createWriteStream('seed/es/' + filename);
   var objects = [];

@@ -33,6 +33,7 @@ node_modules
 
 # Potentially sensitive seed data
 /seed/es
+/seed/*.pcap
 
 # temp files
 /tmp

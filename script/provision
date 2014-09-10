@@ -6,12 +6,11 @@
 export DEBIAN_FRONTEND=noninteractive
 
 
-### BEGIN SAMPLE PCAP SERVER ###
+### BEGIN SAMPLE PCAP DATA ###
 apt-get update
 apt-get install -y libpcap-dev tshark
-curl -s 'http://www.snaketrap.co.uk/pcaps/Ncapture.pcap' -o /var/www/html/napenthes.pcap
-curl -s 'http://malware-traffic-analysis.net/2013/06/18/2013-06-18.pcap' -o /var/www/html/java.pcap
-### END SAMPLE PCAP SERVER ###
+curl -s 'http://www.snaketrap.co.uk/pcaps/hbot.pcap' -o /vagrant/seed/hbot.pcap
+### END SAMPLE PCAP DATA ###
 
 
 ### BEGIN OPENLDAP ###
