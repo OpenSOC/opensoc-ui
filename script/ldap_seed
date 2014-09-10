@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-CONTENT=`cat seed/ldap/content.ldif`
-
-vagrant ssh -c "echo \"$CONTENT\" > content.ldif; \
-  ldapadd -h localhost -p 389 -D 'cn=admin,dc=opensoc,dc=dev' -w opensoc -f content.ldif"
+cd /vagrant/seed/ldap
+sudo ldapadd -h localhost -p 389 -D 'cn=admin,dc=opensoc,dc=dev' -w opensoc -f content.ldif
+cd -

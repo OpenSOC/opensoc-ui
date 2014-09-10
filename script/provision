@@ -5,73 +5,40 @@
 # Prevent dpkg-reconfigure interactive sessions
 export DEBIAN_FRONTEND=noninteractive
 
-### BEGIN SAMPLE PCAP SERVER ###
+
+### BEGIN SAMPLE PCAP DATA ###
 apt-get update
-apt-get install -y apache2
-curl -s 'http://www.snaketrap.co.uk/pcaps/Ncapture.pcap' -o /var/www/html/napenthes.pcap
-curl -s 'http://malware-traffic-analysis.net/2013/06/18/2013-06-18.pcap' -o /var/www/html/java.pcap
-### END SAMPLE PCAP SERVER ###
+apt-get install -y libpcap-dev tshark
+curl -s 'http://www.snaketrap.co.uk/pcaps/hbot.pcap' -o /vagrant/seed/hbot.pcap
+### END SAMPLE PCAP DATA ###
 
 
 ### BEGIN OPENLDAP ###
 # slapd doesn't seem to work right unless you configure it via debconf
 # The password for all users is opensoc
-SEED='
-slapd	slapd/password1	password	opensoc
-slapd	slapd/password2	password	opensoc
-slapd	slapd/purge_database	boolean	false
-slapd	slapd/allow_ldap_v2	boolean	false
-slapd	slapd/invalid_config	boolean	true
-slapd	shared/organization	string	OpenSOC
-slapd	slapd/dump_database	select	when needed
-slapd	slapd/domain	string	opensoc.dev
-slapd	slapd/backend	select	HDB
-slapd	slapd/no_configuration	boolean	false
-slapd	slapd/dump_database_destdir	string	/var/backups/slapd-VERSION
-slapd	slapd/move_old_database	boolean	true
-'
-echo "$SEED" > slapd.seed
-debconf-set-selections ./slapd.seed
-
+debconf-set-selections /vagrant/seed/slapd.seed
 apt-get update
 apt-get -y install slapd ldap-utils
 
-LOGGING='
-dn: cn=config
-changetype: modify
-add: olcLogLevel
-olcLogLevel: stats
-'
-echo "$LOGGING" > logging.ldif
+cd /vagrant/seed/ldap
 ldapmodify -Y EXTERNAL -H ldapi:/// -f logging.ldif
+ldapmodify -Y EXTERNAL -H ldapi:/// -f config.ldif
+ldapadd -D cn=admin,cn=config -w "opensoc" -H ldapi:/// -f memberof_add.ldif
+ldapadd -D cn=admin,cn=config -w "opensoc" -H ldapi:/// -f memberof_config.ldif
+cd -
 ### END OPENLDAP ###
-
-
-### BEGIN POSTGRESQL ###
-echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' > /etc/apt/sources.list.d/pgdg.list
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-apt-get update
-apt-get -y install postgresql-9.3
-echo "listen_addresses = '0.0.0.0'" >> /etc/postgresql/9.3/main/postgresql.conf
-echo "host\tall\tall\t192.168.33.0/24\ttrust" >> /etc/postgresql/9.3/main/pg_hba.conf
-service postgresql restart
-su - postgres -c 'createuser -s -w -d -l opensoc'
-su - postgres -c 'createdb opensoc_dev'
-su - postgres -c 'createdb opensoc_test'
-### END POSTGRESQL ###
 
 
 ### BEGIN REDIS ###
 apt-get -y install redis-server
-update-rc.d redis-server defaults 95 10
-sed -i '/bind 127.0.0.1/c\bind 0.0.0.0' /etc/redis/redis.conf
-service redis-server restart
 ### END REDIS ###
+
 
 ### BEGIN ELASTICSEARCH ###
 apt-get -y install openjdk-7-jre-headless
 wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.deb
 dpkg -i elasticsearch-1.1.1.deb
+rm -rf elasticsearch-1.1.1.deb
 cd /usr/share/elasticsearch
 bin/plugin -install mobz/elasticsearch-head
 cd -
@@ -79,40 +46,18 @@ update-rc.d elasticsearch defaults 95 10
 service elasticsearch restart
 ### END ELASTICSEARCH ###
 
-### BEGIN KAFKA ###
-wget --quiet http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.1.1/kafka_2.10-0.8.1.1.tgz
-tar zxvf kafka_2.10-0.8.1.1.tgz
-echo 'advertised.host.name=192.168.33.10' >> kafka_2.10-0.8.1.1/config/server.properties
-sed -i '/zookeeper.connect=localhost:2181/c\zookeeper.connect=192.168.33.10:2181' kafka_2.10-0.8.1.1/config/server.properties
-chown -R vagrant kafka_2.10-0.8.1.1
 
-# zookeeper-server startup script
-rm /etc/init/zookeeper-server.conf
-ZOOCONF='
-description "Zookeeper Server"
-start on started networking
-stop on runlevel [016]
-exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/zookeeper-server-start.sh config/zookeeper.properties"
-respawn
-respawn limit 3 60
-'
-echo "$ZOOCONF" >> /etc/init/zookeeper-server.conf
-service zookeeper-server restart
+### NODE SETUP ###
+apt-get update
+apt-get install -y nodejs npm
 
-# kafka-server startup script
-rm /etc/init/kafka-server.conf
-KAFKACONF='
-description "Kafka Server"
-start on started networking
-stop on runlevel [016]
-exec su - vagrant -c "cd ~vagrant/kafka_2.10-0.8.1.1 ; bin/kafka-server-start.sh config/server.properties"
-respawn
-respawn limit 3 60
-'
-echo "$KAFKACONF" >> /etc/init/kafka-server.conf
-service kafka-server restart
+ln -s /usr/bin/nodejs /usr/bin/node
+npm install -g nodemon
 
-# Create OpenSOC Kafka topic
-sleep 3
-su - vagrant -c "cd kafka_2.10-0.8.1.1; bin/kafka-topics.sh --create --topic opensoc --zookeeper 192.168.33.10:2181 --partitions 2 --replication-factor 1"
-### END KAFKA ###
+cd /vagrant
+rm -rf node_modules
+su vagrant -c "npm install"
+su vagrant -c  "echo 'export NODE_ENV=vagrant' >> /home/vagrant/.bashrc"
+su vagrant -c "ln -s /vagrant/.nodemonignore ~/.nodemonignore"
+cd -
+### END NODE SETUP ###

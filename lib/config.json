@@ -1,56 +1,25 @@
 {
-  "dev": {
-    "elasticsearch": {
-      "host": "192.168.33.10",
-      "port": 9200
-    },
-    "zookeeper": {
-      "host": "192.168.33.10",
-      "port": 2181
-    },
-    "redis": {
-      "host": "192.168.33.10",
-      "port": 6379
-    },
-    "ldap": {
-      "url": "ldap://192.168.33.10:389",
-      "searchBase": "dc=opensoc,dc=dev",
-      "searchFilter": "(mail={{username}})",
-      "adminDn": "cn=admin,dc=opensoc,dc=dev",
-      "adminPassword": "opensoc"
-    }
+  "secret": "b^~BN-IdQ9{gdp5sa2K$N=d5DV06eN7Y)sjZf:69dUj.3JWq=o",
+  "elasticsearch": {
+    "url": "http://127.0.0.1:9200"
   },
-  "ci": {
-    "elasticsearch": {
-      "host": "localhost",
-      "port": 9200
-    },
-    "zookeeper": {
-      "host": "localhost",
-      "port": 2181
-    },
-    "redis": {
-      "host": "localhost",
-      "port": 6379
-    }
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379
   },
-  "test": {
-    "elasticsearch": {
-    },
-    "zookeeper": {
-      "host": "192.168.33.10",
-      "port": 2181
-    },
-    "redis": {
-      "host": "192.168.33.10",
-      "port": 6379
-    },
-    "ldap": {
-      "url": "ldap://192.168.33.10:389",
-      "searchBase": "dc=opensoc,dc=dev",
-      "searchFilter": "(mail={{username}})",
-      "adminDn": "cn=admin,dc=opensoc,dc=dev",
-      "adminPassword": "opensoc"
-    }
+  "ldap": {
+    "url": "ldap://127.0.0.1:389",
+    "searchBase": "dc=opensoc,dc=dev",
+    "searchFilter": "(mail={{username}})",
+    "searchAttributes": ["cn", "uid", "mail", "givenName", "sn", "memberOf"],
+    "adminDn": "cn=admin,dc=opensoc,dc=dev",
+    "adminPassword": "opensoc"
+  },
+  "pcap": {
+    "url": "http://127.0.0.1:5000/sample/pcap",
+    "mock": true
+  },
+  "permissions": {
+    "pcap": "cn=investigators,ou=groups,dc=opensoc,dc=dev"
   }
 }

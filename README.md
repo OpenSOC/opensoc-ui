@@ -5,36 +5,73 @@ opensoc-ui
 
 User interface for OpenSOC
 
-## Hacking
+## Deployment
 
-### Step 1: Ensure you have a proper Node ~> 0.10.x installed
+ Here are the minimal steps for deployment on a Ubuntu 14.04. These instructions will need to be altered for Ubuntu 12.04 as the nodejs package is too old. Assume that the code is in ```/opt/portal``` and the user is ```portal```.
 
-If you're on a Mac, [Homebrew](http://brew.sh) is the recommended way to install NodeJS with ```brew install node```.
+* Install dependencies:
 
-[Here](.jshintrc) is a sample jshintrc file. Make sure to save it as ```.jshintrc``` in your home directory.
+```bash
+apt-get update
+apt-get install -y libpcap-dev tshark redis-server nodejs npm
+ln -s /usr/bin/nodejs /usr/bin/node
+npm install -g pm2
 
-#### Optional: Ensure you have the tshark commandline utility
+su - portal
+cd /opt/portal
+npm install --production
+```
 
-If you'd like to experiment with the PCAP panel type, you'll need tshark to parse the sample pcaps. This is part of Wireshark and can be installed with Homebrew as well with ```brew install wireshark```.
+* Add a file name ```config.json``` to the repo root (```/opt/portal``` in our setup). The config should point to the various services. The following is an example config, all fields are required:
 
-### Step 2: Install Virtualbox and Vagrant
+```json
+{
+    "secret": "some secret",
+    "elasticsearch": {
+      "url": "http://192.168.33.10:9200"
+    },
+    "redis": {
+      "host": "127.0.0.1",
+      "port": 6379
+    },
+    "ldap": {
+      "url": "ldap://127.0.0.1:389",
+      "searchBase": "dc=opensoc,dc=dev",
+      "searchFilter": "(mail={{username}})",
+      "searchAttributes": ["cn", "uid", "mail", "givenName", "sn", "memberOf"],
+      "adminDn": "cn=admin,dc=opensoc,dc=dev",
+      "adminPassword": "opensoc"
+    },
+    "permissions": {
+      "pcap": "cn=investigators,ou=groups,dc=opensoc,dc=dev"
+    }
+  }
+```
+
+* Run the server:
+
+```bash
+pm2 start index.js -i max --name "opensoc"
+```
+
+
+## Setup development environment
+
+### Step 1: Install Virtualbox and Vagrant
 
 Download the latest package for your platform here:
 
 1. [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
 2. [Vagrant](https://www.vagrantup.com/downloads.html)
 
-### Step 3: Install library dependencies
+### Step 2: Clone repo
 
 ```bash
 git clone git@github.com:OpenSOC/opensoc-ui.git
 cd opensoc-ui
-npm install
 ```
 
-If you get an error complaining about missing pg headers, you need to install the Postgres development headers. On Mac this is simply ```brew install postgresql```
-
-### Step 4: Download and provision the development environment
+### Step 3: Download and provision the development environment
 
 ```bash
 vagrant up
@@ -42,36 +79,33 @@ vagrant up
 
 You might see a couple warnings, but usually these can be ignored. Check for any obvious errors as this can cause problems running the portal later.
 
-### Step 5: Migrate the DB
-
-You'll need to migrate the database for both the development (default) and test environments:
-
-```bash
-script/migrate up
-script/migrate up -e test
-```
-
-You should see no errors.
-
-###  Step 6: Seed the development VM
-
-This will populate dummy data from data/*.json into the Elasticsearch development instance.
-
-First, take a look at the [fetch](script/fetch.js) script to ensure it's pulling from the proper indices. Then run it like so:
+### Step 4: SSH into the vm
+All dependencies will be installed in the VM. The repository root is shared between the host and VM. The shared volume is mounted at /vagrant. Use the following command to ssh into the newly built VM:
 
 ```bash
-ES_HOST=changeme.com script/es_fetch
+vagrant ssh
+cd vagrant
 ```
 
-This will save JSON data in an ES bulk-loadable format into ```seed/es/[index name].json```. Then, you can throw this into ES with:
+###  Step 5: Seed the development VM
+
+To generate seed data for use with the opensoc-ui, use the following command.
+
+```bash
+script/es_gen.js
+```
+
+On the other hand, to duplicate another ES installation use:
+
+```bash
+ES_HOST=changeme.com script/es_fetch.js
+```
+
+You should now have seed data in ```seed/es```. You can load this into the dev ES instance with:
 
 ```bash
 script/es_seed
 ```
-
-Of course, you can always populate your ES indices as you see fit.
-
-For Postgres, there's ```script/pg_seed``` which loads the seed data from ```seed/pg/*.json``` into Postgres.
 
 For authentication, make sure you set up the LDAP directory structure with:
 
@@ -79,7 +113,7 @@ For authentication, make sure you set up the LDAP directory structure with:
 script/ldap_seed
 ```
 
-### Step 7: Ensure tests pass
+### Step 6: Ensure tests pass
 
 You can now run the tests:
 
@@ -87,11 +121,13 @@ You can now run the tests:
 make test
 ```
 
-### Step 8: Launch the server
+### Step 7: Launch the server
 
-The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically.
+The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically. Run the following commands from with the vagrant vm.
 
 ```bash
+vagrant ssh
+cd /vagrant
 npm install -g nodemon
 nodemon
 ```

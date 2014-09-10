@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-db_env=${1:-"dev"}
-psql -h 192.168.33.10 -U postgres opensoc_$db_env

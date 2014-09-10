@@ -14,31 +14,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "shell", path: 'script/provision'
 
-  # Port Forwarding not needed if VM is on NAT'd net
-  # Elasticsearch
-  # config.vm.network :forwarded_port, guest: 9200, host: 9200
 
-  # Postgres
-  # config.vm.network :forwarded_port, guest: 5432, host: 5432
+  # Nodemon server
+  config.vm.network :forwarded_port, guest: 5000, host: 5000
+
+  # Elasticsearch
+  config.vm.network :forwarded_port, guest: 9200, host: 9200
 
   # Redis
   # config.vm.network :forwarded_port, guest: 6379, host: 6379
-
-	# Zookeeper
-	# config.vm.network :forwarded_port, guest: 2181, host: 2181
-
-  # Kafka
-  # config.vm.network :forwarded_port, guest: 9092, host: 9092
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
