@@ -26,7 +26,6 @@ if (!process.env.IN_TRAVIS) {
           end(function (err, res) {
             // redirects to home
             assert.equal(res.header['location'], '/');
-            assert.match(res.header['set-cookie'], /joesmith/);
             assert.equal(res.statusCode, 302);
             done();
           });
