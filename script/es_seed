@@ -1,7 +1,25 @@
 #!/usr/bin/env sh
 
-# Seed Elasticsearch
+# Delete all existing indices.
+curl -XDELETE 'http://localhost:9200/_all/'
+
+# Create the PCAP index.
+curl -XPUT 'http://localhost:9200/pcap_all/'
+
+# Do not store the entire document in the pcap_all index.
+curl -XPUT 'http://localhost:9200/pcap_all/ip_src_addr/_mapping' -d '{
+	"ip_src_addr": {
+		"properties" : {
+          "message" : {"type" : "string", "store" : false}
+        },
+	    "_source" : {
+	        "enabled" : false
+	    }
+	}
+}'
+
+# Seed Elasticsearch.
 for file in seed/es/*.json
 do
-  curl -s -XPOST --data-binary @$file 'http://192.168.33.10:9200/_bulk'
+  curl -s -XPOST --data-binary @$file 'http://localhost:9200/_bulk'
 done
