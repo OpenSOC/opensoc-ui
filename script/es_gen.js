@@ -152,6 +152,11 @@ for (var i = 0; i < sources.length; i++) {
 
     objects.push(JSON.stringify({index: {_index: 'pcap_all', _type: 'pcap'}}));
     objects.push(JSON.stringify({
+      ip_src_addr: alertData.message.ip_src_addr,
+      ip_dst_addr: alertData.message.ip_dst_addr,
+      ip_src_port: alertData.message.ip_src_port,
+      ip_dst_port: alertData.message.ip_dst_port,
+      protocol: protocolMap[alertData.message.protocol],
       pcap_id: [
         ipToHex(alertData.message.ip_src_addr),
         ipToHex(alertData.message.ip_dst_addr),
