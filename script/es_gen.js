@@ -64,12 +64,12 @@ function randomAlert(source) {
   var instance = pad(chance.integer({min: 1, max: 3}), 3);
   var triggered = [];
 
-  for(var i = 0; i < chance.integer({min: 1, max: 3}); i++) {
+  for(var i = 0; i < chance.integer({min: 1, max: 1}); i++) {
     triggered.push({
       body: chance.sentence(),
       title: chance.word(),
       type: choice(alertType),
-      priority: chance.integer({min: 1, max: 10})
+      priority: chance.integer({min: 1, max: 3})
     });
   }
 
@@ -86,7 +86,7 @@ function randomAlert(source) {
           datacenter: choice(clusters)
         }
       },
-      triggered: triggered
+      triggered: triggered[0]
     },
     message: {
       ip_dst_addr: dst.ip,
