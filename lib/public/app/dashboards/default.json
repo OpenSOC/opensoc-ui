@@ -1,11 +1,11 @@
 {
-  "title": " ACME Widgets, Inc.",
+  "title": "New Dashboard",
   "services": {
     "query": {
       "list": {
         "0": {
-          "query": "critical",
-          "alias": "Critical",
+          "query": "alerts.triggered.priority:1",
+          "alias": "",
           "color": "#BF1B00",
           "id": 0,
           "pin": true,
@@ -15,55 +15,84 @@
         "1": {
           "id": 1,
           "color": "#EAB839",
-          "alias": "Major",
+          "alias": "",
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "Major"
+          "query": "alerts.triggered.priority:2"
         },
         "2": {
           "id": 2,
-          "color": "#7EB26D",
-          "alias": "Minor",
+          "color": "#6ED0E0",
+          "alias": "",
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "minor"
+          "query": "alerts.triggered.priority:3"
         },
         "3": {
           "id": 3,
-          "color": "#EF843C",
-          "alias": "",
+          "color": "#E5AC0E",
+          "alias": "Warning",
           "pin": false,
           "type": "lucene",
           "enable": true,
           "query": ""
+        },
+        "4": {
+          "id": 4,
+          "color": "#E24D42",
+          "alias": "1. Alert",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "alerts.triggered.type:alert"
+        },
+        "5": {
+          "id": 5,
+          "color": "#F2C96D",
+          "alias": "3. Error",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "alerts.triggered.type:error"
+        },
+        "6": {
+          "id": 6,
+          "color": "#F9934E",
+          "alias": "2. Warning",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "alerts.triggered.type:warning"
         }
       },
       "ids": [
         0,
         1,
         2,
-        3
+        3,
+        4,
+        6,
+        5
       ]
     },
     "filter": {
       "list": {
         "0": {
-          "type": "time",
-          "field": "@timestamp",
-          "from": "now-7d",
-          "to": "now",
-          "mandate": "must",
+          "type": "field",
+          "field": "_type",
+          "query": "\"pcap\"",
+          "mandate": "mustNot",
           "active": true,
           "alias": "",
           "id": 0
         },
         "1": {
           "type": "time",
-          "from": "2014-07-17T18:41:29.836Z",
-          "to": "2014-07-21T02:08:52.555Z",
-          "field": "@timestamp",
+          "field": "message.timestamp",
+          "from": "now-12h",
+          "to": "now",
           "mandate": "must",
           "active": true,
           "alias": "",
@@ -78,86 +107,19 @@
   },
   "rows": [
     {
-      "title": "Alerts Queue",
-      "height": "150px",
+      "title": "Fixed Overview",
+      "height": "250px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
       "panels": [
         {
           "error": false,
-          "span": 2,
-          "editable": true,
-          "type": "stats",
-          "loadingEditor": false,
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "style": {
-            "font-size": "24pt"
-          },
-          "format": "number",
-          "mode": "count",
-          "display_breakdown": "yes",
-          "sort_field": "",
-          "sort_reverse": false,
-          "label_name": "Severity",
-          "value_name": "Count",
-          "spyable": false,
-          "locked": true,
-          "title": "Alerts Count",
-          "field": "Severity_level"
-        },
-        {
-          "error": false,
-          "span": 2,
-          "editable": true,
-          "group": [
-            "default"
-          ],
-          "type": "terms",
-          "queries": {
-            "mode": "pinned",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "field": "Severity",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 100,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "pie",
-          "counter_pos": "none",
-          "title": "Severity Ratio",
-          "spyable": false,
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": ""
-        },
-        {
-          "error": false,
-          "span": 2,
+          "span": 3,
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "Severity",
+          "field": "alerts.triggered.type",
           "exclude": [],
           "missing": false,
           "other": false,
@@ -170,65 +132,41 @@
           "tilt": false,
           "labels": true,
           "arrangement": "horizontal",
-          "chart": "table",
+          "chart": "bar",
           "counter_pos": "above",
-          "spyable": false,
+          "spyable": true,
           "queries": {
-            "mode": "pinned",
+            "mode": "all",
             "ids": [
               0,
               1,
-              2
+              2,
+              3,
+              4,
+              5,
+              6
             ]
           },
-          "locked": true,
+          "locked": false,
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
-          "title": "Severity Action"
+          "title": "Alert Type"
         },
         {
-          "span": 6,
+          "error": false,
+          "span": 4,
           "editable": true,
-          "group": [
-            "default"
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "_type",
+          "exclude": [
+            "pcap"
           ],
-          "type": "histogram",
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "filter": {
-            "list": {
-              "0": {
-                "type": "time",
-                "field": "@timestamp",
-                "from": "now-24h",
-                "to": "now",
-                "mandate": "must",
-                "active": true,
-                "alias": "",
-                "id": 0
-              }
-            },
-            "ids": [
-              0
-            ]
-          },
-          "value_field": "Severity_level",
-          "time_field": "@timestamp",
-          "lines": true,
-          "bars": false,
-          "zoomlinks": false,
-          "auto_int": false,
-          "exclude": [],
           "missing": false,
           "other": false,
-          "order": "max",
+          "size": 10,
+          "order": "count",
           "style": {
             "font-size": "10pt"
           },
@@ -237,10 +175,44 @@
           "labels": true,
           "arrangement": "horizontal",
           "chart": "pie",
-          "counter_pos": "none",
-          "title": "Severity Level History",
+          "counter_pos": "above",
           "spyable": true,
-          "mode": "total",
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "locked": false,
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Alert Source"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "",
+      "height": "150px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 8,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "message.timestamp",
+          "value_field": null,
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
@@ -249,7 +221,15 @@
             "max": null,
             "min": 0
           },
-          "locked": true,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              4,
+              5,
+              6
+            ]
+          },
+          "locked": false,
           "annotate": {
             "enable": false,
             "query": "*",
@@ -260,8 +240,9 @@
               "desc"
             ]
           },
+          "auto_int": true,
           "resolution": 100,
-          "interval": "12h",
+          "interval": "5m",
           "intervals": [
             "auto",
             "1s",
@@ -276,11 +257,15 @@
             "1w",
             "1y"
           ],
-          "fill": 5,
+          "lines": false,
+          "fill": 0,
           "linewidth": 3,
-          "points": true,
+          "points": false,
           "pointradius": 5,
+          "bars": true,
           "stack": true,
+          "spyable": true,
+          "zoomlinks": true,
           "options": true,
           "legend": true,
           "show_query": true,
@@ -291,76 +276,18 @@
           "zerofill": true,
           "derivative": false,
           "tooltip": {
-            "value_type": "individual",
+            "value_type": "cumulative",
             "query_as_alias": true
           },
-          "scaleSeconds": false
-        },
-        {
-          "span": 3,
-          "editable": true,
-          "type": "trends",
-          "loadingEditor": false,
-          "ago": "1d",
-          "arrangement": "vertical",
-          "spyable": true,
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "locked": false,
-          "style": {
-            "font-size": "20pt"
-          },
-          "title": "Change in last 24hr"
+          "title": "Alert History Timeline"
         },
         {
           "error": false,
-          "span": 2,
+          "span": 4,
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "_type",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "pie",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "pinned",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Alerts Source"
-        },
-        {
-          "error": false,
-          "span": 2,
-          "editable": true,
-          "type": "terms",
-          "loadingEditor": false,
-          "field": "_type",
+          "field": "message.protocol",
           "exclude": [],
           "missing": false,
           "other": false,
@@ -377,260 +304,28 @@
           "counter_pos": "above",
           "spyable": true,
           "queries": {
-            "mode": "pinned",
+            "mode": "all",
             "ids": [
               0,
               1,
-              2
+              2,
+              3,
+              4,
+              5,
+              6
             ]
           },
-          "locked": true,
+          "locked": false,
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
-          "title": "Alert Source"
-        },
-        {
-          "error": false,
-          "span": 2,
-          "editable": false,
-          "type": "map",
-          "loadingEditor": false,
-          "map": "europe",
-          "colors": [
-            "#A0E2E2",
-            "#265656"
-          ],
-          "size": 100,
-          "exclude": [],
-          "spyable": false,
-          "queries": {
-            "mode": "pinned",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "locked": false,
-          "title": "Alerts Source Map",
-          "field": "Severity"
-        },
-        {
-          "error": false,
-          "span": 2,
-          "editable": false,
-          "type": "map",
-          "loadingEditor": false,
-          "map": "usa",
-          "colors": [
-            "#A0E2E2",
-            "#265656"
-          ],
-          "size": 100,
-          "exclude": [],
-          "spyable": false,
-          "queries": {
-            "mode": "pinned",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "locked": false,
-          "title": "Alerts IP Destination",
-          "field": "@fields.source_longitude"
+          "title": "Protocol"
         }
       ],
       "notice": false
     },
     {
-      "title": "Options",
-      "height": "50px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 4,
-          "editable": true,
-          "type": "text",
-          "loadingEditor": false,
-          "mode": "html",
-          "content": "See the full Alerts Queue <a href=\"http://localhost:5000/#/dashboard/file/alerts-queue-screen3.json\">here</a>.",
-          "style": {},
-          "title": "Real Time Alerts Queue"
-        },
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "group": [
-            "default"
-          ],
-          "type": "table",
-          "status": "Stable",
-          "mode": "markdown",
-          "content": "OpenSOC Alerts Home screen.",
-          "style": {},
-          "title": "Top Real Time Alerts",
-          "fields": [
-            "@timestamp",
-            "Severity",
-            "Source_host_ip",
-            "Destination_ip",
-            "Protocol",
-            "@fields.message"
-          ],
-          "size": 10,
-          "field_list": false,
-          "sortable": true,
-          "sort": [
-            "Severity_level",
-            "asc"
-          ],
-          "all_fields": false,
-          "pages": 5,
-          "offset": 0,
-          "overflow": "min-height",
-          "highlight": [
-            "Severity"
-          ],
-          "header": true,
-          "paging": true,
-          "trimFactor": 300,
-          "localTime": false,
-          "timeField": "@timestamp",
-          "spyable": true,
-          "queries": {
-            "mode": "pinned",
-            "ids": [
-              0,
-              1,
-              2
-            ]
-          },
-          "locked": true,
-          "normTimes": true
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "Query Results",
-      "height": "50px",
-      "editable": true,
-      "collapse": true,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "group": [
-            "default"
-          ],
-          "type": "table",
-          "status": "Stable",
-          "mode": "markdown",
-          "content": "OpenSOC Alerts Home screen.",
-          "style": {},
-          "title": "Query Results",
-          "fields": [
-            "@timestamp",
-            "Severity",
-            "Source_host_ip",
-            "Destination_ip",
-            "Protocol",
-            "@fields.message"
-          ],
-          "size": 20,
-          "field_list": false,
-          "sortable": true,
-          "sort": [
-            "Severity_level",
-            "asc"
-          ],
-          "all_fields": false,
-          "pages": 5,
-          "offset": 0,
-          "overflow": "min-height",
-          "highlight": [
-            "Severity"
-          ],
-          "header": true,
-          "paging": true,
-          "trimFactor": 300,
-          "localTime": false,
-          "timeField": "@timestamp",
-          "spyable": true,
-          "queries": {
-            "mode": "unpinned",
-            "ids": [
-              3
-            ]
-          },
-          "locked": false,
-          "normTimes": true
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "Query Results Raw Data",
-      "height": "650px",
-      "editable": true,
-      "collapse": true,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "group": [
-            "default"
-          ],
-          "type": "table",
-          "size": 100,
-          "pages": 5,
-          "offset": 0,
-          "sort": [
-            "_score",
-            "desc"
-          ],
-          "style": {
-            "font-size": "9pt"
-          },
-          "overflow": "min-height",
-          "fields": [],
-          "highlight": [],
-          "sortable": true,
-          "header": true,
-          "paging": true,
-          "spyable": true,
-          "queries": {
-            "mode": "unpinned",
-            "ids": [
-              3
-            ]
-          },
-          "field_list": true,
-          "status": "Stable",
-          "trimFactor": 300,
-          "normTimes": true,
-          "title": "Query Results Raw Data",
-          "all_fields": false,
-          "localTime": false,
-          "timeField": "@timestamp",
-          "locked": false
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "PCAP Data",
+      "title": "",
       "height": "150px",
       "editable": true,
       "collapse": true,
@@ -646,11 +341,15 @@
           "pages": 5,
           "offset": 0,
           "sort": [
-            "_score",
+            "alerts.triggered.priority",
             "desc"
           ],
           "overflow": "min-height",
-          "fields": [],
+          "fields": [
+            "_type",
+            "_index",
+            "alerts.triggered.priority"
+          ],
           "highlight": [],
           "sortable": true,
           "header": true,
@@ -675,60 +374,111 @@
             "font-size": "9pt"
           },
           "normTimes": true,
-          "title": "PCAP Data"
+          "title": "all"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "",
+      "height": "150px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "table",
+          "loadingEditor": false,
+          "size": 10,
+          "pages": 5000,
+          "offset": 0,
+          "sort": [
+            "_score",
+            "desc"
+          ],
+          "overflow": "min-height",
+          "fields": [
+            "alerts.triggered.type",
+            "alerts.triggered.priority",
+            "alerts.triggered.title",
+            "alerts.triggered.body",
+            "_type",
+            "message.ip_dst_port",
+            "message.ip_dst_addr",
+            "message.timestamp",
+            "message.protocol",
+            "message.ip_src_addr"
+          ],
+          "highlight": [],
+          "sortable": true,
+          "header": true,
+          "paging": true,
+          "field_list": true,
+          "all_fields": false,
+          "trimFactor": 300,
+          "localTime": false,
+          "timeField": "@timestamp",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "locked": true,
+          "style": {
+            "font-size": "9pt"
+          },
+          "normTimes": true,
+          "title": "Top Alerts"
         }
       ],
       "notice": false
     }
   ],
   "editable": true,
+  "failover": false,
   "index": {
     "interval": "none",
-    "default": "test_data18",
-    "pattern": "_all",
-    "warm_fields": true
+    "pattern": "[logstash-]YYYY.MM.DD",
+    "default": "_all",
+    "warm_fields": false
   },
   "style": "dark",
-  "failover": false,
+  "realtime": true,
   "panel_hints": true,
-  "loader": {
-    "save_gist": false,
-    "save_elasticsearch": true,
-    "save_local": true,
-    "save_default": true,
-    "save_temp": true,
-    "save_temp_ttl_enable": true,
-    "save_temp_ttl": "30d",
-    "load_gist": true,
-    "load_elasticsearch": true,
-    "load_elasticsearch_size": 20,
-    "load_local": true,
-    "hide": false
-  },
   "pulldowns": [
     {
       "type": "query",
       "collapse": false,
       "notice": false,
+      "enable": true,
       "query": "*",
-      "pinned": false,
+      "pinned": true,
       "history": [
+        "alerts.triggered.type:warning",
+        "alerts.triggered.type:alert",
         "",
-        "minor",
-        "Major",
-        "critical",
-        "10.81.123.243",
-        "10.122.196.84",
-        "10.247.181.37",
-        "192.168.36.174"
+        "alerts.triggered.priority:3",
+        "alerts.triggered.priority:2",
+        "alerts.triggered.priority:1",
+        "*"
       ],
-      "remember": 10,
-      "enable": true
+      "remember": 10
     },
     {
       "type": "filtering",
-      "collapse": true,
-      "notice": false,
+      "collapse": false,
+      "notice": true,
       "enable": true
     }
   ],
@@ -737,6 +487,7 @@
       "type": "timepicker",
       "collapse": false,
       "notice": false,
+      "enable": true,
       "status": "Stable",
       "time_options": [
         "5m",
@@ -761,12 +512,24 @@
         "2h",
         "1d"
       ],
-      "timefield": "@timestamp",
-      "enable": true,
-      "now": false,
-      "filter_id": 0
+      "timefield": "message.timestamp",
+      "now": true,
+      "filter_id": 1
     }
   ],
-  "refresh": false,
-  "realtime": true
+  "loader": {
+    "save_gist": false,
+    "save_elasticsearch": true,
+    "save_local": true,
+    "save_default": true,
+    "save_temp": true,
+    "save_temp_ttl_enable": true,
+    "save_temp_ttl": "30d",
+    "load_gist": false,
+    "load_elasticsearch": true,
+    "load_elasticsearch_size": 20,
+    "load_local": false,
+    "hide": false
+  },
+  "refresh": false
 }
