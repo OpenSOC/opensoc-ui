@@ -1,4 +1,249 @@
 <div ng-controller='pcap' ng-init="init()">
+
+  <style>
+    .table-doc-table {
+      margin-left: 0px !important;
+      overflow-y: auto;
+    }
+    .table-sidebar {
+      width: 200px;
+      display: table-cell;
+      padding-right: 10px;
+    }
+    .table-main {
+      width: 100%;
+      display: table-cell;
+    }
+    .table-container {
+      display: table;
+      height: 100px;
+      width: 100%;
+      table-layout: fixed;
+    }
+    .table-fieldname {
+      white-space: nowrap;
+    }
+
+    .table-fieldname a {
+      word-wrap:break-word;
+      white-space: normal;
+    }
+
+    .table-details {
+      table-layout: fixed;
+    }
+
+    .table-details-field {
+      width: 200px;
+    }
+
+    .table-details-action {
+      width: 60px;
+      text-align: center;
+    }
+
+    .table-details-value {
+    }
+
+    .table-field-value {
+      white-space: pre-wrap;
+    }
+
+    span.hilite {
+        background: yellow;
+    }
+
+    .pcap-raw {
+        background: #FCFCFC;
+        color: #5F5F5F;
+    }
+
+    .uppercase {
+        text-transform: uppercase;
+    }
+
+    span, td, th {
+        font-size: 13px;
+    }
+
+    .main-row {
+        cursor: pointer;
+    }
+
+    .main-row:hover {
+        background-color: #7E7E7E ;
+    }
+
+    .extra-row {
+        background-color: #474747 !important;
+    }
+    ul{
+        list-style-type: none;
+    }
+
+    .highlight {
+      background-color: blue;
+    }
+    .newline { clear:both !important;}
+    .padright { margin-left: 16px !important;}
+
+    .pcap-editor {
+      /*border: 1px solid #ddd;*/
+      background-color: #333;
+      padding: 5px;
+      margin-bottom: 5px;
+    };
+
+  </style>
+
+
+
+<div class="table-container">
+    <div class="pcap-editor" pcap-settings></div>
+    <div class="pcap-editor">
+      <h6>PCAP Search Results</h6>
+      <table class="table table-bordered table-condensed table-details table-striped" ng-style="panel.style">
+      <thead>
+        <tr>
+          <td>PCAP ID</td>
+          <td>Source IP</td>
+          <td>Destination IP</td>
+          <td>Identifier #3</td>
+          <td>Identifier #4</td>
+          <td>Identifier #5</td>
+        <tr>
+      </thead>
+      <tbody bindonce ng-repeat="packet in packet_data.pdml.packet">
+          <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
+            <td>PCAP ID #</td>
+            <td>{{packet.proto[3].field[10].$.show}}</td>
+            <td>{{packet.proto[3].field[14].$.show}}</td>
+            <td>Identifier #3 Data</td>
+            <td>Identifier #4 Data</td>
+            <td>Identifier #5 Data</td>
+          </tr>
+      </tbody>
+      </table>
+    </div>
+
+    <table class="table table-bordered table-condensed table-details table-striped" ng-style="panel.style">
+    <thead>
+      <tr>
+        <td>Packet No.</td>
+        <td>Source</td>
+        <td>Destination</td>
+        <td>Info</td>
+      <tr>
+    </thead>
+    <tbody bindonce ng-repeat="packet in packet_data.pdml.packet">
+        <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
+          <td><span>{{$index}}</span></td>
+          <td>{{packet.proto[3].field[10].$.show}}</td>
+          <td>{{packet.proto[3].field[14].$.show}}</td>
+          <td>{{packet.proto[4].field[0].$.showname}}</td>
+        </tr>
+    </tbody>
+    </table>
+
+      <table class="">
+       <thead></thead>
+       <!-- TODO: Fix repeater bug -->
+        <tbody bindonce ng-repeat="event in data| slice:panel.offset:panel.offset+panel.size" ng-class-odd="'odd'" class="extra-row" ng-show="activePosition == $index">
+          <tr bindonce ng-repeat="prot in event.proto" class="main-row">
+            <td><div ng-click="prot.isVisible = !prot.isVisible">{{protShowname(prot.$)}}</div>
+            <div>
+              <ul ng-show="prot.isVisible">
+                <li ng-repeat="fieldval in prot.field" ng-click="fieldBytes(fieldval)">
+                    <p>{{fieldvalShowname(fieldval)}}</p>
+                </li>
+            </ul>
+            </div>
+            </td>
+          </tr>
+       </tbody>
+      </table>
+
+    <div packet="drilldown"></div>
+</div>
+
+  <script type="text/ng-template" id="packet.html">
+    <div ng-repeat="proto in packet.proto">
+      <span ng-class="{'icon-chevron-down': proto.expanded, 'icon-chevron-right': !proto.expanded}" ng-click="proto.expanded = select(proto) || !proto.expanded"></span>
+      <span ng-class="{highlight: (selectedData.uid === proto.$.uid) || (selectedData2 === proto.$.name )}" ng-click="proto.expanded = select(proto) || !proto.expanded">
+        {{ proto.$.showname }}
+      </span>
+
+      <div ng-if="proto.expanded" style="margin-left:50px">
+        <div ng-repeat="f in proto.field">
+          <span ng-class="{highlight: ($parent.selectedData.uid === f.$.uid) || (selectedData2 === f.$)}" ng-click="select_field(f)">
+            {{ f.$.showname }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div hex-bytes bytes="packet.hexPacket" selected-bytes="selectedBytes" selected-data="selectedData"></div>
+  </script>
+
+  <script type="text/ng-template" id="hexBytes.html">
+    <br/>
+    <span ng-repeat="b in bytes track by $index">
+      <span class="byte" ng-class="{highlight: selectedBytes.pos <= $index && (selectedBytes.pos|num)+(selectedBytes.size|num) > $index, newline:$index%16==0, padright:($index+8)%16==0}" ng-click="selectByte($index)" style="float:left; padding:4px;">
+        {{ b }}
+      </span>
+    </span>
+    <div style="clear:left">
+    <br/>
+    Position: {{selectedBytes.pos}}<br/>
+    Size: {{selectedBytes.size}}<br/>
+    Selected Field: {{selectedBytes.showname}} ({{selectedBytes.name}})</br>
+    selectedBytes :: {{$parent.selectedBytes}}</br>
+    selectedBytes.expand :: {{$parent.selectedBytes.expanded}}
+    </div>
+  </script>
+
+  <!-- Filter PCAP Panel -->
+  <script type="text/ng-template" id="pcapSettings.html">
+    <div class="editor-row">
+        <form action="">
+          <div class="editor-option">
+              <label class="small">Source Port</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.source_port"></input>
+          </div>
+          <div class="editor-option">
+              <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.dest_port"></input>
+          </div>
+          <div class="editor-option">
+              <label class="small">Source IP</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.source_ip"></input>
+          </div>
+          <div class="editor-option">
+              <label class="small">Destination IP</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.dest_ip"></input>
+          </div>
+          <div class="editor-option">
+              <label class="small">Protocol</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.protocol"></input>
+          </div>
+
+          <div class="row-fluid">
+            <a href data-toggle="collapse" >Advanced</a>
+            <div class="panel-collapse collapse">
+              <div class="editor-option">
+                  <label class="small">Fragment Offset</label><input type="text" class="input-medium"></input>
+              </div>
+              <div class="editor-option">
+                  <label class="small">Timestamp</label><input type="text" class="input-medium"></input>
+              </div>
+              <div class="editor-option">
+                  <label class="small">Include Reverse Traffic</label><input type="checkbox" ng-checked="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-option">
+            <button type="button" class="btn btn-success" ng-click="get_data(dashboard)">Search</button>
+          </div>
+
+        </form>
+    </div>
+  </script>
+
   <!--<p ng-style="panel.style" ng-bind-html-unsafe="panel.content | striphtml | newlines"></p>-->
   <markdown ng-show="ready && panel.mode == 'markdown'">
     {{panel.content}}
@@ -7,272 +252,4 @@
   </p>
   <p ng-show="panel.mode == 'html'" ng-bind-html="panel.content">
   </p>
-  <p>Packet Summary</p>
-
-<table class="table table-condensed" style="border-collapse:collapse;">
-    <thead>
-        <tr>
-            <th>Packet #</th>
-            <th>Time</th>
-            <th>Source IP</th>
-            <th>Destination IP</th>
-            <th>Protocol</th>
-            <th>Packet Length (bytes)</th>
-            <th>Info</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr data-toggle="collapse" data-target="#packet1" class="accordion-toggle">
-            <td>1</td>
-            <td>0.000000</td>
-            <td>172.16.253.130</td>
-            <td>224.0.0.22</td>
-            <td>IGMP</td>
-            <td>54</td>
-            <td>Membership Report / Leave group 239.255.255.250</td>
-        </tr>
-        <tr>
-            <td colspan="6" class="hiddenRow"><div id="packet1" class="accordian-body collapse"><span data-toggle="collapse" data-target="#frame1-line1">Frame 1: 342 bytes on wire (2736 bits), 342 bytes captured (2736 bits)</span>
-            <ul class="collapse" id="frame1-line1"><li>Encapsulation type: Ethernet (1)</li>
-            <li>Arrival Time: Feb  3, 2013 18:49:19.524111000 CST</li>
-            <li>Time shift for this packet: 0.000000000 seconds</li>
-            <li>Epoch Time: 1359946159.524111000 seconds</li>
-                        <li>Time delta from previous captured frame: 0.000000000 seconds</li>
-                        <li>Time delta from previous displayed frame: 0.000000000 seconds</li>
-                        <li>Time since reference or first frame: 0.000000000 seconds</li>
-                        <li>Frame Number: 1</li>
-                        <li>Frame Length: 54 bytes (432 bits)</li>
-                        <li>Capture Length: 54 bytes (432 bits)</li>
-                        <li>Frame is marked: False</li>
-                        <li>Frame is ignored: False</li>
-                        <li>Protocols in frame: eth:ip:igmp</li>
-            </ul>
-            <span data-toggle="collapse" data-target="#frame1-line2">Ethernet II, Src: Vmware_af:9c:dc (00:0c:29:af:9c:dc), Dst: IPv4mcast_00:00:16 (01:00:5e:00:00:16)
-            <div class="collapse" id="frame1-line2">
-            <ul>
-                <li>Destination: IPv4mcast_00:00:16 (01:00:5e:00:00:16)</li>
-                <li>Address: IPv4mcast_00:00:16 (01:00:5e:00:00:16)</li>
-                <li>.... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)</li>
-                <li>.... ...1 .... .... .... .... = IG bit: Group address (multicast/broadcast)</li>
-            </ul>
-            <ul>
-            <li>Source: Vmware_af:9c:dc (00:0c:29:af:9c:dc)</li>
-            <li>Address: Vmware_af:9c:dc (00:0c:29:af:9c:dc)</li>
-            <li>.... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)</li>
-            <li>.... ...0 .... .... .... .... = IG bit: Individual address (unicast)</li>
-            <li>Type: IP (0x0800)</li>
-            </ul>
-            </div>
-            <span data-toggle="collapse" data-target="#frame1-line3">Internet Protocol Version 4, Src: 172.16.253.130 (172.16.253.130), Dst: 224.0.0.22 (224.0.0.22)</span>
-            <div class="collapse" id="frame1-line3">
-            <ul>
-<li>Version: 4</li>
-<li>Header length: 24 bytes</li>
-<li>Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00: Not-ECT (Not ECN-Capable Transport))</li>
-<ul><li>0000 00.. = Differentiated Services Codepoint: Default (0x00)</li>
-<li>.... ..00 = Explicit Congestion Notification: Not-ECT (Not ECN-Capable Transport) (0x00)</li></ul>
-<li>Total Length: 40</li>
-<li>Identification: 0x002b (43)</li>
-<li>Flags: 0x00</li>
-<ul>
-<li>0... .... = Reserved bit: Not set</li>
-<li>.0.. .... = Don&apos;t fragment: Not set</li>
-<li>..0. .... = More fragments: Not set</li></ul>
-<li>Fragment offset: 0</li>
-<li>Time to live: 1</li>
-<li>Protocol: IGMP (2)</li>
-<ul>
-<li>Header checksum: 0x9afb [validation disabled]</li>
-<li>Good: False</li>
-<li>Bad: False</li></ul>
-<li>Source: 172.16.253.130 (172.16.253.130)</li>
-<li>Source or Destination Address: 172.16.253.130 (172.16.253.130)</li>
-<li>Source Host: 172.16.253.130</li>
-<li>Source or Destination Host: 172.16.253.130</li>
-<li>Destination: 224.0.0.22 (224.0.0.22)</li>
-<li>Source or Destination Address: 224.0.0.22 (224.0.0.22)</li>
-<li>Destination Host: 224.0.0.22</li>
-<li>Source or Destination Host: 224.0.0.22</li>
-<li>Source GeoIP: Unknown</li>
-<li>Destination GeoIP: Unknown</li>
-<li>Options: (4 bytes), Router Alert</li>
-<li>Router Alert (4 bytes): Router shall examine packet (0)</li>
-<li>Type: 148</li>
-<li>1... .... = Copy on fragmentation: Yes</li>
-<li>.00. .... = Class: Control (0)</li>
-<li>...1 0100 = Number: Router Alert (20)</li>
-<li>Length: 4</li>
-<li>Router Alert: Router shall examine packet (0)</li>
-            </ul>
-            </div>
-            <span data-toggle="collapse" data-target="#frame1-line4">Internet Group Management Protocol</span>
-<div class="collapse" id="frame1-line4">
-            <ul>
-<li>IGMP Version: 3</li>
-<li>Type: Membership Report (0x22)</li>
-<li>Header checksum: 0xeb03 [correct]</li>
-<li>Num Group Records: 1</li>
-<li>Group Record : 239.255.255.250  Change To Include Mode</li>
-<li>Record Type: Change To Include Mode (3)</li>
-<li>Aux Data Len: 0</li>
-<li>Num Src: 0</li>
-<li>Multicast Address: 239.255.255.250 (239.255.255.250)</li>
-            </ul>
-            </div>
-            <div>
-            <h5 data-toggle="collapse" data-target="#frame1-packet-view">Packet Data (Hex View)</h5>
-<div class="collapse" id="frame1-packet-view">0100 5e00 0016 000c<br>
-29af 9cdc 0800 4600<br>
-0028 002b 0000 0102<br>
-9afb ac10 fd82 e000<br>
-0016 9404 0000 2200<br>
-eb03 0000 0001 0300<br>
-0000 efff fffa</div></div>
-            </div>
-</td>
-        </tr>
-        <tr data-toggle="collapse" data-target="#packet3" class="accordion-toggle">
-            <td>2</td>
-            <td>0.004693</td>
-            <td>172.16.253.130</td>
-            <td>224.0.0.22</td>
-            <td>IGMP</td>
-            <td>54</td>
-            <td>Membership Report / Join group 239.255.255.250 for any sources</td>
-        </tr>
-        <tr>
-            <td colspan="6" class="hiddenRow"><div id="packet4" class="accordian-body collapse">
-            Frame 2: 54 bytes on wire (432 bits), 54 bytes captured (432 bits) on interface 0
-            <ul><li>Interface id: 0</li>
-            <li>Encapsulation type: Ethernet (1)</li>
-            <li>Arrival Time: Feb  3, 2013 20:49:19.528804000 CST</li>
-            <li>Time shift for this packet: 0.000000000 seconds</li>
-						<li>Epoch Time: 1359946159.528804000 seconds</li>
-						<li>Time delta from previous captured frame: 0.004693000 seconds</li>
-						<li>Time since reference or first frame: 0.004693000 seconds</li>
-						<li>Frame Number: 1</li>
-						<li>Frame Length: 54 bytes (432 bits)</li>
-						<li>Capture Length: 54 bytes (432 bits)</li>
-						<li>Frame is marked: False</li>
-						<li>Frame is ignored: False</li>
-						<li>Protocols in frame: eth:ip:igmp</li>
-            </ul>
-            Ethernet II, Src: Vmware_af:9c:dc (00:0c:29:af:9c:dc), Dst: IPv4mcast_00:00:16 (01:00:5e:00:00:16)
-            <ul>
-                <li>Destination: IPv4mcast_00:00:16 (01:00:5e:00:00:16)</li>
-                <li>Address: IPv4mcast_00:00:16 (01:00:5e:00:00:16)</li>
-                <li>.... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)</li>
-                <li>.... ...1 .... .... .... .... = IG bit: Group address (multicast/broadcast)</li>
-            </ul>
-            <ul>
-            <li>Source: Vmware_af:9c:dc (00:0c:29:af:9c:dc)</li>
-            <li>Address: Vmware_af:9c:dc (00:0c:29:af:9c:dc)</li>
-            <li>.... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)</li>
-            <li>.... ...0 .... .... .... .... = IG bit: Individual address (unicast)</li>
-            <li>Type: IP (0x0800)</li>
-            </ul>
-            Internet Protocol Version 4, Src: 172.16.253.130 (172.16.253.130), Dst: 224.0.0.22 (224.0.0.22)
-            <ul>
-<li>Version: 4</li>
-<li>Header length: 24 bytes</li>
-<li>Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00: Not-ECT (Not ECN-Capable Transport))</li>
-<ul><li>0000 00.. = Differentiated Services Codepoint: Default (0x00)</li>
-<li>.... ..00 = Explicit Congestion Notification: Not-ECT (Not ECN-Capable Transport) (0x00)</li></ul>
-<li>Total Length: 40</li>
-<li>Identification: 0x002b (43)</li>
-<li>Flags: 0x00</li>
-<ul>
-<li>0... .... = Reserved bit: Not set</li>
-<li>.0.. .... = Don&apos;t fragment: Not set</li>
-<li>..0. .... = More fragments: Not set</li></ul>
-<li>Fragment offset: 0</li>
-<li>Time to live: 1</li>
-<li>Protocol: IGMP (2)</li>
-<ul>
-<li>Header checksum: 0x9afb [validation disabled]</li>
-<li>Good: False</li>
-<li>Bad: False</li></ul>
-<li>Source: 172.16.253.130 (172.16.253.130)</li>
-<li>Source or Destination Address: 172.16.253.130 (172.16.253.130)</li>
-<li>Source Host: 172.16.253.130</li>
-<li>Source or Destination Host: 172.16.253.130</li>
-<li>Destination: 224.0.0.22 (224.0.0.22)</li>
-<li>Source or Destination Address: 224.0.0.22 (224.0.0.22)</li>
-<li>Destination Host: 224.0.0.22</li>
-<li>Source or Destination Host: 224.0.0.22</li>
-<li>Source GeoIP: Unknown</li>
-<li>Destination GeoIP: Unknown</li>
-<li>Options: (4 bytes), Router Alert</li>
-            </ul>
-<div>
-<h5>Packet Data (Hex View)</h5>
-0100 5e00 0016 000c<br>
-29af 9cdc 0800 4600<br>
-0028 002c 0000 0102 <br>
-9afa ac10 fd82 e000 <br>
-0016 9404 0000 2200 <br>
-ea03 0000 0001 0400 <br>
-0000 efff fffa<br>
-
 </div>
-            </div>
-
-            </td>
-        </tr>
-        <tr data-toggle="collapse" data-target="#packet3" class="accordion-toggle">
-            <td>3</td>
-            <td>0.272511</td>
-            <td>172.16.253.130</td>
-            <td>224.0.0.22</td>
-            <td>IGMP</td>
-            <td>54</td>
-            <td>Membership Report / Leave group 239.255.255.250</td>
-        </tr>
-        <tr>
-            <td colspan="6"  class="hiddenRow"><div id="packet3" class="accordian-body collapse">packet4</div></td>
-        </tr>
-        <tr data-toggle="collapse" data-target="#packet3" class="accordion-toggle">
-            <td>4</td>
-            <td>0.308827</td>
-            <td>172.16.253.130</td>
-            <td>224.0.0.22</td>
-            <td>IGMP</td>
-            <td>54</td>
-            <td>Membership Report / Join group 239.255.255.250 for any sources</td>
-        </tr>
-        <tr>
-            <td colspan="6"  class="hiddenRow"><div id="packet3" class="accordian-body collapse">packet5</div></td>
-        </tr>
-        <tr data-toggle="collapse" data-target="#packet3" class="accordion-toggle">
-            <td>5</td>
-            <td>0.817866</td>
-            <td>172.16.253.130</td>
-            <td>224.0.0.22</td>
-            <td>IGMP</td>
-            <td>54</td>
-            <td>Membership Report / Join group 239.255.255.250 for any sources</td>
-        </tr>
-        <tr>
-            <td colspan="6"  class="hiddenRow"><div id="packet3" class="accordian-body collapse">packet5</div></td>
-        </tr>
-    </tbody>
-</table>
-
-  <p>Packet Details Here</p>
-  <br>
-  <br>
-  <br>
-
-  <br>
-  <p>Packet Bytes Here (Hex View)</p>
-</div>
-<!-- <div id="here-we-go">    <div ng-class="class">{{class}}</div>
-    <button ng-click="changeClass()">Change Class</button>  
-    </div> -->
-<script>
-//var responsePromise = $http.get('http://jsonspitter.apiary.io/notes');
-// _.each(resultsData, fucntion(obj)){
-//     console.log(obj.$.name)
-// }
-//console.log('responsePromise = ', responsePromise);
-</script>
