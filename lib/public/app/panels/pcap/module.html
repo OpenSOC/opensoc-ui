@@ -115,7 +115,7 @@
       </thead>
 
       <tbody bindonce ng-repeat="doc in results.hits.hits">
-          <tr ng-click="" ng-class="">
+          <tr ng-click="get_pcap(doc._source.message.pcap_id)" ng-class="">
             <td>{{ doc._source.message.pcap_id }}</td>
             <td>{{ doc._source.message.ip_src_port }}</td>
             <td>{{ doc._source.message.dst_port }}</td>
