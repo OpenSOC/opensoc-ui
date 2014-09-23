@@ -106,21 +106,22 @@
       <thead>
         <tr>
           <td>PCAP ID</td>
+          <td>Source Port</td>
+          <td>Destination Port</td>
           <td>Source IP</td>
           <td>Destination IP</td>
-          <td>Identifier #3</td>
-          <td>Identifier #4</td>
-          <td>Identifier #5</td>
+          <td>Protocol</td>
         <tr>
       </thead>
-      <tbody bindonce ng-repeat="packet in packet_data.pdml.packet">
-          <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
-            <td>PCAP ID #</td>
-            <td>{{packet.proto[3].field[10].$.show}}</td>
-            <td>{{packet.proto[3].field[14].$.show}}</td>
-            <td>Identifier #3 Data</td>
-            <td>Identifier #4 Data</td>
-            <td>Identifier #5 Data</td>
+
+      <tbody bindonce ng-repeat="doc in results.hits.hits">
+          <tr ng-click="" ng-class="">
+            <td>{{ doc._source.message.pcap_id }}</td>
+            <td>{{ doc._source.message.ip_src_port }}</td>
+            <td>{{ doc._source.message.dst_port }}</td>
+            <td>{{ doc._source.message.ip_src_addr }}</td>
+            <td>{{ doc._source.message.ip_dst_addr }}</td>
+            <td>{{ doc._source.message.ip_protocol }}</td>
           </tr>
       </tbody>
       </table>
@@ -206,38 +207,23 @@
     <div class="editor-row">
         <form action="">
           <div class="editor-option">
-              <label class="small">Source Port</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.source_port"></input>
+              <label class="small">Source Port</label><input type="text" class="input-medium" ng-model="ip_src_port"></input>
           </div>
           <div class="editor-option">
-              <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.dest_port"></input>
+              <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dst_port"></input>
           </div>
           <div class="editor-option">
-              <label class="small">Source IP</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.source_ip"></input>
+              <label class="small">Source IP</label><input type="text" class="input-medium" ng-model="ip_src_addr"></input>
           </div>
           <div class="editor-option">
-              <label class="small">Destination IP</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.dest_ip"></input>
+              <label class="small">Destination IP</label><input type="text" class="input-medium" ng-model="ip_dst_addr"></input>
           </div>
           <div class="editor-option">
-              <label class="small">Protocol</label><input type="text" class="input-medium" ng-model="dashboard.current.pcap_settings.protocol"></input>
-          </div>
-
-          <div class="row-fluid">
-            <a href data-toggle="collapse" >Advanced</a>
-            <div class="panel-collapse collapse">
-              <div class="editor-option">
-                  <label class="small">Fragment Offset</label><input type="text" class="input-medium"></input>
-              </div>
-              <div class="editor-option">
-                  <label class="small">Timestamp</label><input type="text" class="input-medium"></input>
-              </div>
-              <div class="editor-option">
-                  <label class="small">Include Reverse Traffic</label><input type="checkbox" ng-checked="" />
-              </div>
-            </div>
+              <label class="small">Protocol</label><input type="text" class="input-medium" ng-model="ip_protocol"></input>
           </div>
 
           <div class="edit-option">
-            <button type="button" class="btn btn-success" ng-click="get_data(dashboard)">Search</button>
+          <button type="button" class="btn btn-success" ng-click="search()">Search</button>
           </div>
 
         </form>
