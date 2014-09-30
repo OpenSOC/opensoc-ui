@@ -117,11 +117,11 @@
           <th style="white-space:nowrap" ng-repeat="field in panel.fields">
             <i ng-show="!$first" class="pointer link icon-caret-left" ng-click="_.move(panel.fields,$index,$index-1)"></i>
 
-            <span  class="pointer" ng-click="set_sort(field)" ng-show='panel.sortable'>
-              {{field}}
+            <span  class="pointer" ng-click="set_sort(field)" ng-show='panel.sortable' title="{{field}}">
+              {{fieldTitle(field)}}
               <i ng-show='field == panel.sort[0]' class="pointer link" ng-class="{'icon-chevron-up': panel.sort[1] == 'asc','icon-chevron-down': panel.sort[1] == 'desc'}"></i>
             </span>
-            <span ng-show='!panel.sortable'>{{field}}</span>
+            <span ng-show='!panel.sortable' title="{{field}}">{{fieldTitle(field)}}</span>
             <i ng-show="!$last" class="pointer link icon-caret-right" ng-click="_.move(panel.fields,$index,$index+1)"></i>
           </th>
 
