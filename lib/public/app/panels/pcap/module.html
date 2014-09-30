@@ -102,26 +102,27 @@
     <div class="pcap-editor" pcap-settings></div>
     <div class="pcap-editor">
       <h6>PCAP Search Results</h6>
+
       <table class="table table-bordered table-condensed table-details table-striped" ng-style="panel.style">
       <thead>
         <tr>
           <td>PCAP ID</td>
-          <td>Source Port</td>
-          <td>Destination Port</td>
           <td>Source IP</td>
           <td>Destination IP</td>
+          <td>Source Port</td>
+          <td>Destination Port</td>
           <td>Protocol</td>
         <tr>
       </thead>
 
-      <tbody bindonce ng-repeat="doc in results.hits.hits">
-          <tr ng-click="get_pcap(doc._source.message.pcap_id)" ng-class="">
+      <tbody bindonce ng-repeat="doc in results.hits.hits | limitTo:5">
+          <!-- <tr ng-click="get_pcap(doc._source.message.pcap_id)" ng-class=""> -->
+          <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
             <td>{{ doc._source.message.pcap_id }}</td>
-            <td>{{ doc._source.message.ip_src_port }}</td>
-            <!-- <td>{{ src_port }}</td> -->
-            <td>{{ doc._source.message.dst_port }}</td>
             <td>{{ doc._source.message.ip_src_addr }}</td>
             <td>{{ doc._source.message.ip_dst_addr }}</td>
+            <td>{{ doc._source.message.ip_src_port }}</td>
+            <td>{{ doc._source.message.dst_port }}</td>
             <td>{{ doc._source.message.ip_protocol }}</td>
           </tr>
       </tbody>
@@ -208,16 +209,16 @@
     <div class="editor-row">
         <form action="">
           <div class="editor-option">
-              <label class="small">Source Port</label><input type="text" class="input-medium" ng-model="ip_src_port"></input>
-          </div>
-          <div class="editor-option">
-              <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dst_port"></input>
-          </div>
-          <div class="editor-option">
               <label class="small">Source IP</label><input type="text" class="input-medium" ng-model="ip_src_addr"></input>
           </div>
           <div class="editor-option">
               <label class="small">Destination IP</label><input type="text" class="input-medium" ng-model="ip_dst_addr"></input>
+          </div>
+          <div class="editor-option">
+              <label class="small">Source Port</label><input type="text" class="input-medium" ng-model="ip_src_port"></input>
+          </div>
+          <div class="editor-option">
+              <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dst_port"></input>
           </div>
           <div class="editor-option">
               <label class="small">Protocol</label><input type="text" class="input-medium" ng-model="ip_protocol"></input>
