@@ -119,11 +119,16 @@
           <!-- <tr ng-click="get_pcap(doc._source.message.pcap_id)" ng-class=""> -->
           <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
             <td>{{ doc._source.message.pcap_id }}</td>
-            <td>{{ doc._source.message.ip_src_addr }}</td>
-            <td>{{ doc._source.message.ip_dst_addr }}</td>
-            <td>{{ doc._source.message.ip_src_port }}</td>
-            <td>{{ doc._source.message.dst_port }}</td>
-            <td>{{ doc._source.message.ip_protocol }}</td>
+            <!-- <td>{{ doc._source.message.ip_src_addr }}</td> -->
+            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).ip_src_dec }}</td>
+            <!-- <td>{{ doc._source.message.ip_dst_addr }}</td> -->
+            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).ip_dst_dec }}</td>
+            <!-- <td>{{ doc._source.message.ip_src_port }}</td> -->
+            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).src_port }}</td>
+            <!-- <td>{{ doc._source.message.dst_port }}</td> -->
+            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).dst_port }}</td>
+            <!-- <td>{{ doc._source.message.ip_protocol }}</td> -->
+            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).protocol }}</td>
           </tr>
       </tbody>
       </table>
@@ -221,7 +226,7 @@
               <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dst_port"></input>
           </div>
           <div class="editor-option">
-              <label class="small">Protocol</label><input type="text" class="input-medium" ng-model="ip_protocol"></input>
+              <label class="small">Protocol</label><input type="text" class="input-small" ng-model="ip_protocol"></input>
           </div>
 
           <div class="edit-option">
