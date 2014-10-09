@@ -3,10 +3,6 @@
   "elasticsearch": {
     "url": "http://127.0.0.1:9200"
   },
-  "redis": {
-    "host": "127.0.0.1",
-    "port": 6379
-  },
   "ldap": {
     "url": "ldap://127.0.0.1:389",
     "searchBase": "dc=opensoc,dc=dev",
