@@ -118,12 +118,13 @@
           ng-style="panel.style">
         <thead>
           <tr>
-            <td class="span2">Packets</td>
+            <td class="span1">Packets</td>
             <td class="span2">Source IP</td>
             <td class="span2">Destination IP</td>
             <td class="span1">Source Port</td>
             <td class="span1">Destination Port</td>
             <td class="span1">Protocol</td>
+            <td class="span4">Pcap ID</td>
           <tr>
         </thead>
 
@@ -137,12 +138,13 @@
             <td>{{ doc.unhexed.src_port }}</td>
             <td>{{ doc.unhexed.dst_port }}</td>
             <td>{{ doc.unhexed.protocol }}</td>
+            <td>{{ doc.term }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="packet-list">
+    <div class="pcap-es-results">
       <table class="table table-bordered table-condensed table-details table-striped"
           ng-style="panel.style" ng-show="packetData.data.objects">
         <thead>
