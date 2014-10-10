@@ -80,6 +80,8 @@ function randomAlerts(source, event) {
       triggered: {
         body: chance.sentence(),
         title: chance.word(),
+        source: event.message.ip_src_addr,
+        dest: event.message.ip_dst_addr,
         type: choice(alertType),
         priority: chance.integer({min: 1, max: 3}),
         reference_id: alertId
@@ -119,23 +121,23 @@ function randomEvent(source) {
   };
 }
 
-function randomPcap(eventData, offset) {
-  var ts = eventData.message.timestamp + (offset || 0);
-  return {
-    ip_src_addr: eventData.message.ip_src_addr,
-    ip_dst_addr: eventData.message.ip_dst_addr,
-    ip_src_port: eventData.message.ip_src_port,
-    ip_dst_port: eventData.message.ip_dst_port,
-    protocol: protocolMap[eventData.message.protocol],
+function randomPcap(event, offset) {
+    offset = offset || 0;
+    return {
+    ip_src_addr: event.message.ip_src_addr,
+    ip_dst_addr: event.message.ip_dst_addr,
+    ip_src_port: event.message.ip_src_port,
+    ip_dst_port: event.message.ip_dst_port,
+    protocol: protocolMap[event.message.protocol],
     message: {
-      ts_sec: Math.floor(ts / 1000),
-      ts_usec: ts * 1000,
+      ts_sec: Math.floor(event.message.timestamp / 1000) + offset,
+      ts_usec: chance.integer({min: 0, max: 999999}),
       pcap_id: [
-        ipToHex(eventData.message.ip_src_addr),
-        ipToHex(eventData.message.ip_dst_addr),
-        eventData.message.ip_src_port.toString(16),
-        eventData.message.ip_dst_port.toString(16),
-        protocolMap[eventData.message.protocol]
+        ipToHex(event.message.ip_src_addr),
+        ipToHex(event.message.ip_dst_addr),
+        protocolMap[event.message.protocol],
+        event.message.ip_src_port.toString(16),
+        event.message.ip_dst_port.toString(16)
       ].join('-')
     }
   };

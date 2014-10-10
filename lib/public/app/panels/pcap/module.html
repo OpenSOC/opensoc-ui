@@ -15,6 +15,11 @@
       table-layout: fixed;
     }
 
+    .pcap-es-results {
+      height: 200px;
+      overflow-y: auto;
+    }
+
     .pcap-raw {
       background: #FCFCFC;
       color: #5F5F5F;
@@ -106,7 +111,7 @@
       </div>
     </div>
 
-    <div class="pcap-editor" ng-if="results">
+    <div class="pcap-es-results" ng-if="results">
       <h6>PCAP Search Results</h6>
 
       <table class="table table-bordered table-condensed table-details table-striped"
@@ -125,7 +130,7 @@
         <tbody bindonce ng-repeat="doc in results.facets.packets.terms">
           <tr ng-click="setPcapId($index, doc.term)"
               ng-class="{highlight : $index === selected}"
-              ng-init="doc.unhexed = parsePcapAgg(doc.term)">
+              ng-init="doc.unhexed = parsePcapId(doc.term)">
             <td>{{ doc.count }}</td>
             <td>{{ doc.unhexed.src_ip }}</td>
             <td>{{ doc.unhexed.dst_ip }}</td>
