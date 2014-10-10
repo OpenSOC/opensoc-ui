@@ -92,7 +92,7 @@
       <div class="editor-row">
         <div class="editor-option">
           <label class="small">Timestamp</label>
-          <span timestamp-input ts="$parent.ts_usec__gte"></span>
+          <span timestamp-input ts="$parent.ts_usec"></span>
         </div>
         <div class="editor-option">
           <label class="small">Duration(+/-)</label>
@@ -104,7 +104,7 @@
           <label class="small">&nbsp</label><button type="button"
               class="btn btn-success" ng-click="search()">Search</button>
 
-          <label class="small">Include Reverse Traffic
+          <label class="small">Reverse Traffic
             <input type="checkbox" class="input-small"
                 ng-model="$parent.includeReverseTraffic"></input></label>
         </div>
@@ -146,7 +146,7 @@
 
     <div class="pcap-es-results">
       <table class="table table-bordered table-condensed table-details table-striped"
-          ng-style="panel.style" ng-show="packetData.data.objects">
+          ng-style="panel.style" ng-show="packetData.length">
         <thead>
           <tr>
             <td class="span1">No.</td>
@@ -155,7 +155,7 @@
             <td class="span7">Info</td>
           <tr>
         </thead>
-        <tbody bindonce ng-repeat="packet in packetData.data.objects">
+        <tbody ng-repeat="packet in packetData">
             <tr ng-click="$parent.drilldown = packet"
                 ng-class="{highlight : $parent.drilldown == packet}">
               <td><span>{{$index + 1}}</span></td>
