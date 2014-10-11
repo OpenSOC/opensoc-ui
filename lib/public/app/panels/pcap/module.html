@@ -91,8 +91,8 @@
 
       <div class="editor-row">
         <div class="editor-option">
-          <label class="small">Timestamp</label>
-          <span timestamp-input ts="$parent.ts_usec"></span>
+          <label class="small">Timestamp (seconds)</label>
+          <input class="input-medium" type="text" ng-model="$parent.ts"/>
         </div>
         <div class="editor-option">
           <label class="small">Duration(+/-)</label>
@@ -226,11 +226,4 @@
       </span>
     </div>
   </div>
-</script>
-
-<script type="text/ng-template" id="timestampInput.html">
-  <input ng-repeat="t in tsTypes" ng-show="tsType == t"
-      class="input-medium" type="text" ng-model="$parent.tsInput"/>
-  <select class="input-small" ng-options="t for t in tsTypes"
-      ng-model="tsType"></select>
 </script>
