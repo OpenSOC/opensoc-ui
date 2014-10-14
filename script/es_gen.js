@@ -137,8 +137,8 @@ function randomPcap(event, offset) {
         ipToHex(event.message.ip_src_addr),
         ipToHex(event.message.ip_dst_addr),
         protocolMap[event.message.protocol],
-        event.message.ip_src_port.toString(16),
-        event.message.ip_dst_port.toString(16),
+        event.message.ip_src_port,
+        event.message.ip_dst_port,
       ].join('-')
     }
   };
