@@ -23,7 +23,7 @@ curl -XPUT 'http://localhost:9200/pcap_all/' -d '{
         "enabled": false
       },
       "_source": {
-        "includes": ["message.ts_sec", "message.ts_usec", "message.pcap_id"]
+        "includes": ["message.ts_micro", "message.pcap_id", "message.ip_id", "message.frag_offset"]
       },
       "properties": {
         "message" : {
@@ -55,13 +55,19 @@ curl -XPUT 'http://localhost:9200/pcap_all/' -d '{
                 "type": "long",
                 "precision_step": 64
             },
-            "ts_sec": {
+            "ts_micro": {
                 "type": "long",
                 "precision_step": 64
             },
-            "ts_usec": {
+            "ip_id": {
                 "type": "long",
-                "precision_step": 64
+                "precision_step": 64,
+                "index": "no"
+            },
+            "frag_offset": {
+                "type": "long",
+                "precision_step": 64,
+                "index": "no"
             }
           }
         }

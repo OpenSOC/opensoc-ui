@@ -130,14 +130,15 @@ function randomPcap(event, offset) {
     ip_dst_port: event.message.ip_dst_port,
     protocol: protocolMap[event.message.protocol],
     message: {
-      ts_sec: Math.floor(event.message.timestamp / 1000) + offset,
-      ts_usec: chance.integer({min: 0, max: 999999}),
+      ts_micro: Math.floor(event.message.timestamp * 1000) + offset,
+      ip_id: chance.integer({min: 0, max: 99999}),
+      frag_offset: chance.integer({min: 0, max: 99999}),
       pcap_id: [
         ipToHex(event.message.ip_src_addr),
         ipToHex(event.message.ip_dst_addr),
         protocolMap[event.message.protocol],
         event.message.ip_src_port.toString(16),
-        event.message.ip_dst_port.toString(16)
+        event.message.ip_dst_port.toString(16),
       ].join('-')
     }
   };
@@ -190,7 +191,7 @@ for (var i = 0; i < sources.length; i++) {
 
     for (var l = 0; l < chance.integer({min: 1, max: 50}); l++) {
       objects.push(JSON.stringify({index: {_index: 'pcap_all', _type: 'pcap_doc'}}));
-      objects.push(JSON.stringify(randomPcap(eventData, l)));
+      objects.push(JSON.stringify(randomPcap(eventData, l * 1000)));
     }
   }
 
