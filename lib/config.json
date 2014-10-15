@@ -16,6 +16,6 @@
     "mock": true
   },
   "permissions": {
-    "pcap": "cn=investigators,ou=groups,dc=opensoc,dc=dev"
+    "pcap": ["cn=investigators,ou=groups,dc=opensoc,dc=dev"]
   }
 }
