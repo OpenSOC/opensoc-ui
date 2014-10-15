@@ -1,34 +1,16 @@
 {
-  "title": " GoodBig Co.",
+  "title": " OpenSOC",
   "services": {
     "query": {
       "list": {
-        "0": {
-          "id": 0,
-          "color": "#7EB26D",
-          "alias": "",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "alert"
-        },
-        "1": {
-          "id": 1,
-          "color": "#DEDAF7",
-          "alias": "",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "*"
-        },
         "2": {
           "id": 2,
           "color": "#6ED0E0",
           "alias": "",
-          "pin": true,
+          "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "_index:\"alert\""
+          "query": "*"
         },
         "3": {
           "id": 3,
@@ -37,86 +19,52 @@
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"bro_alert\""
+          "query": "_type:bro_alert"
         },
         "4": {
           "id": 4,
-          "color": "#E24D42",
+          "color": "#BF1B00",
           "alias": "",
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"sourcefire_alert\""
+          "query": "_type:sourcefire_alert"
         },
         "5": {
           "id": 5,
           "color": "#1F78C1",
-          "alias": "",
-          "pin": false,
+          "alias": "Bro Event",
+          "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "*"
+          "query": "_type:bro_doc"
+        },
+        "6": {
+          "id": 6,
+          "color": "#BA43A9",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:sourcefire_doc"
         }
       },
       "ids": [
-        0,
-        1,
-        2,
         3,
         4,
-        5
+        5,
+        6,
+        2
       ]
     },
     "filter": {
-      "list": {
-        "0": {
-          "type": "time",
-          "field": "timestamp",
-          "from": "now-7d",
-          "to": "now",
-          "mandate": "must",
-          "active": false,
-          "alias": "",
-          "id": 0
-        },
-        "1": {
-          "type": "field",
-          "field": "_index",
-          "query": "\"alert\"",
-          "mandate": "must",
-          "active": false,
-          "alias": "",
-          "id": 1
-        },
-        "2": {
-          "type": "querystring",
-          "query": "timestamp:1411761211587",
-          "mandate": "must",
-          "active": false,
-          "alias": "",
-          "id": 2
-        },
-        "3": {
-          "type": "terms",
-          "field": "message.protocol",
-          "value": "divert",
-          "mandate": "must",
-          "active": false,
-          "alias": "",
-          "id": 3
-        }
-      },
-      "ids": [
-        0,
-        1,
-        2,
-        3
-      ]
+      "list": {},
+      "ids": []
     }
   },
   "rows": [
     {
-      "title": "Dashboard Panels",
+      "title": "Welcome to OpenSOC",
       "height": "150px",
       "editable": true,
       "collapse": false,
@@ -124,292 +72,190 @@
       "panels": [
         {
           "error": false,
-          "span": 3,
+          "span": 6,
           "editable": true,
-          "type": "terms",
+          "type": "text",
           "loadingEditor": false,
-          "field": "environment.customer",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "pie",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-          },
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Customer"
+          "mode": "markdown",
+          "content": "You can create a panel with charts and maps based on specific data. To see some samples of these panels, click [here](http://localhost:5000/#/dashboard/file/panels-overview.json).\n\nYou can move these panels around, edit their settings, minimize them or close them.",
+          "style": {},
+          "title": "Welcome to OpenSOC"
         },
         {
           "error": false,
-          "span": 3,
+          "span": 6,
           "editable": true,
-          "type": "terms",
+          "type": "text",
           "loadingEditor": false,
-          "field": "topology.topology",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "bar",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-          },
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Topology"
-        },
-        {
-          "error": false,
-          "span": 4,
-          "editable": true,
-          "type": "terms",
-          "loadingEditor": false,
-          "field": "triggered.type",
-          "exclude": [],
-          "missing": false,
-          "other": true,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "bar",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-          },
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Category"
-        },
-        {
-          "error": false,
-          "span": 2,
-          "editable": true,
-          "type": "terms",
-          "loadingEditor": false,
-          "field": "triggered.priority",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "pie",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-          },
-          "locked": true,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Priority"
+          "mode": "markdown",
+          "content": "The asterisk \"*\" can be as a wildcard for zero or more characters.\n\n\nThe period \".\" can be used to represent any character. The following will match the string \"abcde\":\n\nab...\n\na.c.e\n\nNOTE: When querying or filtering for an IP address. Make sure to use double quotes around the address.\n\n\nTo see more regexp rules for querying and filters, see the ES documentation [here](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#_standard_operators).",
+          "style": {},
+          "title": "Regular Expression Rules for Queries and Filters"
         }
       ],
       "notice": false
     },
     {
-      "title": "Enriched Data",
+      "title": "Histogram",
       "height": "150px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
       "panels": [
         {
-          "error": false,
-          "span": 4,
+          "span": 12,
           "editable": true,
-          "type": "terms",
+          "type": "histogram",
           "loadingEditor": false,
-          "field": "message.protocol",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
+          "mode": "count",
+          "time_field": "timestamp",
+          "value_field": null,
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
           },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "bar",
-          "counter_pos": "above",
-          "spyable": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0,
-              1,
-              2,
-              3,
               4,
-              5
+              6
             ]
           },
           "locked": false,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Protocol"
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "1y",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": false,
+          "fill": 0,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": true,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": true,
+          "options": true,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Sourcefire Alerts and Events"
         },
         {
-          "error": false,
-          "span": 4,
+          "span": 12,
           "editable": true,
-          "type": "terms",
+          "type": "histogram",
           "loadingEditor": false,
-          "field": "enrichment.geo.ip_src_addr.country",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
+          "mode": "count",
+          "time_field": "timestamp",
+          "value_field": null,
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
           },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "bar",
-          "counter_pos": "above",
-          "spyable": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
+              3
             ]
           },
           "locked": false,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Source Country"
-        },
-        {
-          "error": false,
-          "span": 4,
-          "editable": true,
-          "type": "terms",
-          "loadingEditor": false,
-          "field": "enrichment.geo.ip_dst_addr.country",
-          "exclude": [],
-          "missing": false,
-          "other": false,
-          "size": 10,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "bar",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
             ]
           },
-          "locked": false,
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Destination Country"
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "1y",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": false,
+          "fill": 0,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": true,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": true,
+          "options": true,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Bro Alerts"
         }
       ],
       "notice": false
     },
     {
-      "title": "All Alerts Data",
+      "title": "Alerts",
       "height": "150px",
       "editable": true,
       "collapse": false,
@@ -421,93 +267,38 @@
           "editable": true,
           "type": "table",
           "loadingEditor": false,
-          "size": 5,
-          "pages": 5,
+          "size": 10,
+          "pages": 100,
           "offset": 0,
           "sort": [
-            "timestamp",
+            "_type",
             "asc"
           ],
           "overflow": "min-height",
           "fields": [
-            "timestamp",
+            "_type",
             "triggered.priority",
+            "timestamp",
             "triggered.source",
-            "triggered.dest",
-            "topology.topology",
-            "topology.topology_instance",
             "triggered.title",
+            "triggered.content",
             "triggered.type",
-            "environment.customer",
-            "environment.datacenter"
+            "triggered.dest"
           ],
           "highlight": [],
           "sortable": true,
           "header": true,
           "paging": true,
           "field_list": false,
-          "all_fields": false,
-          "trimFactor": 300,
-          "localTime": true,
-          "timeField": "timestamp",
-          "spyable": true,
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              2,
-              3,
-              4
-            ]
-          },
-          "locked": true,
-          "style": {
-            "font-size": "9pt"
-          },
-          "normTimes": true,
-          "title": "Top Alerts"
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "Raw Query Results",
-      "height": "150px",
-      "editable": true,
-      "collapse": true,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "type": "table",
-          "loadingEditor": false,
-          "size": 5,
-          "pages": 5,
-          "offset": 0,
-          "sort": [
-            "_score",
-            "desc"
-          ],
-          "overflow": "min-height",
-          "fields": [],
-          "highlight": [],
-          "sortable": true,
-          "header": true,
-          "paging": true,
-          "field_list": true,
           "all_fields": false,
           "trimFactor": 300,
           "localTime": false,
           "timeField": "@timestamp",
           "spyable": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0,
-              1,
-              2
+              4
             ]
           },
           "locked": false,
@@ -515,13 +306,13 @@
             "font-size": "9pt"
           },
           "normTimes": true,
-          "title": "Raw Query Results"
+          "title": "Alerts"
         }
       ],
       "notice": false
     },
     {
-      "title": "Row 2",
+      "title": "Events",
       "height": "150px",
       "editable": true,
       "collapse": false,
@@ -533,25 +324,22 @@
           "editable": true,
           "type": "table",
           "loadingEditor": false,
-          "size": 5,
-          "pages": 2,
+          "size": 10,
+          "pages": 100,
           "offset": 0,
           "sort": [
-            "timestamp",
+            "message.ts",
             "desc"
           ],
           "overflow": "min-height",
           "fields": [
-            "timestamp",
-            "triggered.priority",
-            "triggered.source",
-            "triggered.dest",
-            "environment.customer",
-            "environment.datacenter",
-            "environment.instance",
-            "triggered.type",
-            "triggered.title",
-            "triggered.content"
+            "_type",
+            "message.level",
+            "message.peer",
+            "message.protocol",
+            "message.ts",
+            "message.original_string",
+            "message.message"
           ],
           "highlight": [],
           "sortable": true,
@@ -560,13 +348,14 @@
           "field_list": false,
           "all_fields": false,
           "trimFactor": 300,
-          "localTime": true,
-          "timeField": "timestamp",
+          "localTime": false,
+          "timeField": "@timestamp",
           "spyable": true,
           "queries": {
-            "mode": "unpinned",
+            "mode": "selected",
             "ids": [
-              5
+              5,
+              6
             ]
           },
           "locked": false,
@@ -574,24 +363,25 @@
             "font-size": "9pt"
           },
           "normTimes": true,
-          "title": "Query Results"
-        },
+          "title": "Events"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "PCAP Data",
+      "height": "150px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
         {
           "error": false,
           "span": 12,
           "editable": true,
           "type": "pcap",
           "loadingEditor": false,
-          "mode": "markdown",
-          "content": "",
-          "queries": {
-            "mode": "all",
-            "ids": []
-          },
-          "style": {
-            "font-size": "9px"
-          },
-          "title": "PCAP Table"
+          "title": "PCAP Data"
         }
       ],
       "notice": false
@@ -602,7 +392,7 @@
   "index": {
     "interval": "none",
     "pattern": "[logstash-]YYYY.MM.DD",
-    "default": "alert,bro*,sourcefire*",
+    "default": "alert,*_index*",
     "warm_fields": false
   },
   "style": "dark",
@@ -617,16 +407,16 @@
       "query": "*",
       "pinned": true,
       "history": [
+        "_type:sourcefire_doc",
+        "_type:bro_doc",
+        "_type:sourcefire_alert",
+        "_type:bro_alert",
         "*",
-        "_type:\"sourcefire_alert\"",
-        "_type:\"bro_alert\"",
-        "_index:\"alert\"",
-        "alert",
-        "\"1411741803987-d7691dd4-9909-4011-99bc-40adaba3b0a4\"",
-        "\"1411741804194-0d003c96-ec9d-4912-8541-b0f60f47d782\"",
-        "\"1411741804181-bf77cc7f-0845-4266-80ce-134db0fe7191\"",
-        "1411741804181-bf77cc7f-0845-4266-80ce-134db0fe7191",
-        "CO"
+        "_type:*_doc",
+        "type:*_alert",
+        "bd1801e6-fb95-45df-aa62-38028740eaf0",
+        "type:bro_alert",
+        "type:bro_doc"
       ],
       "remember": 10
     },
@@ -668,7 +458,7 @@
         "1d"
       ],
       "timefield": "timestamp",
-      "now": true,
+      "now": false,
       "filter_id": 0
     }
   ],
