@@ -77,7 +77,7 @@
           "type": "text",
           "loadingEditor": false,
           "mode": "markdown",
-          "content": "You can create a panel with charts and maps based on specific data. To see some samples of these panels, click [here](http://localhost:5000/#/dashboard/file/panels-overview.json).\n\nYou can move these panels around, edit their settings, minimize them or close them.",
+          "content": "You can create a panel with charts and maps based on specific data. To see some samples of these panels, click [here](/#/dashboard/file/panels-overview.json).\n\nYou can move these panels around, edit their settings, minimize them or close them.",
           "style": {},
           "title": "Welcome to OpenSOC"
         },
@@ -328,7 +328,7 @@
           "pages": 100,
           "offset": 0,
           "sort": [
-            "message.ts",
+            "_type",
             "desc"
           ],
           "overflow": "min-height",
@@ -337,7 +337,7 @@
             "message.level",
             "message.peer",
             "message.protocol",
-            "message.ts",
+            "message.timestamp",
             "message.original_string",
             "message.message"
           ],
@@ -392,7 +392,7 @@
   "index": {
     "interval": "none",
     "pattern": "[logstash-]YYYY.MM.DD",
-    "default": "alert,*_index*",
+    "default": "*alert*,*_index*",
     "warm_fields": false
   },
   "style": "dark",

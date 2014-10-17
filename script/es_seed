@@ -5,61 +5,75 @@ curl -XDELETE 'http://localhost:9200/_all/'
 
 # Create the PCAP index.
 curl -XPUT 'http://localhost:9200/pcap_all/' -d '{
-	"settings": {
-    	"index.codec.bloom.load": false,
-    	"index.compound_on_flush": false,
-    	"index.compound_format": false,
-    	"index.merge.policy.use_compound_file": false,
-    	"index.refresh_interval": 120,
-    	"index.action.write_consistency": false,
-   		"index.translog.flush_threshold_ops": 100000,
-   		"index.compound_on_flush": false,
-   		"index.compound_format": false,
-   		"index.merge.policy.use_compound_file": false,
-		"index.merge.policy.segments_per_tier": 50,
-		"index.merge.policy.max_merge_at_once_explicit": 50,
-		"index.merge.policy.max_merge_at_once": 30,
-		"index.merge.policy.floor_segment": 1
-  	},
-	"mappings": {
-		"pcap": {
-		  	"_all": {
-		    	"enabled": false
-		  	},
-			"_source": {
-				"includes": ["pcap_id"]
-			},
-			"properties": {
-			    "pcap_id": {
-			    	"type": "string",
-					"index": "no",
-					"postings_format": "Lucene41"
-				},
-			    "ip_protocol": {
-			      	"type": "long",
-					"precision_step" : 64
-			    },
-			    "src_addr": {
-			      	"type": "string",
-					"index": "not_analyzed",
-					"postings_format": "Lucene41"
-			    },
-			    "src_port": {
-			      	"type": "long",
-					"precision_step" : 64
-			    },
-			    "dst_addr": {
-			      	"type": "string",
-					"index": "not_analyzed",
-					"postings_format": "Lucene41"
-			    },
-			    "dst_port": {
-			      	"type": "long",
-					"precision_step" : 64
-			    }
-			}
-		}
-	}
+  "settings": {
+      "index.codec.bloom.load": false,
+      "index.compound_on_flush": false,
+      "index.compound_format": false,
+      "index.merge.policy.use_compound_file": false,
+      "index.refresh_interval": 120,
+      "index.action.write_consistency": false,
+      "index.translog.flush_threshold_ops": 100000,
+      "index.compound_on_flush": false,
+      "index.compound_format": false,
+      "index.merge.policy.use_compound_file": false
+  },
+  "mappings": {
+    "pcap_doc": {
+      "_all": {
+        "enabled": false
+      },
+      "_source": {
+        "includes": ["message.ts_micro", "message.pcap_id", "message.ip_id", "message.frag_offset"]
+      },
+      "properties": {
+        "message" : {
+          "properties":{
+            "pcap_id": {
+              "type": "string",
+              "index": "not_analyzed",
+              "postings_format": "Lucene41"
+            },
+            "ip_protocol": {
+                "type": "long",
+                "precision_step": 64
+            },
+            "ip_src_addr": {
+                "type": "string",
+                "index": "not_analyzed",
+                "postings_format": "Lucene41"
+            },
+            "ip_src_port": {
+                "type": "long",
+                "precision_step": 64
+            },
+            "ip_dst_addr": {
+                "type": "string",
+                "index": "not_analyzed",
+                "postings_format": "Lucene41"
+            },
+            "ip_dst_port": {
+                "type": "long",
+                "precision_step": 64
+            },
+            "ts_micro": {
+                "type": "long",
+                "precision_step": 64
+            },
+            "ip_id": {
+                "type": "long",
+                "precision_step": 64,
+                "index": "no"
+            },
+            "frag_offset": {
+                "type": "long",
+                "precision_step": 64,
+                "index": "no"
+            }
+          }
+        }
+      }
+    }
+  }
 }'
 
 # Seed Elasticsearch.

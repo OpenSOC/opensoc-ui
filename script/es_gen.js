@@ -49,6 +49,9 @@ function ipToHex(ip) {
   var parts = ip.split('.');
   for (var i = 0; i < parts.length; i++) {
     parts[i] = parseInt(parts[i]).toString(16);
+    if (parts[i].length == 1) {
+      parts[i] = '0' + parts[i];
+    }
   }
   return parts.join('');
 }
@@ -57,37 +60,45 @@ function choice(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function randomAlert(source) {
+function randomAlerts(source, event) {
+  var alerts = [];
+  var instance = pad(chance.integer({min: 1, max: 3}), 3);
+  for(var i = 0; i < chance.integer({min: 1, max: 1}); i++) {
+    var alertId = chance.guid();
+    event.alerts.push(alertId);
+    alerts.push({
+      timestamp: chance.timestamp(),
+      environment: {
+        customer: 'mtd',
+        instance: 'dev',
+        datacenter: choice(clusters)
+      },
+      topology: {
+        topology: source,
+        topology_instance: source[0].toUpperCase() + instance
+      },
+      triggered: {
+        body: chance.sentence(),
+        title: chance.word(),
+        source: event.message.ip_src_addr,
+        dest: event.message.ip_dst_addr,
+        type: choice(alertType),
+        priority: chance.integer({min: 1, max: 3}),
+        reference_id: alertId
+      },
+      enrichment: event.enrichment
+    });
+  }
+  return alerts;
+}
+
+function randomEvent(source) {
   var dst = choice(inventory);
   var src = choice(inventory);
   var protocol = choice(protocols);
-  var instance = pad(chance.integer({min: 1, max: 3}), 3);
-  var triggered = [];
-
-  for(var i = 0; i < chance.integer({min: 1, max: 1}); i++) {
-    triggered.push({
-      body: chance.sentence(),
-      title: chance.word(),
-      type: choice(alertType),
-      priority: chance.integer({min: 1, max: 3})
-    });
-  }
 
   return {
-    alerts: {
-      identifier: {
-        topology: {
-          topology: source,
-          topology_instance: source[0].toUpperCase() + instance
-        },
-        environment: {
-          customer: 'mtd',
-          instance: 'dev',
-          datacenter: choice(clusters)
-        }
-      },
-      triggered: triggered[0]
-    },
+    alerts: [],
     message: {
       ip_dst_addr: dst.ip,
       ip_src_addr: src.ip,
@@ -106,6 +117,29 @@ function randomAlert(source) {
         ip_dst_addr: dst.host,
         ip_src_addr: src.host
       }
+    }
+  };
+}
+
+function randomPcap(event, offset) {
+    offset = offset || 0;
+    return {
+    ip_src_addr: event.message.ip_src_addr,
+    ip_dst_addr: event.message.ip_dst_addr,
+    ip_src_port: event.message.ip_src_port,
+    ip_dst_port: event.message.ip_dst_port,
+    protocol: protocolMap[event.message.protocol],
+    message: {
+      ts_micro: Math.floor(event.message.timestamp * 1000) + offset,
+      ip_id: chance.integer({min: 0, max: 99999}),
+      frag_offset: chance.integer({min: 0, max: 99999}),
+      pcap_id: [
+        ipToHex(event.message.ip_src_addr),
+        ipToHex(event.message.ip_dst_addr),
+        protocolMap[event.message.protocol],
+        event.message.ip_src_port,
+        event.message.ip_dst_port,
+      ].join('-')
     }
   };
 }
@@ -146,27 +180,19 @@ for (var i = 0; i < sources.length; i++) {
     var index = source + '_index';
     var type = source + '_type';
     objects.push(JSON.stringify({index: {_index: index, _type: type}}));
+    var eventData = randomEvent(source);
+    objects.push(JSON.stringify(eventData));
 
-    var alertData = randomAlert(source);
-    objects.push(JSON.stringify(alertData));
+    objects.push(JSON.stringify({index: {_index: 'alert', _type: source + '_alert'}}));
+    var alertData = randomAlerts(source, eventData);
+    for (var k = 0; k < alertData.length; k++) {
+      objects.push(JSON.stringify(alertData[k]));
+    }
 
-    objects.push(JSON.stringify({index: {_index: 'pcap_all', _type: 'pcap'}}));
-    objects.push(JSON.stringify({
-      ip_src_addr: alertData.message.ip_src_addr,
-      ip_dst_addr: alertData.message.ip_dst_addr,
-      ip_src_port: alertData.message.ip_src_port,
-      ip_dst_port: alertData.message.ip_dst_port,
-      protocol: protocolMap[alertData.message.protocol],
-      pcap_id: [
-        ipToHex(alertData.message.ip_src_addr),
-        ipToHex(alertData.message.ip_dst_addr),
-        protocolMap[alertData.message.protocol],
-        alertData.message.ip_src_port,
-        alertData.message.ip_dst_port,
-        pad(chance.integer({min: 0, max: 99999}), 5),
-        pad(chance.integer({min: 0, max: 99999}), 5)
-      ].join('-')
-    }));
+    for (var l = 0; l < chance.integer({min: 1, max: 50}); l++) {
+      objects.push(JSON.stringify({index: {_index: 'pcap_all', _type: 'pcap_doc'}}));
+      objects.push(JSON.stringify(randomPcap(eventData, l * 1000)));
+    }
   }
 
   json.write(objects.join('\n'));

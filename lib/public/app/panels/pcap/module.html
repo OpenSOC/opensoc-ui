@@ -1,94 +1,96 @@
-<div ng-controller='pcap' ng-init="init()">
+<div class="pcap" ng-controller='pcap'>
 
   <style>
-    .table-doc-table {
-      margin-left: 0px !important;
+    span, td, th {
+      font-size: 13px;
+    }
+
+    .bg-hide {
+      color: #222;
+    }
+
+    .pcap h6 {
+      font-size: 1em;
+    }
+
+    .pcap .hex {
+      max-height: 300px;
       overflow-y: auto;
     }
-    .table-sidebar {
-      width: 200px;
-      display: table-cell;
-      padding-right: 10px;
-    }
-    .table-main {
-      width: 100%;
-      display: table-cell;
-    }
-    .table-container {
-      display: table;
-      height: 100px;
-      width: 100%;
-      table-layout: fixed;
-    }
-    .table-fieldname {
+
+    .pcap-es-results th {
+      height: 0;
+      line-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      color: transparent;
+      border: none;
       white-space: nowrap;
     }
 
-    .table-fieldname a {
-      word-wrap:break-word;
-      white-space: normal;
+    .pcap-es-results th div{
+      position: absolute;
+      background: transparent;
+      padding: 9px 25px;
+      top: 0;
+      margin-left: -25px;
+      line-height: normal;
+      color: #fff;
     }
 
-    .table-details {
-      table-layout: fixed;
+    .pcap-es-results th:first-child div{
+      border: none;
     }
 
-    .table-details-field {
-      width: 200px;
+    .pcap-es-results .pcap-container {
+      max-height: 200px;
+      overflow-y: auto;
     }
 
-    .table-details-action {
-      width: 60px;
-      text-align: center;
-    }
-
-    .table-details-value {
-    }
-
-    .table-field-value {
-      white-space: pre-wrap;
-    }
-
-    span.hilite {
-        background: yellow;
+    .pcap-es-results {
+      position: relative;
+      padding-top: 37px;
     }
 
     .pcap-raw {
-        background: #FCFCFC;
-        color: #5F5F5F;
+      background: #FCFCFC;
+      color: #5F5F5F;
     }
 
-    .uppercase {
-        text-transform: uppercase;
+    .packet-viewer {
+      min-height: 300px;
     }
 
-    span, td, th {
-        font-size: 13px;
+    .packet-list {
+      max-height: 300px;
+      overflow-y: scroll;
     }
 
-    .main-row {
-        cursor: pointer;
-    }
-
-    .main-row:hover {
-        background-color: #7E7E7E ;
-    }
-
-    .extra-row {
-        background-color: #474747 !important;
-    }
-    ul{
-        list-style-type: none;
+    .packet .stack {
+      max-height: 200px;
+      overflow-y: scroll;
+      border-radius: 1px;
+      border: 1px solid #333;
+      border-collapse: separate;
+      border-left: 0;
+      margin: 20px 0;
+      padding-bottom: 10px;
     }
 
     .highlight {
-      background-color: blue;
+      background-color: #0067B5;
     }
-    .newline { clear:both !important;}
-    .padright { margin-left: 16px !important;}
+
+    .newline:after {
+      content:"\A";
+      white-space:pre;
+    }
+
+    .padright {
+      margin-left: 16px !important;
+    }
 
     .pcap-editor {
-      /*border: 1px solid #ddd;*/
       background-color: #333;
       padding: 5px;
       margin-bottom: 5px;
@@ -96,153 +98,236 @@
 
   </style>
 
+  <p ng-if="!user.permissions.pcap">Access Denied</p>
 
-
-<div class="table-container">
-    <div class="pcap-editor" pcap-settings></div>
+  <div class="table-container" ng-if="user.permissions.pcap">
     <div class="pcap-editor">
-      <h6>PCAP Search Results</h6>
+      <div class="editor-row">
+        <div class="editor-option">
+          <label class="small">Source IP</label><input type="text"
+              class="input-medium" ng-model="$parent.ip_src_addr"></input>
+        </div>
+        <div class="editor-option">
+          <label class="small">Destination IP</label><input type="text"
+              class="input-medium" ng-model="$parent.ip_dst_addr"></input>
+        </div>
+        <div class="editor-option">
+          <label class="small">Source Port</label><input type="text"
+              class="input-medium" ng-model="$parent.ip_src_port"></input>
+        </div>
+        <div class="editor-option">
+          <label class="small">Destination Port</label><input type="text"
+              class="input-medium" ng-model="$parent.ip_dst_port"></input>
+        </div>
+        <div class="editor-option">
+          <label class="small">Protocol</label><input type="text"
+              class="input-small" ng-model="$parent.ip_protocol"></input>
+        </div>
+      </div>
 
-      <table class="table table-bordered table-condensed table-details table-striped" ng-style="panel.style">
-      <thead>
-        <tr>
-          <td>PCAP ID</td>
-          <td>Source IP</td>
-          <td>Destination IP</td>
-          <td>Source Port</td>
-          <td>Destination Port</td>
-          <td>Protocol</td>
-        <tr>
-      </thead>
+      <div class="editor-row">
+        <div class="editor-option">
+          <label class="small">Timestamp</label>
+          <input class="input-medium" type="text" ng-model="$parent.ts"/>
+        </div>
+        <div class="editor-option">
+          <label class="small">Duration(+/-)</label>
+          <select class="input-small"
+              ng-options="d.desc for d in durations"
+              ng-model="$parent.duration"></select>
+        </div>
+        <div class="editor-option">
+          <label class="small">&nbsp</label><button type="button"
+              class="btn btn-success" ng-click="search()">Search</button>
 
-      <tbody bindonce ng-repeat="doc in results.hits.hits | limitTo:5">
-          <!-- <tr ng-click="get_pcap(doc._source.message.pcap_id)" ng-class=""> -->
-          <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
-            <td>{{ doc._source.message.pcap_id }}</td>
-            <!-- <td>{{ doc._source.message.ip_src_addr }}</td> -->
-            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).ip_src_dec }}</td>
-            <!-- <td>{{ doc._source.message.ip_dst_addr }}</td> -->
-            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).ip_dst_dec }}</td>
-            <!-- <td>{{ doc._source.message.ip_src_port }}</td> -->
-            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).src_port }}</td>
-            <!-- <td>{{ doc._source.message.dst_port }}</td> -->
-            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).dst_port }}</td>
-            <!-- <td>{{ doc._source.message.ip_protocol }}</td> -->
-            <td>{{ un_hex_pcap_id(doc._source.message.pcap_id).protocol }}</td>
-          </tr>
-      </tbody>
-      </table>
-    </div>
-
-    <table class="table table-bordered table-condensed table-details table-striped" ng-style="panel.style">
-    <thead>
-      <tr>
-        <td>Packet No.</td>
-        <td>Source</td>
-        <td>Destination</td>
-        <td>Info</td>
-      <tr>
-    </thead>
-    <tbody bindonce ng-repeat="packet in packet_data.pdml.packet">
-        <tr ng-click="$parent.drilldown = packet; setSelected($index);" ng-class="{highlight : $index === selectedValue}">
-          <td><span>{{$index}}</span></td>
-          <td>{{packet.proto[3].field[10].$.show}}</td>
-          <td>{{packet.proto[3].field[14].$.show}}</td>
-          <td>{{packet.proto[4].field[0].$.showname}}</td>
-        </tr>
-    </tbody>
-    </table>
-
-      <table class="">
-       <thead></thead>
-       <!-- TODO: Fix repeater bug -->
-        <tbody bindonce ng-repeat="event in data| slice:panel.offset:panel.offset+panel.size" ng-class-odd="'odd'" class="extra-row" ng-show="activePosition == $index">
-          <tr bindonce ng-repeat="prot in event.proto" class="main-row">
-            <td><div ng-click="prot.isVisible = !prot.isVisible">{{protShowname(prot.$)}}</div>
-            <div>
-              <ul ng-show="prot.isVisible">
-                <li ng-repeat="fieldval in prot.field" ng-click="fieldBytes(fieldval)">
-                    <p>{{fieldvalShowname(fieldval)}}</p>
-                </li>
-            </ul>
-            </div>
-            </td>
-          </tr>
-       </tbody>
-      </table>
-
-    <div packet="drilldown"></div>
-</div>
-
-  <script type="text/ng-template" id="packet.html">
-    <div ng-repeat="proto in packet.proto">
-      <span ng-class="{'icon-chevron-down': proto.expanded, 'icon-chevron-right': !proto.expanded}" ng-click="proto.expanded = select(proto) || !proto.expanded"></span>
-      <span ng-class="{highlight: (selectedData.uid === proto.$.uid) || (selectedData2 === proto.$.name )}" ng-click="proto.expanded = select(proto) || !proto.expanded">
-        {{ proto.$.showname }}
-      </span>
-
-      <div ng-if="proto.expanded" style="margin-left:50px">
-        <div ng-repeat="f in proto.field">
-          <span ng-class="{highlight: ($parent.selectedData.uid === f.$.uid) || (selectedData2 === f.$)}" ng-click="select_field(f)">
-            {{ f.$.showname }}
-          </span>
+          <label class="small">Reverse Traffic
+            <input type="checkbox" class="input-small"
+                ng-model="$parent.includeReverseTraffic"></input></label>
         </div>
       </div>
     </div>
-    <div hex-bytes bytes="packet.hexPacket" selected-bytes="selectedBytes" selected-data="selectedData"></div>
-  </script>
 
-  <script type="text/ng-template" id="hexBytes.html">
-    <br/>
-    <span ng-repeat="b in bytes track by $index">
-      <span class="byte" ng-class="{highlight: selectedBytes.pos <= $index && (selectedBytes.pos|num)+(selectedBytes.size|num) > $index, newline:$index%16==0, padright:($index+8)%16==0}" ng-click="selectByte($index)" style="float:left; padding:4px;">
-        {{ b }}
-      </span>
-    </span>
-    <div style="clear:left">
-    <br/>
-    Position: {{selectedBytes.pos}}<br/>
-    Size: {{selectedBytes.size}}<br/>
-    Selected Field: {{selectedBytes.showname}} ({{selectedBytes.name}})</br>
-    selectedBytes :: {{$parent.selectedBytes}}</br>
-    selectedBytes.expand :: {{$parent.selectedBytes.expanded}}
+    <div ng-if="results">
+      <h6>STREAMS</h6>
+
+      <div class="pcap-es-results">
+        <div class="pcap-container">
+          <table class="table table-bordered table-condensed table-details table-striped"
+              ng-style="panel.style">
+            <thead>
+              <tr>
+                <th class="span1">Count <div>Count</div></th>
+                <th class="span2">Src IP <div>Src IP</div></th>
+                <th class="span2">Dest IP <div>Dst IP</div></th>
+                <th class="span1">Src Port <div>Src Port</div></th>
+                <th class="span1">Dst Port <div>Dst Port</div></th>
+                <th class="span1">Protocol <div>Protocol</div></th>
+                <th class="span3">Pcap ID <div>Pcap ID</div></th>
+                <th class="span1">Download <div>Download</div></th>
+              <tr>
+            </thead>
+
+            <tbody bindonce ng-repeat="doc in results.facets.packets.terms">
+              <tr ng-click="setStream($index, doc.term)"
+                  ng-class="{highlight: $index === selectedStream}"
+                  ng-init="doc.unhexed = parsePcapId(doc.term)">
+                <td>{{ doc.count }}</td>
+                <td>{{ doc.unhexed.src_ip }}</td>
+                <td>{{ doc.unhexed.dst_ip }}</td>
+                <td>{{ doc.unhexed.src_port }}</td>
+                <td>{{ doc.unhexed.dst_port }}</td>
+                <td>{{ doc.unhexed.protocol }}</td>
+                <td>{{ doc.term }}</td>
+                <td>
+                  <a ng-click="downloadStream(doc)">
+                    <span class="icon-download"></span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </script>
 
-  <!-- Filter PCAP Panel -->
-  <script type="text/ng-template" id="pcapSettings.html">
-    <div class="editor-row">
-        <form action="">
-          <div class="editor-option">
-              <label class="small">Source IP</label><input type="text" class="input-medium" ng-model="ip_src_addr"></input>
-          </div>
-          <div class="editor-option">
-              <label class="small">Destination IP</label><input type="text" class="input-medium" ng-model="ip_dst_addr"></input>
-          </div>
-          <div class="editor-option">
-              <label class="small">Source Port</label><input type="text" class="input-medium" ng-model="ip_src_port"></input>
-          </div>
-          <div class="editor-option">
-              <label class="small">Destination Port</label><input type="text" class="input-medium" ng-model="dst_port"></input>
-          </div>
-          <div class="editor-option">
-              <label class="small">Protocol</label><input type="text" class="input-small" ng-model="ip_protocol"></input>
-          </div>
+    <div ng-if="stream">
 
-          <div class="edit-option">
-          <button type="button" class="btn btn-success" ng-click="search()">Search</button>
-          </div>
+      <div class="pull-right">
+        <a ng-click="setStream(
+          selectedStream,
+          results.facets.packets.terms[selectedStream].term,
+          streamPage - 1)">&lt;</a>
 
-        </form>
+        <a ng-click="setStream(
+          selectedStream,
+          results.facets.packets.terms[selectedStream].term,
+          streamPage + 1)">&gt;</a>
+      </div>
+
+      <h6>PACKETS</h6>
+
+      <div class="pcap-es-results">
+        <div class="pcap-container">
+          <table class="table table-bordered table-condensed table-details table-striped"
+              ng-style="panel.style">
+            <thead>
+              <tr>
+                <th class="span1">No.<div>No.</div></th>
+                <th class="span2">Timestamp<div>Timestamp</div></th>
+                <th class="span2">Src IP<div>Src IP</div></th>
+                <th class="span2">Dest IP<div>Dst IP</div></th>
+                <th class="span1">Src Port<div>Src Port</div></th>
+                <th class="span1">Dst Port<div>Dst Port</div></th>
+                <th class="span1">Protocol<div>Protocol</div></th>
+                <th class="span3">Pcap ID<div>Pcap ID</div></th>
+              <tr>
+            </thead>
+
+            <tbody bindonce ng-repeat="doc in stream.hits.hits">
+              <tr ng-click="setPacket($index, doc._source.message)"
+                  ng-class="{highlight: $index === selectedPacket}"
+                  ng-init="doc.unhexed = parsePcapId(doc._source.message.pcap_id)">
+                <td>{{ $index + 1 + (streamFrom || 0)}}</td>
+                <td>{{ doc._source.message.ts_micro / 1000 | date:'yyyy-MM-dd hh:mm:ss.sss'}}</td>
+                <td>{{ doc.unhexed.src_ip }}</td>
+                <td>{{ doc.unhexed.dst_ip }}</td>
+                <td>{{ doc.unhexed.src_port }}</td>
+                <td>{{ doc.unhexed.dst_port }}</td>
+                <td>{{ doc.unhexed.protocol }}</td>
+                <td>{{ doc._source.message.pcap_id }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </script>
 
-  <!--<p ng-style="panel.style" ng-bind-html-unsafe="panel.content | striphtml | newlines"></p>-->
-  <markdown ng-show="ready && panel.mode == 'markdown'">
-    {{panel.content}}
-  </markdown>
-  <p ng-show="panel.mode == 'pcap'" ng-style='panel.style' ng-bind-html="panel.content | striphtml | newlines">
-  </p>
-  <p ng-show="panel.mode == 'html'" ng-bind-html="panel.content">
-  </p>
+    <div class="pcap-es-results" ng-if="packetData.length > 1">
+      <table class="table table-bordered table-condensed table-details table-striped"
+          ng-style="panel.style" ng-show="packetData.length">
+        <thead>
+          <tr>
+            <td class="span1">No.</td>
+            <td class="span2">Source</td>
+            <td class="span2">Destination</td>
+            <td class="span7">Info</td>
+          <tr>
+        </thead>
+        <tbody ng-repeat="p in packetData">
+            <tr ng-click="setPcapPacket(p)"
+                ng-class="{highlight : $parent.packet == p}">
+              <td><span>{{$index + 1}}</span></td>
+              <td>{{p.proto[3].field[10].$.show}}</td>
+              <td>{{p.proto[3].field[14].$.show}}</td>
+              <td>{{p.proto[4].field[0].$.showname | sourcePort}}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="packet-viewer" ng-if="packetData.length">
+      <div ng-if="packetData.length == 1">
+        <div packet="packetData[0]" class="packet"></div>
+      </div>
+
+      <div ng-if="packet">
+        <div packet="packet" class="packet"></div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script type="text/ng-template" id="packet.html">
+  <div class="stack" proto="packet.proto" selected="selected"></div>
+  <div class="hex" hex-bytes dump="packet.hexdump" selected="selected"></div>
+</script>
+
+<script type="text/ng-template" id="proto.html">
+  <div ng-repeat="f in proto">
+    <div ng-click="select(f)"
+        ng-class="{highlight: $parent.selected.uid == f.$.uid}">
+
+      <div style="padding-left: {{ $parent.padding }}px">
+        <span ng-if="!f.field" class="icon-asterisk bg-hide"></span>
+        <span ng-if="f.field" ng-class="{
+            'icon-chevron-down': f.$.expanded,
+            'icon-chevron-right': !f.$.expanded
+          }"></span>
+
+        {{ f.$.showname || f.$.show}}
+      </div>
+    </div>
+
+    <div class="fields" ng-if="f.field.length && f.$.expanded">
+      <div proto="f.field" padding="nextPadding" selected="selected"></div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="hexBytes.html">
+  <div class="row">
+    <div class="span6">
+      <span ng-repeat="b in bytes track by $index">
+        <span class="byte" ng-class="{
+          highlight: selected.pos <= $index &&
+            (selected.pos|num)+(selected.size|num) > $index,
+          newline: $index % 16 == 15,
+          padright: $index % 16 == 8}"
+          ng-click="selectByte($index)"
+          style="font-family: monospace;">{{ b }} </span>
+      </span>
+    </div>
+
+    <div class="span6">
+      <span ng-repeat="b in bytes track by $index">
+        <span class="byte" ng-class="{
+          highlight: (selected.pos|num) <= $index &&
+              (selected.pos|num) + (selected.size|num) > $index,
+          newline: $index % 16 == 15,
+          padright: ($index + 8) % 16 == 0}"
+          ng-click="selectByte($index)"
+          style="font-family: monospace;">{{ b | toAscii }}</span>
+      </span>
+    </div>
+  </div>
+</script>
