@@ -328,7 +328,7 @@
           "pages": 100,
           "offset": 0,
           "sort": [
-            "message.timestamp",
+            "_type",
             "desc"
           ],
           "overflow": "min-height",
