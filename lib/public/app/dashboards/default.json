@@ -392,7 +392,7 @@
   "index": {
     "interval": "none",
     "pattern": "[logstash-]YYYY.MM.DD",
-    "default": "alert,*_index*",
+    "default": "*alert*,*_index*",
     "warm_fields": false
   },
   "style": "dark",
