@@ -328,7 +328,7 @@
           "pages": 100,
           "offset": 0,
           "sort": [
-            "message.ts",
+            "message.timestamp",
             "desc"
           ],
           "overflow": "min-height",
@@ -337,7 +337,7 @@
             "message.level",
             "message.peer",
             "message.protocol",
-            "message.ts",
+            "message.timestamp",
             "message.original_string",
             "message.message"
           ],
