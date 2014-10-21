@@ -84,7 +84,7 @@ All dependencies will be installed in the VM. The repository root is shared betw
 
 ```bash
 vagrant ssh
-cd vagrant
+cd /vagrant
 ```
 
 ###  Step 5: Seed the development VM
@@ -133,3 +133,6 @@ nodemon
 ```
 
 You can then access the OpenSOC ui at ```http://localhost:5000```.
+
+Two default accounts: mail: joesmith@opensoc.dev, maryfodder@opensoc.dev
+The default password is: opensoc
