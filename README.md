@@ -13,7 +13,7 @@ User interface for OpenSOC
 
 ```bash
 apt-get update
-apt-get install -y libpcap-dev tshark redis-server nodejs npm
+apt-get install -y libpcap-dev tshark nodejs npm
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g pm2
 
@@ -22,17 +22,13 @@ cd /opt/portal
 npm install --production
 ```
 
-* Add a file name ```config.json``` to the repo root (```/opt/portal``` in our setup). The config should point to the various services. The following is an example config, all fields are required:
+* Add a file named ```config.json``` to the repo root (```/opt/portal``` in our setup). The following is an example ```config.json```, all fields are required:
 
 ```json
 {
     "secret": "some secret",
     "elasticsearch": {
-      "url": "http://192.168.33.10:9200"
-    },
-    "redis": {
-      "host": "127.0.0.1",
-      "port": 6379
+      "url": "http://127.0.0.1:9200"
     },
     "ldap": {
       "url": "ldap://127.0.0.1:389",
