@@ -154,7 +154,8 @@ for (var i = 0; i < numEnrichedMachines; i++) {
       postalCode: chance.zip(),
       latitude: chance.latitude({fixed: 4}),
       longitude: chance.longitude({fixed: 4}),
-      locID: chance.integer({min: 10000, max: 30000})
+      locID: chance.integer({min: 10000, max: 30000}),
+      location_point: chance.coordinates({fixed: 2}),
     },
     host: {
       known_info: {
