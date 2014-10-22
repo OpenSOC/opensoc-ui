@@ -91,6 +91,15 @@
           "content": "The asterisk \"*\" can be as a wildcard for zero or more characters.\n\n\nThe period \".\" can be used to represent any character. The following will match the string \"abcde\":\n\nab...\n\na.c.e\n\nNOTE: When querying or filtering for an IP address. Make sure to use double quotes around the address.\n\n\nTo see more regexp rules for filters, see the ES documentation [here](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#_standard_operators).",
           "style": {},
           "title": "Regular Expression Rules for Queries and Filters"
+        },
+        {
+          "error": false,
+          "span": 12,
+          "type": "bettermap",
+          "title": "Better Map",
+          "field": "enrichment.geo.ip_dst_addr.location_point",
+          "size": 2000,
+          "editable": true
         }
       ],
       "notice": false
