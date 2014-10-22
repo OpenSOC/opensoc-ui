@@ -21,9 +21,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Elasticsearch
   config.vm.network :forwarded_port, guest: 9200, host: 9200
 
-  # Redis
-  # config.vm.network :forwarded_port, guest: 6379, host: 6379
-
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
