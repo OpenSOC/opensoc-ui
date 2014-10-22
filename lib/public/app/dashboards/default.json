@@ -97,7 +97,9 @@
           "span": 12,
           "type": "bettermap",
           "title": "Better Map",
-          "field": "enrichment.geo.ip_dst_addr.location_point"
+          "field": "enrichment.geo.ip_dst_addr.location_point",
+          "size": 2000,
+          "editable": true
         }
       ],
       "notice": false
