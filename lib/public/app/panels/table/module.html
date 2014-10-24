@@ -150,7 +150,7 @@
                   <th class="table-details-value">Value</th>
                 </thead>
                 <tr ng-repeat="(key,value) in event.kibana._source track by $index" ng-class-odd="'odd'">
-                  <td style="word-wrap:break-word" bo-text="fieldTitle(key)"></td>
+                  <td style="word-wrap:break-word" bo-text="fieldTitle(key)" title="{{key}}"></td>
                   <td style="white-space:nowrap">
                     <i class='icon-search pointer' ng-click="build_search(key,value)" bs-tooltip="'Add filter to match this value'"></i>
                     <i class='icon-ban-circle pointer' ng-click="build_search(key,value,true)" bs-tooltip="'Add filter to NOT match this value'"></i>
