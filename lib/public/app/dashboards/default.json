@@ -47,6 +47,24 @@
           "type": "lucene",
           "enable": true,
           "query": "_type:sourcefire_doc"
+        },
+        "7": {
+          "id": 7,
+          "color": "#BA43A9",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:*_doc"
+        },
+        "8": {
+          "id": 8,
+          "color": "#BA43A9",
+          "alias": "",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "_type:*_alert"
         }
       },
       "ids": [
@@ -54,7 +72,9 @@
         4,
         5,
         6,
-        2
+        2,
+        7,
+        8
       ]
     },
     "filter": {
@@ -298,7 +318,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              4
+              7
             ]
           },
           "locked": false,
@@ -354,8 +374,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              5,
-              6
+              8
             ]
           },
           "locked": false,
