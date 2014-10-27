@@ -94,8 +94,13 @@
       background-color: #333;
       padding: 5px;
       margin-bottom: 5px;
-    };
+    }
 
+    .loading {
+      background-image: url('/img/load_big.gif');
+      width: 115px;
+      height: 15px;
+    }
   </style>
 
   <p ng-if="!user.permissions.pcap">Access Denied</p>
@@ -147,6 +152,7 @@
       </div>
     </div>
 
+    <div ng-if="loadingStreams" class="loading"></div>
     <div ng-if="results">
       <h6>STREAMS</h6>
 
@@ -190,8 +196,8 @@
       </div>
     </div>
 
+    <div ng-if="loadingPackets" class="loading"></div>
     <div ng-if="stream">
-
       <div class="pull-right">
         <a ng-click="setStream(
           selectedStream,
@@ -242,6 +248,7 @@
       </div>
     </div>
 
+    <div ng-if="loadingPcap" class="loading"></div>
     <div class="pcap-es-results" ng-if="packetData.length > 1">
       <table class="table table-bordered table-condensed table-details table-striped"
           ng-style="panel.style" ng-show="packetData.length">
