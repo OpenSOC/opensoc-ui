@@ -78,8 +78,19 @@
       ]
     },
     "filter": {
-      "list": {},
-      "ids": []
+      "list":{ "0":
+        {
+          "type": "time",
+          "field":"timestamp",
+          "from":"now-24h",
+          "to":"now",
+          "mandate":"must",
+          "active":true,
+          "alias":"",
+          "id":0
+        }
+      },
+      "ids":[0]
     }
   },
   "rows": [
@@ -297,13 +308,10 @@
           "overflow": "min-height",
           "fields": [
             "_type",
-            "triggered.priority",
             "timestamp",
-            "triggered.source",
-            "triggered.dest",
-            "triggered.title",
-            "triggered.content",
-            "triggered.type"
+            "priority",
+            "designated_host",
+            "description"
           ],
           "highlight": [],
           "sortable": true,
@@ -354,12 +362,12 @@
           "overflow": "min-height",
           "fields": [
             "_type",
-            "message.level",
-            "message.peer",
-            "message.protocol",
             "message.timestamp",
-            "message.original_string",
-            "message.message"
+            "message.ip_src_addr",
+            "message.ip_src_port",
+            "message.ip_dst_addr",
+            "message.ip_dst_port",
+            "message.original_string"
           ],
           "highlight": [],
           "sortable": true,
