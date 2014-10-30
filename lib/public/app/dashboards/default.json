@@ -306,6 +306,7 @@
           "overflow": "min-height",
           "fields": [
             "_type",
+            "triggered.body",
             "triggered.priority",
             "timestamp",
             "triggered.source",
