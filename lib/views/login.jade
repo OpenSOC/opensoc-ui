@@ -9,8 +9,16 @@ html
     link(rel='stylesheet', href='css/timepicker.css')
     link(rel='stylesheet', href='css/animate.min.css')
     link(rel='stylesheet', href='css/normalize.min.css')
-    link(rel='stylesheet', href='css/opensoc.css')
-    style
+    style.
+      .login-form {
+        margin-top: 60px;
+        border: 1px solid #666;
+        padding: 20px;
+      }
+
+      td.count {
+        background-color: #ee0000;
+      }
   body
     noscript
       .container
@@ -27,17 +35,16 @@ html
               legend Login
               if flash.error
                 .alert.alert-error=flash.error
-              div(class="#{flash.error ? 'control-group error' : 'control-group'}") 
+              div(class="#{flash.error ? 'control-group error' : 'control-group'}")
                 label.control-label(for='inputEmail') Email
                 .controls
                   input#inputEmail(type='text', name='email', placeholder='Email')
 
-              div(class="#{flash.error ? 'control-group error' : 'control-group'}") 
+              div(class="#{flash.error ? 'control-group error' : 'control-group'}")
                 label.control-label(for='inputPassword') Password
                 .controls
                   input#inputPassword(type='password', name='password', placeholder='Password')
               .control-group
                 .controls
                   button.btn(type='submit') Sign in
-    //
-       <div ng-cloak ng-view></div> 
+    // <div ng-cloak ng-view></div>
