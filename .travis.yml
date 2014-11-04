@@ -8,10 +8,6 @@ notifications:
     - opensoc-github@external.cisco.com
     on_success: never
     on_failure: always
-  hipchat:
-    rooms:
-      secure: ftMVn8V34kdqbwVUDMoKgbEKG4KzywcAIxByW0bUes18Fl4e0Tc5wUajfKCtB3ih9fazNgClQgoDZWhYGZ/Ik7o/DxwJdMd7SN36Vfl412LQiV7IVPO+vvVVvrAH5RxXA1yxQveNlF7DI6ANRwVISs/OsAplznIzmyqsJ/onn1I=
-
 addons:
   postgresql: "9.3"
 before_script:
