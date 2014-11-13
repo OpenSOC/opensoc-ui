@@ -22,7 +22,7 @@ endif
 
 # Load test data into DB
 seed:
-	node script/es_fetch.js && script/es_seed.sh
+	node script/es_gen.js && script/es_seed.sh
 
 clean:
 	rm -rf ./node_modules ./coverage
