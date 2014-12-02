@@ -49,6 +49,7 @@ apt-get install -y nodejs npm
 
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g nodemon
+npm install -g grunt-cli
 
 cd /vagrant
 rm -rf node_modules
