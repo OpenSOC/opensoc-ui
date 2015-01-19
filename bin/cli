@@ -13,7 +13,7 @@ case "$1" in
 
 serve)
 	echo  "Starting test server. Exit with Ctrl+C."
-	NODE_ENV=production node server.js
+	NODE_ENV=production node $root/server.js
    ;;
 *)
 	NODE_ENV=production forever $1 ${*:2} \
