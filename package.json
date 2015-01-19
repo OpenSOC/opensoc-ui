@@ -1,6 +1,6 @@
 {
   "name": "opensoc-ui",
-  "version": "0.0.1-alpha",
+  "version": "0.0.1-beta",
   "description": "OpenSOC Portal",
   "main": "server.js",
   "files": [
@@ -10,8 +10,8 @@
     "README.md",
     "server.js"
   ],
-  "bin" : {
-    "opensoc-ui" : "./bin/cli"
+  "bin": {
+    "opensoc-ui": "./bin/cli"
   },
   "scripts": {
     "prepublish": "cd kibana && grunt build && cp -r dist ../lib/static_dist"
