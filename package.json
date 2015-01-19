@@ -4,16 +4,16 @@
   "description": "OpenSOC Portal",
   "main": "server.js",
   "files": [
+    "bin",
     "lib",
     "LICENSE",
     "README.md",
     "server.js"
   ],
+  "bin" : {
+    "opensoc-ui" : "./bin/cli"
+  },
   "scripts": {
-    "test": "NODE_ENV=production node server.js",
-    "start": "NODE_ENV=production forever start server.js",
-    "stop": "NODE_ENV=production forever stop server.js",
-    "restart": "NODE_ENV=production forever restart server.js",
     "prepublish": "cd kibana && grunt build && cp -r dist ../lib/static_dist"
   },
   "repository": {

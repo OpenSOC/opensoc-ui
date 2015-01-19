@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+	echo "Usage: $0 start|restart|stop|serve"
+	exit
+fi
+
+case "$1" in
+
+serve)
+	echo  "Starting test server. Exit with Ctrl+C."
+	NODE_ENV=production node server.js
+   ;;
+*)
+	NODE_ENV=production forever $1 ${*:2} \
+		--spinSleepTime 1000 --minUptime 5000 \
+		server.js
+   ;;
+esac
