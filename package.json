@@ -1,6 +1,6 @@
 {
   "name": "opensoc-ui",
-  "version": "0.0.1-beta7",
+  "version": "0.0.1-beta8",
   "description": "OpenSOC Portal",
   "main": "server.js",
   "files": [
