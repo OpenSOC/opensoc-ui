@@ -14,7 +14,7 @@
     "opensoc-ui": "./bin/cli"
   },
   "scripts": {
-    "prepublish": "cd kibana && grunt build && cp -r dist ../lib/static_dist"
+    "prepublish": "cd kibana && grunt build && cp -rf dist ../lib/static_dist"
   },
   "repository": {
     "type": "git",
