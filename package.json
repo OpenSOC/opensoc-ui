@@ -2,22 +2,34 @@
   "name": "opensoc-ui",
   "version": "0.0.0",
   "description": "OpenSOC Portal",
-  "main": "index.js",
-  "private": true,
+  "main": "server.js",
+  "files": [
+    "lib",
+    "LICENSE",
+    "README.md",
+    "server.js"
+  ],
   "scripts": {
-    "test": "make test",
-    "seed": "make seed"
+    "test": "NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production forever start server.js",
+    "stop": "NODE_ENV=production forever stop server.js",
+    "restart": "NODE_ENV=production forever restart server.js",
+    "prepublish": "cd kibana && grunt build && cp -r dist ../lib/static_dist"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/OpenSOC/opensoc-ui.git"
   },
-  "author": "",
+  "author": "OpenSOC Team",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/OpenSOC/opensoc-ui/issues"
   },
+  "preferGlobal": true,
   "homepage": "https://github.com/OpenSOC/opensoc-ui",
+  "config": {
+    "path": ""
+  },
   "dependencies": {
     "async": "^0.9.0",
     "bcrypt": "^0.7.8",
@@ -42,7 +54,8 @@
     "cookie-parser": "~1.3.2",
     "body-parser": "~1.6.5",
     "cookie-session": "~1.0.2",
-    "xml-stream": "~0.4.4"
+    "xml-stream": "~0.4.4",
+    "forever": "~0.13.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

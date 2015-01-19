@@ -24,66 +24,46 @@ The commands in this section are for deployment on Ubuntu 14.04. These instructi
 
 ```bash
 apt-get update
-apt-get install -y git  # To checkout the repo
 apt-get install -y libpcap-dev tshark nodejs npm
 ln -s /usr/bin/nodejs /usr/bin/node
-npm install -g pm2
+npm install -g forever
+npm install -g opensoc-ui
 ```
 
-#### Step 3: Get the code
+#### Step 3: Configure the UI
+
+Before you can spin up the UI, you need to point it to the various services and configure other deployment specific settings. You can specify a config file either by setting the environment variable ```OPENSOC_UI_CONFIG``` or by setting a npm package config:
 
 ```bash
-git clone git@github.com:OpenSOC/opensoc-ui.git
-cd opensoc-ui
-git submodule update --init
+npm config set opensoc-ui:/path/to/config.json
 ```
 
-#### Step 4: Install node modules
+##### Config fields
 
-From the repo root run:
+* ```host```: IP address the server should listen on.
 
-```bash
-npm install --production
-```
+* ```port```: Port the server should listen on.
 
-#### Step 5: Configure the UI
+* ```secret```: A random string that used to sign cookies.
 
-Before you can spin up the UI, you need to point it to the various services and configure other deployment specific settings. These settings should be added to a file named ```config.json``` that should live in the repo root. Below is a list of fields that the are expected:
+* ```elasticsearch```: Must be a JSON object with the following keys:
+    * ```url```: URI to OpenSOC ElasticSearch cluster.
 
-###### ```secret```
+* ```ldap```: Must be a JSON object with the following keys:
+    * ```url```: URI to LDAP service.
+    * ```searchBase```: LDAP search base.
+    * ```adminDn```: LDAP admin distinguished name.
+    * ```adminPassword```: LDAP admin password.
 
-A random string that serves as the application secret. This will be used to sign cookies.
+* ```pcap```: Must be a JSON object with the following keys:
+    * ```url```: URI to the OpenSOC PCAP API service. The PCAP service uses the prefix ```pcap/pcapGetter```. This should be included as it is a configurable in the PCAP service. For clarification, see the example config below.
+    * ```mock```: This should be set to ```false```.
 
-###### ```elasticsearch```
-
-Must be a JSON object with the following keys:
-* ```url```: URI to OpenSOC ElasticSearch cluster.
-
-###### ```ldap```
-
-Must be a JSON object with the following keys:
-
-* ```url```: URI to LDAP service.
-* ```searchBase```: LDAP search base.
-* ```adminDn```: LDAP admin distinguished name.
-* ```adminPassword```: LDAP admin password.
-
-###### ```pcap```
-
-Must be a JSON object with the following keys:
-
-* ```url```: URI to the OpenSOC PCAP API service. The PCAP service uses the prefix ```pcap/pcapGetter```. This should be included as it is a configurable in the PCAP service. For clarification, see the example config below.
-* ```mock```: This should be set to ```false```.
+* ```permissions```: Must be a JSON object with the following keys:
+    * ```pcap```: List of AD/LDAP groups that should have access to raw pcap data.
 
 
-###### ```permissions```
-
-JSON object with the following keys:
-
-* ```pcap```: List of AD/LDAP groups that should have access to raw pcap data.
-
-
-##### Example ```config.json```
+##### Example config
 
 The following is an example ```config.json``` file. This config will not work for you in production but is meant to serve as an example. It assumes that ElasticSearch, LDAP, and the OpenSOC PCAP service are running on 192.168.100.1:
 
@@ -111,13 +91,33 @@ The following is an example ```config.json``` file. This config will not work fo
 }
 ```
 
-#### Step 6: Start the node server
-
+#### Step 4: Test the server
 ```bash
-pm2 start index.js -i max --name "opensoc"
+npm test -g opensoc-ui
 ```
 
-If all goes well the OpenSOC UI will be running on port 5000. Visit it in your browser and rejoice.
+This will run the server without daemonizing that may make it easier to debug any issues with your setup. You can exit the test server with ```Ctrl+C```.
+
+#### Step 5: Start daemonized server
+
+```bash
+npm start -g opensoc-ui
+```
+
+Incidentally, to stop the server use:
+
+```bash
+npm stop -g opensoc-ui
+```
+
+and to restart it use:
+
+```bash
+npm restart -g opensoc-ui
+```
+
+#### Step 6: Rejoice
+Rejoice.
 
 ___
 

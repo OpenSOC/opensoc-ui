@@ -1,0 +1,13 @@
+node_modules
+
+coverage
+doc
+kibana
+script
+seed
+test
+
+README.md
+Vagrantfile
+
+config.json*

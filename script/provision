@@ -45,7 +45,7 @@ service elasticsearch restart
 
 ### NODE SETUP ###
 apt-get update
-apt-get install -y nodejs npm
+apt-get install -y nodejs npm git
 
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g nodemon
