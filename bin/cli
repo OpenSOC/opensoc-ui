@@ -6,7 +6,7 @@ while [ -h "$src" ]; do
   src="$(readlink "$src")"
   [[ $src != /* ]] && src="$bindir/$src"
 done
-bin="$( cd -P "$( dirname "$src" )" && pwd )"
+bindir="$( cd -P "$( dirname "$src" )" && pwd )"
 root=`dirname "$bindir"`
 
 
