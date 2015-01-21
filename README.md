@@ -2,11 +2,24 @@
 
 # OpenSOC UI
 
-User interface for the OpenSOC platform. The user interface is a modified version of **Kibana 3** which is served by a node JS backend.
+User interface for the OpenSOC platform. The UI is a modified version of **[Kibana 3](https://github.com/elasticsearch/kibana/tree/kibana3)** which is served by a node JS backend.
 ___
 
 ## Deployment
 
+
+### Quick start
+
+* Create a config file: ```echo "{}" > ~/.opensoc-ui```
+* Install opensoc-ui: ```npm install -g opensoc-ui```
+* Start opensoc-ui: ```opensoc-ui```
+
+This will start the server in the same process. To start/stop a daemonized server use ```opensoc-ui start``` and ```opensoc-ui stop```. You can view the location of the log file with ```opensoc-ui logs```. The daemon is started using the ```forever``` node package. You can tack on other command line flags that the library supports. More information about this is available at https://www.npmjs.com/package/forever.
+
+Next, head over to the "Configuration" section for more information about the config file.
+
+
+### Indepth guide
 
 #### Step 1: Setup required services
 
@@ -26,19 +39,54 @@ The commands in this section are for deployment on Ubuntu 14.04. These instructi
 apt-get update
 apt-get install -y libpcap-dev tshark nodejs npm
 ln -s /usr/bin/nodejs /usr/bin/node
-npm install -g forever
 npm install -g opensoc-ui
 ```
 
 #### Step 3: Configure the UI
 
-Before you can spin up the UI, you need to point it to the various services and configure other deployment specific settings. You can specify a config file either by setting the environment variable ```OPENSOC_UI_CONFIG``` or by setting a npm package config:
+Before you can spin up the UI, you need to point it to the various services and configure other deployment specific settings. The application will look for an application config using in the following places in order:
 
+* ```~/.opensoc-ui```
+* Path specified by the environment variable ```OPENSOC_UI_CONFIG```
+* Path specified by the npm package config setting ```path```. Once the package is installed, this can be set with ```npm config set opensoc-ui:path "/path/to/config.json"```
+
+#### Step 4: Test the server
 ```bash
-npm config set opensoc-ui:/path/to/config.json
+opensoc-ui
 ```
 
-##### Config fields
+This will run the server without daemonizing that may make it easier to debug any issues with your setup. You can exit the test server with ```Ctrl+C```.
+
+#### Step 5: Start daemonized server
+
+```bash
+opensoc-ui start
+```
+
+Incidentally, to stop the server use:
+
+```bash
+opensoc-ui stop
+```
+
+and to restart it use:
+
+```bash
+opensoc-ui restart
+```
+
+For logs:
+```bash
+opensoc-ui logs
+```
+
+___
+
+## Configuration
+
+The OpenSOC-UI is configured using a JSON file.
+
+##### Fields
 
 * ```host```: IP address the server should listen on.
 
@@ -90,34 +138,6 @@ The following is an example ```config.json``` file. This config will not work fo
   }
 }
 ```
-
-#### Step 4: Test the server
-```bash
-npm test -g opensoc-ui
-```
-
-This will run the server without daemonizing that may make it easier to debug any issues with your setup. You can exit the test server with ```Ctrl+C```.
-
-#### Step 5: Start daemonized server
-
-```bash
-npm start -g opensoc-ui
-```
-
-Incidentally, to stop the server use:
-
-```bash
-npm stop -g opensoc-ui
-```
-
-and to restart it use:
-
-```bash
-npm restart -g opensoc-ui
-```
-
-#### Step 6: Rejoice
-Rejoice.
 
 ___
 
