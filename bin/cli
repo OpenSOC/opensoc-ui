@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Follow symlinks to $0 to find ourselves.
 src="${BASH_SOURCE[0]}"
 while [ -h "$src" ]; do
   bindir="$( cd -P "$( dirname "$src" )" && pwd )"
@@ -8,27 +9,26 @@ while [ -h "$src" ]; do
 done
 
 bindir="$( cd -P "$( dirname "$src" )" && pwd )"
+
+# Locate the install root
 root=`dirname "$bindir"`
 
 forever="$root/node_modules/forever/bin/forever"
-
-
-if [ $# -lt 1 ]
-then
-    echo "Usage: $0 start|restart|stop|serve"
-    exit
-fi
-
+script="$root/server.js"
 
 case "$1" in
-
-serve)
-    echo  "Starting test server. Exit with Ctrl+C."
-    NODE_ENV=production node $root/server.js
-   ;;
-*)
-    NODE_ENV=production $forever $1 ${*:2} \
-        --spinSleepTime 1000 --minUptime 5000 \
-        $root/server.js
-   ;;
+    start)
+        extra_opts="--spinSleepTime 1000 --minUptime 30000"
+        ;;
+    list)
+        script=""
+        ;;
+    logs)
+        script=""
+        ;;
+    -h)
+        echo "Usage: $0 [start|restart|stop|list|logs]"
+        exit
 esac
+
+NODE_ENV=production $forever ${*:1} $extra_opts $script
