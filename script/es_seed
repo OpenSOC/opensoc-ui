@@ -81,3 +81,5 @@ for file in seed/es/*.json
 do
   curl -s -XPOST --data-binary @$file 'http://localhost:9200/_bulk'
 done
+
+echo "\nDone."

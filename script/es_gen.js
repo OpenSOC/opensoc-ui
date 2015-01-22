@@ -63,11 +63,20 @@ function choice(arr) {
 function randomAlerts(source, event) {
   var alerts = [];
   var instance = pad(chance.integer({min: 1, max: 3}), 3);
-  for(var i = 0; i < chance.integer({min: 1, max: 1}); i++) {
+  var priorities = ['High', 'Medium', 'Low'];
+
+  for(var i = 0; i < chance.integer({min: -5, max: 3}); i++) {
     var alertId = chance.guid();
     event.alerts.push(alertId);
     alerts.push({
-      timestamp: chance.timestamp(),
+      alert_id: alertId,
+      timestamp: event.message.timestamp,
+      priority: choice(priorities),
+      designated_host: choice([
+        event.message.ip_src_addr,
+        event.message.ip_dst_addr
+      ]),
+      description: chance.sentence(),
       environment: {
         customer: 'mtd',
         instance: 'dev',
@@ -76,15 +85,6 @@ function randomAlerts(source, event) {
       topology: {
         topology: source,
         topology_instance: source[0].toUpperCase() + instance
-      },
-      triggered: {
-        body: chance.sentence(),
-        title: chance.word(),
-        source: event.message.ip_src_addr,
-        dest: event.message.ip_dst_addr,
-        type: choice(alertType),
-        priority: chance.integer({min: 1, max: 3}),
-        reference_id: alertId
       },
       enrichment: event.enrichment
     });
@@ -179,13 +179,18 @@ for (var i = 0; i < sources.length; i++) {
 
   for (var j = 0; j < documentsPerIndex; j++) {
     var index = source + '_index';
-    var type = source + '_type';
-    objects.push(JSON.stringify({index: {_index: index, _type: type}}));
+    var type = source + '_doc';
+
     var eventData = randomEvent(source);
+    var alertData = randomAlerts(source, eventData);
+    for (var k = 0; k < alertData.length; k++) {
+      eventData.alerts.push(alertData[k].alert_id);
+    }
+
+    objects.push(JSON.stringify({index: {_index: index, _type: type}}));
     objects.push(JSON.stringify(eventData));
 
     objects.push(JSON.stringify({index: {_index: 'alert', _type: source + '_alert'}}));
-    var alertData = randomAlerts(source, eventData);
     for (var k = 0; k < alertData.length; k++) {
       objects.push(JSON.stringify(alertData[k]));
     }

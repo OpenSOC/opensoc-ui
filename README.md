@@ -88,6 +88,8 @@ The OpenSOC-UI is configured using a JSON file.
 
 ##### Fields
 
+* ```auth```: Set to ```true``` to enable authentication with ldap.
+
 * ```host```: IP address the server should listen on.
 
 * ```port```: Port the server should listen on.
@@ -97,7 +99,7 @@ The OpenSOC-UI is configured using a JSON file.
 * ```elasticsearch```: Must be a JSON object with the following keys:
     * ```url```: URI to OpenSOC ElasticSearch cluster.
 
-* ```ldap```: Must be a JSON object with the following keys:
+* ```ldap```: Only required if ```auth``` is set to true. Must be a JSON object with the following keys:
     * ```url```: URI to LDAP service.
     * ```searchBase```: LDAP search base.
     * ```adminDn```: LDAP admin distinguished name.
