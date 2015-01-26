@@ -2,6 +2,8 @@ language: node_js
 env: IN_TRAVIS=true
 node_js:
 - '0.10'
+before_install: npm install -g grunt-cli
+install: npm install
 notifications:
   email:
     recipients:
@@ -10,4 +12,3 @@ notifications:
     on_failure: always
 before_script:
   - sudo apt-get install -y libpcap-dev tshark
-  - sudo npm install -g grunt-cli
