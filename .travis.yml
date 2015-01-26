@@ -10,3 +10,4 @@ notifications:
     on_failure: always
 before_script:
   - sudo apt-get install -y libpcap-dev tshark
+  - sudo npm install -g grunt-cli
