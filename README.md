@@ -1,4 +1,4 @@
-![Build Status](https://magnum.travis-ci.com/OpenSOC/opensoc-ui.svg?token=jo4ZVAV7CXvqp5459Gzo&branch=master)
+![Build Status](https://travis-ci.org/OpenSOC/opensoc-ui.svg?branch=master)
 
 # OpenSOC UI
 
