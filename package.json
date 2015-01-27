@@ -14,7 +14,8 @@
     "opensoc-ui": "./bin/cli"
   },
   "scripts": {
-    "prepublish": "cd kibana && rm -rf dist && grunt build && cp -rf dist ../lib/static_dist"
+    "prepublish": "cd kibana && rm -rf dist && grunt build && cp -rf dist ../lib/static_dist",
+    "test": "NODE_ENV=TEST ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --check-leaks -R spec"
   },
   "repository": {
     "type": "git",

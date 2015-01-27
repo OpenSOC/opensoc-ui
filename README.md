@@ -179,9 +179,34 @@ vagrant ssh
 cd /vagrant
 ```
 
-####  Step 5: Seed the development VM
+#### Step 5: Ensure tests pass
 
-To generate seed data for use with the opensoc-ui, use the following command.
+You can now run the tests:
+
+```bash
+make test
+```
+
+#### Step 6: Launch the server
+
+The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically. Run the following commands from with the vagrant vm.
+
+```bash
+vagrant ssh
+cd /vagrant
+npm install -g nodemon
+nodemon
+```
+
+You can then access the OpenSOC ui at ```http://localhost:5000```.
+
+Two default accounts: mail: joesmith@opensoc.dev, maryfodder@opensoc.dev
+The default password is: opensoc
+
+
+### Seed data for development
+
+When the VM is provisioned, elasticsearch and LDAP are provided some seed data to get you started. This fake data tries to mimic data from the OpenSOC platform to set you up for local development without running the entire platform. Occasionally, you may need to regenerate your seed data. To do this, use the following command.
 
 ```bash
 script/es_gen.js
@@ -204,27 +229,3 @@ For authentication, make sure you set up the LDAP directory structure with:
 ```bash
 script/ldap_seed
 ```
-
-#### Step 6: Ensure tests pass
-
-You can now run the tests:
-
-```bash
-make test
-```
-
-#### Step 7: Launch the server
-
-The ```nodemon``` utility automatically watches for changed files and reloads the node server automatically. Run the following commands from with the vagrant vm.
-
-```bash
-vagrant ssh
-cd /vagrant
-npm install -g nodemon
-nodemon
-```
-
-You can then access the OpenSOC ui at ```http://localhost:5000```.
-
-Two default accounts: mail: joesmith@opensoc.dev, maryfodder@opensoc.dev
-The default password is: opensoc

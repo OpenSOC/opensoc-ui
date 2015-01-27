@@ -25,6 +25,9 @@ ldapmodify -Y EXTERNAL -H ldapi:/// -f logging.ldif
 ldapmodify -Y EXTERNAL -H ldapi:/// -f config.ldif
 ldapadd -D cn=admin,cn=config -w "opensoc" -H ldapi:/// -f memberof_add.ldif
 ldapadd -D cn=admin,cn=config -w "opensoc" -H ldapi:/// -f memberof_config.ldif
+
+# SEED LDAP
+ldapadd -h localhost -p 389 -D "cn=admin,dc=opensoc,dc=dev" -w opensoc -f content.ldif
 cd -
 ### END OPENLDAP ###
 
@@ -40,8 +43,13 @@ bin/plugin -install mobz/elasticsearch-head
 cd -
 update-rc.d elasticsearch defaults 95 10
 service elasticsearch restart
-### END ELASTICSEARCH ###
 
+# SEED ELASTICSEARCH
+cd /vagrant
+su vagrant -c "script/es_gen.js"
+su vagrant -c "script/es_seed"
+cd -
+### END ELASTICSEARCH ###
 
 ### NODE SETUP ###
 apt-get update
@@ -50,6 +58,11 @@ apt-get install -y nodejs npm git
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g nodemon
 npm install -g grunt-cli
+
+cd /vagrant/kibana
+rm -rf node_modules dist
+su vagrant -c "npm install"
+cd -
 
 cd /vagrant
 rm -rf node_modules
