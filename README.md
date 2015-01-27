@@ -184,7 +184,7 @@ cd /vagrant
 You can now run the tests:
 
 ```bash
-make test
+npm test
 ```
 
 #### Step 6: Launch the server
