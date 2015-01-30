@@ -36,6 +36,7 @@ var assetValues = ['important', 'mundane'];
 var assetTypes = ['printer', 'server', 'router'];
 var alertType = ['error', 'warning', 'alert'];
 var clusters = ['preprod', 'cluster A', 'cluster B'];
+var cifLevels = ['orange', 'red', 'yellow', 'brown'];
 var protocols = ['tcp', 'udp'];
 var protocolMap = {tcp: 6, udp: 17};
 
@@ -109,6 +110,9 @@ function randomEvent(source) {
       timestamp: chance.integer({min: startTimestamp, max: endTimestamp})
     },
     enrichment: {
+      cif: {
+        level: choice(cifLevels)
+      },
       geo: {
         ip_dst_addr: dst.geo,
         ip_src_addr: src.geo
