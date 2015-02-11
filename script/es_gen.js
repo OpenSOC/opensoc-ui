@@ -36,7 +36,7 @@ var assetValues = ['important', 'mundane'];
 var assetTypes = ['printer', 'server', 'router'];
 var alertType = ['error', 'warning', 'alert'];
 var clusters = ['preprod', 'cluster A', 'cluster B'];
-var cifLevels = ['orange', 'red', 'yellow', 'brown'];
+var cifLevels = ['RED', 'AMBER', 'GREEN', 'WHITE'];
 var protocols = ['tcp', 'udp'];
 var protocolMap = {tcp: 6, udp: 17};
 
