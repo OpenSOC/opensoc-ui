@@ -146,7 +146,7 @@ ___
 ## Development
 
 
-These instructions are only for local development on the OpenSOC UI. Development is done in an Ubuntu 1.04 virtual machine that is provisioned using vagrant. It is intended to provided an isolated environment with all the dependencies and services either installed or stubbed. None of these instructions should be used for deployments. If that was not clear enough, these instructions are **NOT FOR DEPLOYMENT**.
+These instructions are only for local development on the OpenSOC UI. Development is done in an Ubuntu 14.04(trusty) virtual machine that is provisioned using vagrant. It is intended to provided an isolated environment with all the dependencies and services either installed or stubbed. None of these instructions should be used for deployments. If that was not clear enough, these instructions are **NOT FOR DEPLOYMENT**.
 
 #### Step 1: Install Virtualbox and Vagrant
 
