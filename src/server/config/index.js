@@ -33,10 +33,13 @@ try {
   packagePath = path.resolve(__dirname, '..', '..', '..', 'package.json');
 }
 
+var requestTimeout = kibana.request_timeout || 0;
+var pingTimeout = kibana.ping_timeout == null ? requestTimeout : kibana.ping_timeout;
+
 var config = module.exports = {
   port                    : kibana.port || 5601,
   host                    : kibana.host || '0.0.0.0',
-  elasticsearch           : kibana.elasticsearch_url || 'http           : //localhost : 9200',
+  elasticsearch           : kibana.elasticsearch_url || 'http://localhost:9200',
   root                    : path.normalize(path.join(__dirname, '..')),
   quiet                   : false,
   public_folder           : public_folder,
@@ -46,7 +49,11 @@ var config = module.exports = {
   opensoc                 : kibana.opensoc,
   package                 : require(packagePath),
   htpasswd                : htpasswdPath,
-  buildNum                : '@@buildNum'
+  buildNum                : '@@buildNum',
+  maxSockets              : kibana.maxSockets || Infinity,
+  log_file                : kibana.log_file || null,
+  request_timeout         : requestTimeout,
+  ping_timeout            : pingTimeout
 };
 
 config.plugins = listPlugins(config);

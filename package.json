@@ -18,19 +18,22 @@
   },
   "preferGlobal": true,
   "license": "Apache 2.0",
-  "author": "Rashid Khan <rashid.khan@elasticsearch.com>",
+  "author": "Rashid Khan <rashid.khan@elastic.co>",
   "contributors": [
-    "Spencer Alger <spencer.alger@elasticsearch.com>",
-    "Chris Cowan <chris.cowan@elasticsearch.com>",
-    "Joe Fleming <joe.fleming@elasticsearch.com>",
-    "Lukas Olson <lukas.olson@elasticsearch.com>",
+    "Spencer Alger <spencer.alger@elastic.co>",
+    "Chris Cowan <chris.cowan@elastic.co>",
+    "Joe Fleming <joe.fleming@elastic.co>",
+    "Lukas Olson <lukas.olson@elastic.co>",
+    "Juan Thomassie <juan.thomassie@elastic.co>",
+    "Shelby Sturgis <shelby@elastic.co>",
+    "Khalah Jones-Golden <khalah.jones@elastic.co>",
     "Ram Mehta <ram.mehta@gmail.com>"
   ],
   "scripts": {
     "test": "grunt test",
     "start": "node ./src/server/bin/kibana.js",
     "server": "node ./src/server/bin/kibana.js",
-    "precommit": "grunt hintStagedFiles"
+    "precommit": "grunt lintStagedFiles"
   },
   "repository": {
     "type": "git",
@@ -62,6 +65,8 @@
     "requirefrom": "^0.2.0",
     "semver": "^4.2.0",
     "serve-favicon": "~2.2.0",
+    "through": "^2.3.6",
+
     "cluster": "~0.7.7",
     "connect": "^2.16.2",
     "connect-flash": "^0.1.1",
@@ -83,11 +88,12 @@
     "grunt-contrib-compress": "~0.9.1",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-jade": "~0.10.0",
-    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-jshint": "^0.11",
     "grunt-contrib-less": "~0.10.0",
     "grunt-contrib-requirejs": "~0.4.4",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-esvm": "~0.3.2",
+    "grunt-jscs": "git://github.com/spalger/grunt-jscs.git#addFix",
     "grunt-mocha": "~0.4.10",
     "grunt-replace": "^0.7.9",
     "grunt-run": "^0.2.3",
@@ -111,8 +117,9 @@
     "requirejs": "~2.1.14",
     "rjs-build-analysis": "0.0.3",
     "simple-git": "^0.11.0",
+    "sinon": "^1.12.2",
+    "sinon-as-promised": "^2.0.3",
     "tar": "^1.0.1",
-    "grunt-lib-contrib": "~0.7.1",
     "chalk": "~1.0.0",
     "q": "~1.2.0"
   }

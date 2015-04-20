@@ -2,6 +2,7 @@ define(function (require) {
   return function LegendFactory(d3) {
     var _ = require('lodash');
     var legendHeaderTemplate = _.template(require('text!components/vislib/partials/legend_header.html'));
+    var dataLabel = require('components/vislib/lib/_data_label');
 
     require('css!components/vislib/styles/main');
 
@@ -76,24 +77,23 @@ define(function (require) {
       .data(arrOfLabels)
       .enter()
         .append('li')
-        .attr('class', function (d) {
-          return 'color ' + self.colorToClass(args.color(d));
-        })
+        .attr('class', 'color')
+        .each(self._addIdentifier)
         .html(function (d) {
           return '<i class="fa fa-circle dots" style="color:' + args.color(d) + '"></i>' + d;
         });
     };
 
     /**
-     * Creates a class name based on the colors assigned to each label
+     * Append the data label to the element
      *
-     * @method colorToClass
-     * @param name {String} Label
-     * @returns {string} CSS class name
+     * @method _addIdentifier
+     * @param label {string} label to use
      */
-    Legend.prototype.colorToClass = function (name) {
-      return 'c' + name.replace(/[#]/g, '');
+    Legend.prototype._addIdentifier = function (label) {
+      dataLabel(this, label);
     };
+
 
     /**
      * Renders legend
@@ -131,35 +131,47 @@ define(function (require) {
         }
       });
 
-      visEl.selectAll('.color')
-      .on('mouseover', function (d) {
-        var liClass = '.' + self.colorToClass(self.color(d));
-        visEl.selectAll('.color').classed('blur_shape', true);
+      legendDiv.select('.legend-ul').selectAll('li')
+      .on('mouseover', function (label) {
+        var charts = visEl.selectAll('.chart');
+
+        // legend
+        legendDiv.selectAll('li')
+        .filter(function (d) {
+          return this.getAttribute('data-label') !== label;
+        })
+        .classed('blur_shape', true);
+
+        // all data-label attribute
+        charts.selectAll('[data-label]')
+        .filter(function (d) {
+          return this.getAttribute('data-label') !== label;
+        })
+        .classed('blur_shape', true);
 
         var eventEl =  d3.select(this);
         eventEl.style('white-space', 'inherit');
         eventEl.style('word-break', 'break-all');
-
-        // select series on chart
-        visEl.selectAll(liClass).classed('blur_shape', false);
       })
       .on('mouseout', function () {
         /*
          * The default opacity of elements in charts may be modified by the
          * chart constructor, and so may differ from that of the legend
          */
-        visEl.selectAll('.chart')
-        .selectAll('.color')
+
+        var charts = visEl.selectAll('.chart');
+
+        // legend
+        legendDiv.selectAll('li')
+        .classed('blur_shape', false);
+
+        // all data-label attribute
+        charts.selectAll('[data-label]')
         .classed('blur_shape', false);
 
         var eventEl =  d3.select(this);
         eventEl.style('white-space', 'nowrap');
         eventEl.style('word-break', 'inherit');
-
-        // Legend values should always return to their default opacity of 1
-        visEl.select('.legend-ul')
-        .selectAll('.color')
-        .classed('blur_shape', false);
       });
     };
 

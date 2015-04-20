@@ -1,6 +1,6 @@
 <div class="form-group">
   <div ng-repeat="filter in agg.params.filters">
-    <label>Query {{$index + 1}}</label>
+    <label>Filter {{$index + 1}}</label>
     <div class="form-group vis-editor-agg-form-row">
       <input validate-query
         ng-model="filter.input.query"
@@ -17,9 +17,18 @@
     </div>
   </div>
 </div>
+
+<input ng-model="agg.params.filters.length" name="filterLength" required min="1" type="number" class="ng-hide">
+<div class="hintbox" ng-show="aggForm.filterLength.$invalid">
+  <p>
+    <i class="fa fa-danger text-danger"></i>
+    <strong>Required:</strong> You must specify at least one filter
+  </p>
+</div>
+
 <div
   click-focus="'filter'+(agg.params.filters.length-1)"
   ng-click="agg.params.filters.push({input:{}})"
   class="sidebar-item-button primary">
-  Add filter
+  Add Filter
 </div>

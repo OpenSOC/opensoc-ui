@@ -6,7 +6,9 @@
 
     <input
       ng-model="agg.params.percents[$index]"
-      percent-list="agg.params.percents"
+      values-list="agg.params.percents"
+      values-list-min="0"
+      values-list-max="100"
       input-focus
       class="form-control">
 
@@ -16,9 +18,12 @@
   </div>
 
   <input ng-model="validLength" name="validLength" required type="hidden">
-  <p ng-show="aggForm.validLength.$invalid" class="text-danger text-center">
-    You mush specify at least one percentile
-  </p>
+  <div class="hintbox" ng-show="aggForm.validLength.$invalid">
+    <p>
+      <i class="fa fa-danger text-danger"></i>
+      <strong>Required:</strong> You mush specify at least one percentile
+    </p>
+  </div>
 
   <button
     ng-click="add()"

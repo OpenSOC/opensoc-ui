@@ -12,6 +12,12 @@ ___
 
 [TODO] Rewrite this section.
 
+---
+* Download: [http://www.elastic.co/downloads/kibana](http://www.elastic.co/downloads/kibana)
+* Run `bin/kibana` on unix, or `bin\kibana.bat` on Windows.
+* Visit [http://localhost:5601](http://localhost:5601)
+---
+
 * Create a config file: ```echo "{}" > ~/.opensoc-ui``` (*)
 * Install opensoc-ui: ```npm install -g opensoc-ui```
 * Start opensoc-ui: ```opensoc-ui``` (*)
@@ -239,4 +245,4 @@ script/ldap_seed
 
 ## Kibana Documentation
 
-Visit [Elasticsearch.org](http://www.elasticsearch.org/guide/en/kibana/current/index.html) for the full Kibana documentation.
+Visit [Elastic.co](http://www.elastic.co/guide/en/kibana/current/index.html) for the full Kibana documentation.

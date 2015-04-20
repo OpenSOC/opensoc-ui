@@ -2,7 +2,6 @@ define(function (require) {
   var $ = require('jquery');
   var app = require('modules').get('apps/discover');
   var html = require('text!plugins/discover/components/field_chooser/discover_field.html');
-  var detailsHtml = require('text!plugins/discover/components/field_chooser/discover_field_details.html');
   var _ = require('lodash');
 
   require('directives/css_truncate');
@@ -17,6 +16,8 @@ define(function (require) {
       link: function ($scope, $elem) {
         var detailsElem;
         var detailScope = $scope.$new();
+
+        var detailsHtml = require('text!plugins/discover/components/field_chooser/lib/detail_views/string.html');
 
         var init = function () {
           if ($scope.field.details) {
@@ -34,7 +35,8 @@ define(function (require) {
 
             if (field.analyzed && field.type === 'string') {
               warnings.push('This is an analyzed string field.' +
-                ' Analyzed strings are highly unique and can use a lot of memory to visualize.');
+                ' Analyzed strings are highly unique and can use a lot of memory to visualize.' +
+                ' Values such as foo-bar will be broken into foo and bar.');
             }
 
             if (!field.indexed) {

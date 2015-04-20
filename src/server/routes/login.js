@@ -1,4 +1,4 @@
-exports = module.exports = function(app, config) {
+exports = module.exports = function (app, config) {
   var _ = require('lodash');
   var passport = require('passport');
   var ldapauth = require('passport-ldapauth');
@@ -9,7 +9,7 @@ exports = module.exports = function(app, config) {
     passwordField: 'password',
     server: config.ldap
   }, function (user, done) {
-      return done(null, user);
+    return done(null, user);
   }));
 
   // Serialize LDAP user into session.
@@ -23,12 +23,12 @@ exports = module.exports = function(app, config) {
     ldapUser.permissions = {};
     var permissions = _.keys(config.permissions);
     _.each(permissions, function (perm) {
-      ldapUser.permissions[perm] = false
-      _.each(config.permissions[perm], function(group) {
+      ldapUser.permissions[perm] = false;
+      _.each(config.permissions[perm], function (group) {
         if (_.contains(memberOf, group)) {
           ldapUser.permissions[perm] = true;
         }
-      })
+      });
     });
 
     done(null, JSON.stringify(ldapUser));
@@ -38,7 +38,7 @@ exports = module.exports = function(app, config) {
   passport.deserializeUser(function (ldapUser, done) {
     try {
       done(null, JSON.parse(ldapUser));
-    } catch(err) {
+    } catch (err) {
       done(null, null);
     }
   });
