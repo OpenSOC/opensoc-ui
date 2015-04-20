@@ -1,4 +1,5 @@
 language: node_js
+<<<<<<< HEAD
 env: IN_TRAVIS=true
 node_js:
 - '0.10'
@@ -12,3 +13,24 @@ notifications:
     - opensoc-github@external.cisco.com
     on_success: never
     on_failure: always
+=======
+node_js:
+- '0.10'
+install:
+- npm install -g grunt-cli bower
+- npm install
+- bower install
+script:
+- npm test
+notifications:
+  email:
+  - rashid.khan@elasticsearch.com
+  - spencer.alger@elasticsearch.com
+  hipchat:
+    rooms:
+      secure: UKrVR+5KztHarodQruQe97UJfwftutD6RNdXlVkr+oIr2GqccisDIIN9pAzS/kxl+eAnP1uT6VHzc9YI/jgbrmiSkz3DHViw+MwDwY2aIDgI8aHEbd/4B2ihtb15+OYTVbb+lytyz4+W8A8hSmbkTR/P/uFIJ+EYcBeYZfw1elo=
+    format: html
+    on_success: change
+    template:
+    - ! '%{repository_slug}/%{branch} by %{author}: %{commit_message} (<a href="%{build_url}">open</a>)'
+>>>>>>> d31be9aa7399e62a191bbf8435d6a0cdad569383

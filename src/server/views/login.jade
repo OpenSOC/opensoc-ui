@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    meta(name='viewport', content='width=device-width')
+    title OpenSOC - Login
+    link(rel='stylesheet', href='styles/main.css?_b=@@buildNum')
+    //- link(rel='stylesheet', href='css/bootstrap.dark.min.css', title='Dark')
+    //- link(rel='stylesheet', href='css/timepicker.css')
+    //- link(rel='stylesheet', href='css/animate.min.css')
+    //- link(rel='stylesheet', href='css/normalize.min.css')
+    style.
+      .login-form {
+        margin-top: 60px;
+        border: 1px solid #666;
+        padding: 20px;
+      }
+
+      td.count {
+        background-color: #ee0000;
+      }
+  body
+    noscript
+      .container
+        center
+          h3 You must enable javascript to use Kibana
+    //- link(rel='stylesheet', href='css/bootstrap.dark.min.css')
+    //- link(rel='stylesheet', href='css/bootstrap-responsive.min.css')
+    //- link(rel='stylesheet', href='css/font-awesome.min.css')
+    .container
+      .row
+        .col-xs-4.col-xs-offset-4
+          form.login-form.form-signin(action='/login', method='POST')
+            if flash.error
+              .alert.alert-error=flash.error
+
+            h3.text-center.form-signin-heading Login
+            label(for="inputEmail" class="sr-only") Email address
+            input(name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus)
+            label(for="inputPassword" class="sr-only") Password
+            input(name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required)
+            br
+            button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign In

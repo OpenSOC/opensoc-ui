@@ -1,3 +1,0 @@
-[submodule "kibana"]
-	path = kibana
-	url = https://github.com/OpenSOC/kibana

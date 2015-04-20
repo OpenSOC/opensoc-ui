@@ -1,8 +1,8 @@
-![Build Status](https://travis-ci.org/OpenSOC/opensoc-ui.svg?branch=master)
+![Build Status](https://travis-ci.org/OpenSOC/opensoc-ui.svg?branch=kibana4)
 
 # OpenSOC UI
 
-User interface for the OpenSOC platform. The UI is a modified version of **[Kibana 3](https://github.com/elasticsearch/kibana/tree/kibana3)** which is served by a node JS backend.
+User interface for the OpenSOC platform. The UI is a modified version of **[Kibana 4](https://github.com/elasticsearch/kibana/tree/master)**.
 ___
 
 ## Deployment
@@ -10,9 +10,11 @@ ___
 
 ### Quick start
 
-* Create a config file: ```echo "{}" > ~/.opensoc-ui```
+[TODO] Rewrite this section.
+
+* Create a config file: ```echo "{}" > ~/.opensoc-ui``` (*)
 * Install opensoc-ui: ```npm install -g opensoc-ui```
-* Start opensoc-ui: ```opensoc-ui```
+* Start opensoc-ui: ```opensoc-ui``` (*)
 
 This will start the server in the same process. To start/stop a daemonized server use ```opensoc-ui start``` and ```opensoc-ui stop```. You can view the location of the log file with ```opensoc-ui logs```. The daemon is started using the ```forever``` node package. You can tack on other command line flags that the library supports. More information about this is available at https://www.npmjs.com/package/forever.
 
@@ -44,6 +46,8 @@ npm install -g opensoc-ui
 
 #### Step 3: Configure the UI
 
+[TODO] Rewrite this section.
+
 Before you can spin up the UI, you need to point it to the various services and configure other deployment specific settings. The application will look for an application config using in the following places in order:
 
 * ```~/.opensoc-ui```
@@ -58,6 +62,8 @@ opensoc-ui
 This will run the server without daemonizing that may make it easier to debug any issues with your setup. You can exit the test server with ```Ctrl+C```.
 
 #### Step 5: Start daemonized server
+
+[TODO] Rewrite this section.
 
 ```bash
 opensoc-ui start
@@ -115,6 +121,8 @@ The OpenSOC-UI is configured using a JSON file.
 
 ##### Example config
 
+[TODO] Rewrite this section.
+
 The following is an example ```config.json``` file. This config will not work for you in production but is meant to serve as an example. It assumes that ElasticSearch, LDAP, and the OpenSOC PCAP service are running on 192.168.100.1:
 
 ```json
@@ -160,7 +168,6 @@ Download the latest package for your platform here:
 ```bash
 git clone git@github.com:OpenSOC/opensoc-ui.git
 cd opensoc-ui
-git submodule update --init
 ```
 
 #### Step 3: Download and provision the development environment
@@ -206,7 +213,7 @@ The default password is: opensoc
 
 ### Seed data for development
 
-When the VM is provisioned, elasticsearch and LDAP are provided some seed data to get you started. This fake data tries to mimic data from the OpenSOC platform to set you up for local development without running the entire platform. Occasionally, you may need to regenerate your seed data. To do this, use the following command.
+When the VM is provisioned, elasticsearch and LDAP are provided some seed data to get you started. This fake data tries to mimic data from the OpenSOC platform to set you up for local development without running the entire platform. Occasionally, you may need to regenerate your seed data. To do this, use the following commands.
 
 ```bash
 script/es_gen.js
@@ -229,3 +236,7 @@ For authentication, make sure you set up the LDAP directory structure with:
 ```bash
 script/ldap_seed
 ```
+
+## Kibana Documentation
+
+Visit [Elasticsearch.org](http://www.elasticsearch.org/guide/en/kibana/current/index.html) for the full Kibana documentation.

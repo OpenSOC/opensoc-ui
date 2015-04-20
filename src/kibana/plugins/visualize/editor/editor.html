@@ -1,0 +1,120 @@
+<div ng-controller="VisEditor" class="vis-editor">
+
+  <navbar ng-if="!appEmbedded">
+    <div class="fill bitty-modal-container">
+      <div ng-if="vis.type.requiresSearch && $state.linked && !unlinking"
+        ng-dblclick="unlink()"
+        tooltip="Double click to unlink this visualization from the saved search"
+        class="bitty-modal visualize-linked">
+        <i class="fa fa-link"></i>
+        &nbsp;
+        This visualization is linked to a saved search:
+        <b>{{ savedVis.savedSearchId | json}}</b>
+      </div>
+
+      <div
+        ng-if="vis.type.requiresSearch && unlinking"
+        ng-click="clearUnlinking()"
+        class="bitty-modal">
+        <i class="fa fa-chain-broken"></i> Unlinked!
+      </div>
+
+      <form ng-if="vis.type.requiresSearch && $state.linked" class="inline-form" name="queryInput">
+        <div class="typeahead">
+          <div class="input-group">
+            <input
+              disabled
+              type="text"
+              class="form-control">
+
+            <button
+              class="btn btn-default" type="submit"
+              ng-disabled="true">
+              <span class="fa fa-search"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <form
+        ng-if="vis.type.requiresSearch && !$state.linked"
+        ng-submit="fetch()"
+        class="inline-form"
+        name="queryInput">
+        <div class="typeahead" kbn-typeahead="visualize">
+          <div class="input-group"
+            ng-class="queryInput.$invalid ? 'has-error' : ''">
+            <input
+              ng-model="state.query"
+              validate-query
+              input-focus
+              kbn-typeahead-input
+              placeholder="Search..."
+              type="text"
+              class="form-control">
+
+            <button
+              class="btn btn-default" type="submit"
+              ng-disabled="queryInput.$invalid">
+              <span class="fa fa-search"></span>
+            </button>
+          </div>
+          <kbn-typeahead-items></kbn-typeahead-items>
+        </div>
+      </form>
+    </div>
+
+    <div class="button-group">
+      <kbn-tooltip text="New Visualization" placement="bottom" append-to-body="1">
+        <button ng-click="startOver()"><i class="fa fa-file-new-o"></i></button>
+      </kbn-tooltip>
+
+      <kbn-tooltip text="Save Visualization" placement="bottom" append-to-body="1">
+        <!-- normal save -->
+        <button ng-if="!editableVis.dirty" ng-click="configTemplate.toggle('save')">
+          <i class="fa fa-save"></i>
+        </button>
+
+        <!-- save stub with tooltip -->
+        <button disabled ng-if="editableVis.dirty" tooltip="Apply or Discard your changes before saving">
+          <i class="fa fa-save"></i>
+        </button>
+      </kbn-tooltip>
+
+      <kbn-tooltip text="Load Saved Visualization" placement="bottom" append-to-body="1">
+        <button ng-click="configTemplate.toggle('load')"><i class="fa fa-folder-open-o"></i></button>
+      </kbn-tooltip>
+      <kbn-tooltip text="Share Visualization" placement="bottom" append-to-body="1">
+        <button ng-click="configTemplate.toggle('share')"><i class="fa fa-external-link"></i></button>
+      </kbn-tooltip>
+      <kbn-tooltip text="Refresh" placement="bottom" append-to-body="1">
+        <button ng-click="fetch()"><i class="fa fa-refresh"></i></button>
+      </kbn-tooltip>
+    </div>
+  </navbar>
+
+
+  <config
+    ng-if="!appEmbedded"
+    config-template="configTemplate"
+    config-object="conf">
+  </config>
+
+  <filter-bar state="state"></filter-bar>
+
+  <div class="vis-editor-content">
+
+    <vis-editor-sidebar class="vis-editor-sidebar" ng-if="!appEmbedded"></vis-editor-sidebar>
+
+    <div class="vis-editor-canvas" ng-class="{ embedded: appEmbedded }">
+      <div class="visualize-info" ng-if="savedVis.id">
+        <div class="visualize-info-tab">
+          <span bindonce bo-bind="savedVis.title"></span>
+        </div>
+      </div>
+
+      <visualize vis="vis" editable-vis="editableVis"  search-source="savedVis.searchSource"></visualize>
+    </div>
+  </div>
+
+</div>

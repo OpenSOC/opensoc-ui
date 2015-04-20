@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kibana4 Tests</title>
+
+    <link rel="stylesheet" href="/node_modules/mocha/mocha.css" />
+    <script src="/node_modules/expect.js/index.js"></script>
+    <script src="/node_modules/mocha/mocha.js"></script>
+    <script src="/src/kibana/bower_components/requirejs/require.js"></script>
+    <script src="/src/kibana/require.config.js"></script>
+
+    <script>(function () {
+      var COVERAGE = !!(/coverage/i.test(window.location.search));
+      var SAUCELABS = !!(/saucelabs/i.test(window.location.search));
+      var DISABLE_RESIZE_CHECKER = true;
+
+      mocha.setup({
+        ui: 'bdd',
+        reporter: 'html'
+      });
+
+      require.config({
+        baseUrl: '/',
+        paths: {
+          config: '/config',
+          specList: '/specs',
+          test_utils: '../../test/utils',
+          fixtures: '../../test/unit/fixtures',
+          vislib_fixtures: '../../test/unit/specs/vislib/fixture',
+          specs: '../../test/unit/specs',
+          sinon: '../../test/utils/sinon',
+          bluebird: 'bower_components/bluebird/js/browser/bluebird',
+          angular: 'bower_components/angular-mocks/angular-mocks',
+          angular_src: 'bower_components/angular/angular',
+          screencast_reporter_css: '../../node_modules/mocha-screencast-reporter/screencast-reporter',
+          ScreencastReporter: '../../node_modules/mocha-screencast-reporter/screencast-reporter'
+        },
+        shim: {
+          angular: {
+            deps: [
+              'jquery',
+              'angular_src'
+            ],
+            exports: 'angular'
+          },
+          'sinon/sinon': {
+            deps: [
+              'sinon/sinon-timers-1.8.2'
+            ],
+            exports: 'sinon'
+          }
+        },
+        waitSeconds: 6000,
+        // mark all requested files with instrument query param
+        urlArgs: COVERAGE ? 'instrument=true' : void 0
+      });
+
+      function setupCoverage(done) {
+        document.title = document.title.replace('Tests', 'Coverage');
+        require([
+          'test_utils/istanbul_reporter/reporter'
+        ], function (IstanbulReporter) {
+          mocha.reporter(IstanbulReporter);
+          done();
+        });
+      }
+
+      function setupSaucelabsReporter(done) {
+        require([
+          'ScreencastReporter',
+          'css!screencast_reporter_css'
+        ], function (ScreencastReporter) {
+          mocha.reporter(ScreencastReporter);
+          done();
+        });
+      }
+
+      function runTests() {
+        require([
+          'text!specList',
+          'kibana',
+          'sinon/sinon',
+          'angular'
+        ], loadSpecs);
+      }
+
+      function loadSpecs(specListJson) {
+        var deps = JSON.parse(specListJson);
+        deps.unshift('sinon/sinon');
+        deps.unshift('kibana');
+
+        sessionStorage.clear();
+        localStorage.clear();
+
+        require(deps, bootstrap);
+      }
+
+      function bootstrap(kibana, sinon) {
+        kibana.load(function () {
+          var xhr = sinon.useFakeXMLHttpRequest();
+
+          window.mochaRunner = mocha.run().on('end', function () {
+            window.mochaResults = this.stats;
+            window.mochaResults.details = getFailedTests(this);
+            xhr.restore();
+          });
+
+          function getFailedTests(runner) {
+            var fails = [];
+            var suiteStack = [];
+
+            (function recurse(suite) {
+              suiteStack.push(suite);
+
+              (suite.tests || [])
+              .filter(function (test) {
+                return test.state !== 'passed' && test.state !== 'pending';
+              })
+              .forEach(function (test) {
+                fails.push({
+                  title: suiteStack.concat(test).reduce(function (title, suite) {
+                    if (suite.title) {
+                      return (title ? title + ' ' : '') + suite.title;
+                    } else {
+                      return title;
+                    }
+                  }, ''),
+                  err: test.err ? (test.err.stack || test.err.message) : 'unknown error'
+                });
+              });
+
+              (suite.suites || []).forEach(recurse);
+
+              suiteStack.pop();
+            }(runner.suite));
+
+            return fails;
+          }
+        });
+      }
+
+      if (COVERAGE) {
+        setupCoverage(runTests);
+      }
+      else if (SAUCELABS) {
+        setupSaucelabsReporter(runTests);
+      }
+      else {
+        runTests();
+      }
+
+    })();</script>
+  </head>
+  <body><div id="mocha"></div></body>
+</html>
