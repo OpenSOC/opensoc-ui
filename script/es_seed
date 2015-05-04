@@ -76,6 +76,21 @@ curl -XPUT 'http://localhost:9200/pcap_all/' -d '{
   }
 }'
 
+# Apply an index filter to add the _timestamp path which maps to timestamp
+# TODO: Remove this after a set mapping has this implemented
+curl -XPUT 'http://localhost:9200/_template/ts_template' -d '{
+  "template": "*",
+  "mappings": {
+    "_default_": {
+      "_timestamp": {
+        "store": true,
+        "enabled": true,
+        "path": "timestamp"
+      }
+    }
+  }
+}'
+
 # Seed Elasticsearch.
 for file in seed/es/*.json
 do

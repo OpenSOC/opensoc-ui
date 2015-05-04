@@ -33,7 +33,7 @@ define(function (require) {
       description: 'The index to access if no index is set',
     },
     'metaFields': {
-      value: ['_source', '_id', '_type', '_index'],
+      value: ['_source', '_id', '_type', '_index', '_timestamp'],
       description: 'Fields that exist outside of _source to merge into our document when displaying it',
     },
     'discover:sampleSize': {
