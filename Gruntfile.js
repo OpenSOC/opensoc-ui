@@ -17,6 +17,7 @@ module.exports = function (grunt) {
     nodeVersion: '0.10.35',
     platforms: ['darwin-x64', 'linux-x64', 'linux-x86', 'windows'],
 
+    osptestDir: __dirname + '/test/opensoc',
     unitTestDir: __dirname + '/test/unit',
     testUtilsDir: __dirname + '/test/utils',
     bowerComponentsDir: __dirname + '/src/kibana/bower_components',
@@ -37,6 +38,7 @@ module.exports = function (grunt) {
       '<%= src %>/server/**/*.js',
       '<%= src %>/kibana/{components,directives,factories,filters,plugins,registry,services,utils}/**/*.js',
       '<%= unitTestDir %>/**/*.js',
+      '<%= osptestDir %>/**/*.js',
       '!<%= unitTestDir %>/specs/vislib/fixture/**/*'
     ],
     lessFiles: [

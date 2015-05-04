@@ -1,5 +1,7 @@
 var _ = require('lodash');
 module.exports = function (grunt) {
+  var config = require('../src/server/config/');
+
   function addTestTask(tasks) {
     var testTask = 'mocha:unit';
 
@@ -22,6 +24,10 @@ module.exports = function (grunt) {
     if (grunt.option('quick')) {
       grunt.task.run('quick-test');
       return;
+    }
+
+    if (config.kibana.opensoc.auth) {
+      config.kibana.opensoc.auth = false;
     }
 
     var tasks = [
