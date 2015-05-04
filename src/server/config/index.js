@@ -56,9 +56,9 @@ var config = module.exports = {
   ping_timeout            : pingTimeout,
 
   pcap: {
-    url: "http://127.0.0.1:5601/sample/pcap",
+    url: 'http://127.0.0.1:5601/sample/pcap',
     mock: true
-  } 
+  }
 };
 
 config.plugins = listPlugins(config);
