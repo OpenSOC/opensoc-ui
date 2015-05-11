@@ -41,3 +41,9 @@ lib/static_dist
 
 # temp files
 /tmp
+
+# Nodemon specific
+.nodemon-find-ref
+
+# Basics
+.DS_Store
