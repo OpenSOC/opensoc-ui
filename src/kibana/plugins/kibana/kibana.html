@@ -16,7 +16,7 @@
     <!-- Full navbar -->
     <div collapse="!showCollapsed" class="navbar-collapse" id="kibana-primary-navbar">
       <ul class="nav navbar-nav" role="navigation">
-        <li aria-label="Kibana Barcode Logo" class="logo hidden-xs"></li>
+        <li aria-label="Kibana Barcode Logo" class="logo hidden-xs" title="Version @@version"></li>
         <li ng-repeat="app in apps.inOrder | filter:{show: true}" ng-class="{active: activeApp === app}">
           <a ng-href="#{{app === activeApp ? app.rootPath : app.lastPath}}" bo-text="app.name"></a>
         </li>
