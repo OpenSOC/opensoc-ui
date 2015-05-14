@@ -3,6 +3,7 @@ module.exports = function (grunt) {
   var build = grunt.config.get('build');
   var src = grunt.config.get('src');
   var app = grunt.config.get('app');
+  var plugins = grunt.config.get('plugins');
 
   var config = {
     options: {
@@ -26,6 +27,10 @@ module.exports = function (grunt) {
         {
           src: [join(src, 'server', 'config', 'index.js')],
           dest: join(build, 'dist', 'kibana', 'src', 'config', 'index.js')
+        },
+        {
+          src: [join(plugins, 'kibana', 'kibana.html')],
+          dest: join(build, 'src', 'plugins', 'kibana', 'kibana.html')
         }
       ]
     },
