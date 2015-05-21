@@ -18,6 +18,7 @@ var passport = require('passport');
 var routes = require('./routes/index');
 var proxy = require('./routes/proxy');
 var login = require('./routes/login');
+var pcap = require('./routes/pcap');
 
 var app = express();
 
@@ -78,12 +79,8 @@ if (config.external_plugins_folder) app.use('/plugins', express.static(config.ex
 
 app.use('/', routes);
 
-
-/**
- * pcap service
- */
-require('../../lib/modules/pcap')(app, config);
-
+// pcap service
+pcap(app, config);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

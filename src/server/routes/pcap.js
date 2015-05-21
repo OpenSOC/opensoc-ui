@@ -29,7 +29,7 @@ function readRawBytes(size, transit) {
 }
 
 
-exports = module.exports = function(app, config) {
+exports = module.exports = function (app, config) {
   var _ = require('lodash');
   var fs = require('fs');
   var spawn = require('child_process').spawn;
@@ -38,12 +38,12 @@ exports = module.exports = function(app, config) {
 
   // Mock pcap service for use in development
   if (config.pcap.mock) {
-    app.get('/sample/pcap/:command', function(req, res) {
+    app.get('/sample/pcap/:command', function (req, res) {
       res.sendFile('/vagrant/seed/opensoc.pcap');
     });
   }
 
-  app.get('/pcap/:command', function(req, res) {
+  app.get('/pcap/:command', function (req, res) {
     if (config.kibana.opensoc.auth && (!req.user || !req.user.permissions.pcap)) {
       res.send(403, 'Forbidden!');
       return;
@@ -60,7 +60,7 @@ exports = module.exports = function(app, config) {
 
     if (raw) {
       res.set('Content-Type', 'application/cap');
-      res.set('Content-Disposition', 'attachment; filename="opensoc.pcap"')
+      res.set('Content-Disposition', 'attachment; filename="opensoc.pcap"');
       curl.stdout.pipe(res);
       return;
     }
@@ -81,20 +81,20 @@ exports = module.exports = function(app, config) {
       transit.push(data);
     });
 
-    gzip.stdout.on('end', function() {
+    gzip.stdout.on('end', function () {
       gzip.stdout.unpipe(res.stdin);
       gzip.kill('SIGKILL');
     });
 
     var npcaps = 0;
-    xml.on('end', function() {
+    xml.on('end', function () {
       gzip.stdin.end();
       curl.stdout.unpipe(tshark.stdin);
       curl.kill('SIGKILL');
       tshark.kill('SIGKILL');
     });
 
-    xml.on('endElement: packet', function(packet) {
+    xml.on('endElement: packet', function (packet) {
       var psize = parseInt(packet.proto[0].$.size);
       npcaps || readRawBytes(24, transit);  // skip global header
       readRawBytes(16, transit);  // skip packet header
