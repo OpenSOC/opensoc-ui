@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/OpenSOC/opensoc-ui.svg?branch=kibana4)
+[![Build Status](https://travis-ci.org/OpenSOC/opensoc-ui.svg?branch=kibana4)](https://travis-ci.org/OpenSOC/opensoc-ui)
 
 # OpenSOC UI
 
