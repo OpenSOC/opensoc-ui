@@ -1,8 +1,14 @@
 language: node_js
-<<<<<<< HEAD
+
 env: IN_TRAVIS=true
 node_js:
 - '0.10'
+
+branches:
+  only:
+    - master
+    - kibana4
+
 before_install:
     - sudo apt-get install -y libpcap-dev tshark
     - npm install -g grunt-cli
@@ -13,7 +19,7 @@ notifications:
     - opensoc-github@external.cisco.com
     on_success: never
     on_failure: always
-=======
+
 node_js:
 - '0.10'
 install:
@@ -33,4 +39,4 @@ notifications:
     on_success: change
     template:
     - ! '%{repository_slug}/%{branch} by %{author}: %{commit_message} (<a href="%{build_url}">open</a>)'
->>>>>>> d31be9aa7399e62a191bbf8435d6a0cdad569383
+
