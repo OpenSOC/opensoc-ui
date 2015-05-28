@@ -17,6 +17,7 @@ define(function (require) {
   require('components/bind');
   require('components/listen');
   require('components/fancy_forms/fancy_forms');
+  require('components/stringify/register');
   require('directives/click_focus');
   require('directives/info');
   require('directives/spinner');
@@ -28,7 +29,7 @@ define(function (require) {
 
   // ensure that the kibana module requires ui.bootstrap
   require('modules').get('kibana', ['ui.bootstrap'])
-  .directive('kibana', function (Private, $rootScope, $injector, Promise, config, kbnSetup) {
+  .directive('kibana', function (Private, $rootScope, $injector, Promise, config, kbnSetup, opensoc) {
     return {
       template: require('text!plugins/kibana/kibana.html'),
       controllerAs: 'kibana',
@@ -36,6 +37,9 @@ define(function (require) {
         var _ = require('lodash');
         var self = $rootScope.kibana = this;
         var notify = new Notifier({ location: 'Kibana' });
+
+        // Make the opensoc config available
+        $rootScope.opensoc = opensoc;
 
         // this is the only way to handle uncaught route.resolve errors
         $rootScope.$on('$routeChangeError', function (event, next, prev, err) {

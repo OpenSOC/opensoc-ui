@@ -8,11 +8,31 @@
     <script src="/node_modules/mocha/mocha.js"></script>
     <script src="/src/kibana/bower_components/requirejs/require.js"></script>
     <script src="/src/kibana/require.config.js"></script>
-
     <script>(function () {
       var COVERAGE = !!(/coverage/i.test(window.location.search));
       var SAUCELABS = !!(/saucelabs/i.test(window.location.search));
       var DISABLE_RESIZE_CHECKER = true;
+
+
+      var mochaSuiteOn = mocha.suite.on;
+      mocha.suite.on = function (eventName, fn) {
+        if (eventName !== 'pre-require') {
+          return mochaSuiteOn.call(this, eventName, fn);
+        }
+
+        return mochaSuiteOn.call(this, eventName, function (context, file, mocha) {
+          fn.call(this, context, file, mocha);
+
+          var contextDescribe = context.describe;
+          context.describe = function (name, body) {
+            if (!body && name && name instanceof Array) {
+              contextDescribe(name[0], name[1]);
+            } else {
+              contextDescribe(name, body);
+            }
+          };
+        });
+      };
 
       mocha.setup({
         ui: 'bdd',
@@ -36,6 +56,11 @@
           ScreencastReporter: '../../node_modules/mocha-screencast-reporter/screencast-reporter'
         },
         shim: {
+          angular_src: {
+            deps: [
+              'jquery'
+            ]
+          },
           angular: {
             deps: [
               'jquery',
@@ -43,6 +68,7 @@
             ],
             exports: 'angular'
           },
+          'angular-route': ['angular'],
           'sinon/sinon': {
             deps: [
               'sinon/sinon-timers-1.8.2'
@@ -138,6 +164,7 @@
           }
         });
       }
+
 
       if (COVERAGE) {
         setupCoverage(runTests);

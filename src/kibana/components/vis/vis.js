@@ -70,7 +70,7 @@ define(function (require) {
       if (_.isString(this.type)) this.type = visTypes.byName[this.type];
 
       this.listeners = _.assign({}, state.listeners, this.type.listeners);
-      this.params = _.defaults({}, state.params || {}, this.type.params.defaults || {});
+      this.params = _.defaults({}, _.cloneDeep(state.params || {}), this.type.params.defaults || {});
 
       this.aggs = new AggConfigs(this, state.aggs);
     };
@@ -100,6 +100,14 @@ define(function (require) {
       } else {
         return !!this.type.hierarchicalData;
       }
+    };
+
+    Vis.prototype.hasSchemaAgg = function (schemaName, aggTypeName) {
+      var aggs = this.aggs.bySchemaName[schemaName] || [];
+      return aggs.some(function (agg) {
+        if (!agg.type || !agg.type.name) return false;
+        return agg.type.name === aggTypeName;
+      });
     };
 
     return Vis;

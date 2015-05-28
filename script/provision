@@ -34,9 +34,9 @@ cd -
 
 ### BEGIN ELASTICSEARCH ###
 apt-get -y install openjdk-7-jre-headless
-wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.deb
-dpkg -i elasticsearch-1.4.4.deb
-rm -rf elasticsearch-1.4.4.deb
+wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
+dpkg -i elasticsearch-1.5.2.deb
+rm -rf elasticsearch-1.5.2.deb
 cd /usr/share/elasticsearch
 bin/plugin -install mobz/elasticsearch-head
 cd -

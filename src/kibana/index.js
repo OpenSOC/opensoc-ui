@@ -22,7 +22,6 @@ define(function (require) {
     'ngClipboard'
   ]);
 
-
   kibana
     // This stores the Kibana revision number, @REV@ is replaced by grunt.
     .constant('kbnVersion', window.KIBANA_VERSION)
@@ -42,6 +41,13 @@ define(function (require) {
     .config(['ngClipProvider', function (ngClipProvider) {
       ngClipProvider.setPath('bower_components/zeroclipboard/dist/ZeroClipboard.swf');
     }]);
+
+  kibana
+    // Make the opensoc config available.
+    .constant('opensoc', {
+      auth: configFile.opensoc.auth,
+      permissions: configFile.opensoc.permissions
+    });
 
   // setup routes
   routes

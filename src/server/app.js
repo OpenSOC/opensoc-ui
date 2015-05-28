@@ -80,7 +80,7 @@ if (config.external_plugins_folder) app.use('/plugins', express.static(config.ex
 app.use('/', routes);
 
 // pcap service
-pcap(app, config);
+pcap(app, config.kibana.opensoc);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
