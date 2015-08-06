@@ -2,6 +2,12 @@ language: node_js
 env: IN_TRAVIS=true
 node_js:
 - '0.10'
+
+branches:
+	only:
+		- master
+		- kibana4
+
 before_install:
     - sudo apt-get install -y libpcap-dev tshark
     - npm install -g grunt-cli
